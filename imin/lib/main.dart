@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/change_password',
+      initialRoute: '/login',
       getPages: [
         GetPage(name: '/login', page: () => LoginScreen()),
         GetPage(name: '/profile', page: () => ProfileScreen()),

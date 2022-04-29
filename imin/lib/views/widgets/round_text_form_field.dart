@@ -40,7 +40,11 @@ class RoundTextFormField extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
             child: TextFormField(
-              obscureText: isVisibility == true ? false : true,
+              obscureText: textTitle != "รหัสผ่าน"
+                  ? false
+                  : isVisibility == true
+                      ? false
+                      : true,
               decoration: InputDecoration(
                 hintText: textTitle,
                 // prefixIconConstraints:

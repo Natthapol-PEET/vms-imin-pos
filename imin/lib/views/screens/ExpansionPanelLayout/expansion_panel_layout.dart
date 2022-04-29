@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/helpers/constance.dart';
 
+// ignore: must_be_immutable
 class ExpansionPanelScreen extends StatelessWidget {
   ExpansionPanelScreen({
     Key? key,
@@ -8,36 +11,12 @@ class ExpansionPanelScreen extends StatelessWidget {
   }) : super(key: key);
 
   final Widget child;
-
-  List<ItemModel> itemData = <ItemModel>[
-    ItemModel(
-      headerItem: 'Android',
-      discription:
-          "Android is a mobile operating system based on a modified version of the Linux kernel and other open source software, designed primarily for touchscreen mobile devices such as smartphones and tablets.",
-      colorsItem: Colors.white,
-    ),
-    ItemModel(
-      headerItem: 'iOS',
-      discription:
-          "iOS is a mobile operating system created and developed by Apple Inc. exclusively for its hardware.",
-      colorsItem: Colors.white,
-    ),
-    ItemModel(
-      headerItem: 'Windows',
-      discription:
-          "Microsoft Windows, commonly referred to as Windows, is a group of several proprietary graphical operating system families, all of which are developed and marketed by Microsoft. ",
-      colorsItem: Colors.white,
-    ),
-    ItemModel(
-      headerItem: 'Linux',
-      discription:
-          "Linux is a family of open-source Unix-like operating systems based on the Linux kernel, an operating system.",
-      colorsItem: Colors.white,
-    ),
-  ];
+  // final controller = Get.put(ExpansionPanelController());
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       body: Row(
         children: [
@@ -47,39 +26,22 @@ class ExpansionPanelScreen extends StatelessWidget {
               color: themeBgColor,
               child: Column(
                 children: [
-                  SizedBox(height: 30),
-                  Image.asset("assets/images/Artani-Logo.png", scale: 2.5),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: itemData.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          color: themeBgColor,
-                          child: ExpansionTile(
-                            backgroundColor: goldColor,
-                            collapsedIconColor: Colors.white,
-                            iconColor: Colors.white,
-                            title: Text(
-                              itemData[index].headerItem,
-                              style: TextStyle(
-                                color: !itemData[index].expanded
-                                    ? Colors.white
-                                    : Colors.grey.shade300,
-                              ),
-                            ),
-                            children: [
-                              Text(
-                                itemData[index].discription,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                  height: 1.3,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
+                  Padding(
+                    padding: EdgeInsets.only(
+                        top: size.height * 0.05, bottom: size.height * 0.015),
+                    child: Image.asset("assets/images/Artani-Logo.png",
+                        scale: 2.5),
+                  ),
+                  GetBuilder<ExpansionPanelController>(
+                    id: 'aVeryUniqueID', // here
+                    init: ExpansionPanelController(),
+                    builder: (controller) => Expanded(
+                      child: Column(
+                        children: [
+                          buildMenu(controller, size),
+                          logout(size),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -91,18 +53,106 @@ class ExpansionPanelScreen extends StatelessWidget {
       ),
     );
   }
-}
 
-class ItemModel {
-  String headerItem;
-  String discription;
-  Color colorsItem;
-  bool expanded;
+  InkWell logout(Size size) {
+    return InkWell(
+      onTap: () => print('ออกจากระบบ'),
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+            vertical: size.height * 0.02, horizontal: size.width * 0.01),
+        child: Row(
+          children: [
+            Icon(Icons.exit_to_app, color: Colors.white),
+            SizedBox(width: size.width * 0.01),
+            Text(
+              'ออกจากระบบ',
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: fontRegular,
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
-  ItemModel({
-    this.headerItem = "",
-    this.discription = "",
-    this.colorsItem = Colors.white,
-    this.expanded = false,
-  });
+  Expanded buildMenu(ExpansionPanelController controller, Size size) {
+    return Expanded(
+      child: ListView.builder(
+        key: Key('builder ${controller.selected.toString()}'), //attention
+        itemCount: controller.itemData.length,
+        itemBuilder: (context, index) {
+          return Container(
+            color: themeBgColor,
+            child: ExpansionTile(
+              key: Key(index.toString()), //attention
+              initiallyExpanded: index == controller.selected, //attention,
+              expandedAlignment: Alignment.topLeft,
+              expandedCrossAxisAlignment: CrossAxisAlignment.start,
+              backgroundColor: goldColor,
+              // collapsedIconColor: Colors.white,
+              // iconColor: Colors.white,
+              collapsedIconColor: controller.itemData[index].subItem.length > 0
+                  ? Colors.white
+                  : Colors.transparent,
+              iconColor: controller.itemData[index].subItem.length > 0
+                  ? Colors.white
+                  : Colors.transparent,
+              title: Row(
+                children: [
+                  Icon(controller.itemData[index].icon,
+                      color: index == controller.selected
+                          ? Colors.white
+                          : Colors.grey.shade300),
+                  SizedBox(width: size.width * 0.01),
+                  Text(
+                    controller.itemData[index].titleItem,
+                    style: TextStyle(
+                      color: index == controller.selected
+                          ? Colors.white
+                          : Colors.grey.shade300,
+                      fontFamily: fontRegular,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
+              children: [
+                // for (var subItem in controller.itemData[index].subItem)
+                for (int i = 0;
+                    i < controller.itemData[index].subItem.length;
+                    i++) ...[
+                  InkWell(
+                    onTap: () => controller.updateSubItemSelector(index, i),
+                    child: Container(
+                      padding: EdgeInsets.only(
+                          left: size.width * 0.04, bottom: size.height * 0.02),
+                      width: double.infinity,
+                      child: Text(
+                        controller.itemData[index].subItem[i],
+                        style: TextStyle(
+                          color: controller.itemData[index].subItemSelect[i]
+                              ? Colors.white
+                              : Colors.grey.shade300,
+                          fontFamily: fontRegular,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                  ),
+                ]
+              ],
+              onExpansionChanged: (v) =>
+                  controller.onExpansionChanged(v, index),
+            ),
+          );
+        },
+      ),
+    );
+  }
 }

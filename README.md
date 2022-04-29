@@ -2,8 +2,7 @@
 
 ## command
 
-flutter clean
-flutter pub get
-flutter run
-flutter run -d chrome
-S
+### flutter clean
+### flutter pub get
+### flutter run
+### flutter run -d chrome

@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 
 class ItemModel {
-  String headerItem;
-  String discription;
-  Color colorsItem;
+  IconData icon;
+  String titleItem;
+  List subItem;
+  List subItemSelect;
+  List<VoidCallback>? onClick;
   bool expanded;
 
   ItemModel({
-    this.headerItem = "",
-    this.discription = "",
-    this.colorsItem = Colors.white,
+    this.icon = Icons.ac_unit,
+    this.titleItem = "",
+    this.subItem = const [],
+    this.subItemSelect = const [],
+    this.onClick,
     this.expanded = false,
   });
 }

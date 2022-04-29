@@ -3,12 +3,18 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:imin/views/screens/ChangePassword/change_password_screen.dart';
+import 'package:imin/views/screens/Demo/select.dart';
 import 'package:imin/views/screens/Login/login_screen.dart';
-import 'package:imin/views/screens/Profile/demo.dart';
+import 'package:imin/views/screens/Demo/demo.dart';
 import 'package:imin/views/screens/Profile/profile_screen.dart';
+import 'package:wakelock/wakelock.dart';
 
 void main() {
   runApp(MyApp());
+
+  // The following line will enable the Android and iOS wakelock.
+  WidgetsFlutterBinding.ensureInitialized();
+  Wakelock.enable();
 
   // Hide status bar and bottom navigation bar
   SystemChrome.setEnabledSystemUIOverlays([]);
@@ -28,7 +34,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/login',
+      initialRoute: '/profile',
       getPages: [
         GetPage(name: '/login', page: () => LoginScreen()),
         GetPage(name: '/profile', page: () => ProfileScreen()),
@@ -36,6 +42,7 @@ class MyApp extends StatelessWidget {
 
         // demo
         GetPage(name: '/demo', page: () => ExpansionPanelDemo()),
+        GetPage(name: '/select', page: () => Selector()),
       ],
     );
   }

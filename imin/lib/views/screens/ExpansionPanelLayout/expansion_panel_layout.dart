@@ -1,9 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/helpers/constance.dart';
-import 'package:imin/views/screens/ChangePassword/change_password_screen.dart';
-import 'package:imin/views/screens/Profile/profile_screen.dart';
 
 // ignore: must_be_immutable
 class ExpansionPanelScreen extends StatelessWidget {
@@ -17,49 +17,96 @@ class ExpansionPanelScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return Scaffold(
-      body: Row(
-        children: [
-          Expanded(
-            flex: 1,
-            child: Container(
-              color: themeBgColor,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                        top: size.height * 0.05, bottom: size.height * 0.015),
-                    child: Image.asset("assets/images/Artani-Logo.png",
-                        scale: 2.5),
-                  ),
-                  GetBuilder<ExpansionPanelController>(
-                    id: 'aVeryUniqueID', // here
-                    init: ExpansionPanelController(),
-                    builder: (controller) => Expanded(
-                      child: Column(
-                        children: [
-                          buildMenu(controller, size),
-                          logout(size),
-                        ],
-                      ),
+    Future<bool> _onWillPop() async {
+      return (await showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text(
+                'แจ้งเตือน',
+                style: TextStyle(
+                  fontFamily: fontRegular,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              content: Text('คุณต้องการออกจากแอปใช่หรือไม่ ?'),
+              actions: [
+                TextButton(
+                  // onPressed: () => Navigator.of(context).pop(true),
+                  onPressed: () => exit(0),
+                  child: Text(
+                    'ใช่',
+                    style: TextStyle(
+                      fontFamily: fontRegular,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green,
+                      fontSize: 16,
                     ),
                   ),
-                ],
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: Text(
+                    'ไม่ใช่',
+                    style: TextStyle(
+                      fontFamily: fontRegular,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )) ??
+          false;
+    }
+
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        body: Row(
+          children: [
+            Expanded(
+              flex: 1,
+              child: Container(
+                color: themeBgColor,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: size.height * 0.05, bottom: size.height * 0.015),
+                      child: Image.asset("assets/images/Artani-Logo.png",
+                          scale: 2.5),
+                    ),
+                    GetBuilder<ExpansionPanelController>(
+                      id: 'aVeryUniqueID', // here
+                      init: ExpansionPanelController(),
+                      builder: (controller) => Expanded(
+                        child: Column(
+                          children: [
+                            buildMenu(controller, size),
+                            logout(size),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          // child,
-          Expanded(
-            flex: 4,
-            child: GetBuilder<ExpansionPanelController>(
-              id: 'aopbmsbbffdgkb', // here
-              init: ExpansionPanelController(),
-              builder: (controller) => Container(
-                child: controller.currentContent,
+            // child,
+            Expanded(
+              flex: 4,
+              child: GetBuilder<ExpansionPanelController>(
+                id: 'aopbmsbbffdgkb', // here
+                init: ExpansionPanelController(),
+                builder: (controller) => Container(
+                  child: controller.currentContent,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

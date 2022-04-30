@@ -38,14 +38,17 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/expansion_panel',
       getPages: [
+        // Screens
         GetPage(name: '/login', page: () => LoginScreen()),
         GetPage(name: '/expansion_panel', page: () => ExpansionPanelScreen()),
-        // GetPage(name: '/profile', page: () => ProfileScreen()),
-        // GetPage(name: '/change_password', page: () => ChangePasswordScreen()),
-        // GetPage(name: '/entrance_project', page: () => EntranceProjectScreen()),
-        // GetPage(name: '/exit_project', page: () => ExitProjectScreen()),
 
-        // demo
+        // Components
+        GetPage(name: '/profile', page: () => ProfileScreen()),
+        GetPage(name: '/change_password', page: () => ChangePasswordScreen()),
+        GetPage(name: '/entrance_project', page: () => EntranceProjectScreen()),
+        GetPage(name: '/exit_project', page: () => ExitProjectScreen()),
+
+        // demos
         GetPage(name: '/demo', page: () => ExpansionPanelDemo()),
         GetPage(name: '/select', page: () => Selector()),
       ],

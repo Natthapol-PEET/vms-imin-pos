@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:imin/views/screens/ChangePassword/change_password_screen.dart';
 import 'package:imin/views/screens/Demo/select.dart';
+import 'package:imin/views/screens/EntranceProject/entrance_project_screen.dart';
+import 'package:imin/views/screens/ExitProject/exit_project_screen.dart';
+import 'package:imin/views/screens/ExpansionPanelLayout/expansion_panel_layout.dart';
 import 'package:imin/views/screens/Login/login_screen.dart';
 import 'package:imin/views/screens/Demo/demo.dart';
 import 'package:imin/views/screens/Profile/profile_screen.dart';
@@ -34,11 +36,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/profile',
+      initialRoute: '/expansion_panel',
       getPages: [
         GetPage(name: '/login', page: () => LoginScreen()),
-        GetPage(name: '/profile', page: () => ProfileScreen()),
-        GetPage(name: '/change_password', page: () => ChangePasswordScreen()),
+        GetPage(name: '/expansion_panel', page: () => ExpansionPanelScreen()),
+        // GetPage(name: '/profile', page: () => ProfileScreen()),
+        // GetPage(name: '/change_password', page: () => ChangePasswordScreen()),
+        // GetPage(name: '/entrance_project', page: () => EntranceProjectScreen()),
+        // GetPage(name: '/exit_project', page: () => ExitProjectScreen()),
 
         // demo
         GetPage(name: '/demo', page: () => ExpansionPanelDemo()),

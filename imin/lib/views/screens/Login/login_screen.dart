@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/controllers/login_controller.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/views/widgets/bg_image.dart';
@@ -10,6 +11,7 @@ class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
 
   final controller = Get.put(LoginController());
+  final expandController = Get.put(ExpansionPanelController());
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +109,10 @@ class LoginScreen extends StatelessWidget {
                   SizedBox(height: size.height * 0.008),
                   RoundButton(
                     title: 'เข้าสู่ระบบ',
-                    press: () {},
+                    press: () {
+                      Get.toNamed('/expansion_panel');
+                      expandController.setDefaultValues();
+                    },
                   ),
                 ],
               ),

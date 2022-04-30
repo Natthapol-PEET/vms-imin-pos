@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+class EntranceProjectScreen extends StatelessWidget {
+  const EntranceProjectScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      'ProfileScreen',
+      'EntranceProjectScreen',
       style: TextStyle(
         color: Colors.black,
         fontSize: 36,

@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/helpers/constance.dart';
+import 'package:imin/views/screens/ChangePassword/change_password_screen.dart';
+import 'package:imin/views/screens/Profile/profile_screen.dart';
 
 // ignore: must_be_immutable
 class ExpansionPanelScreen extends StatelessWidget {
   ExpansionPanelScreen({
     Key? key,
-    required this.child,
   }) : super(key: key);
 
-  final Widget child;
   // final controller = Get.put(ExpansionPanelController());
 
   @override
@@ -48,7 +48,17 @@ class ExpansionPanelScreen extends StatelessWidget {
               ),
             ),
           ),
-          child,
+          // child,
+          Expanded(
+            flex: 4,
+            child: GetBuilder<ExpansionPanelController>(
+              id: 'aopbmsbbffdgkb', // here
+              init: ExpansionPanelController(),
+              builder: (controller) => Container(
+                child: controller.currentContent,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -56,7 +66,7 @@ class ExpansionPanelScreen extends StatelessWidget {
 
   InkWell logout(Size size) {
     return InkWell(
-      onTap: () => print('ออกจากระบบ'),
+      onTap: () => Get.toNamed('/login'),
       child: Padding(
         padding: EdgeInsets.symmetric(
             vertical: size.height * 0.02, horizontal: size.width * 0.01),
@@ -128,6 +138,7 @@ class ExpansionPanelScreen extends StatelessWidget {
                     i++) ...[
                   InkWell(
                     onTap: () => controller.updateSubItemSelector(index, i),
+                    // onTap: controller.itemData[index].onClick[i],
                     child: Container(
                       padding: EdgeInsets.only(
                           left: size.width * 0.04, bottom: size.height * 0.02),

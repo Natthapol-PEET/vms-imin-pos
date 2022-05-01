@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
+import 'package:imin/controllers/on_will_pop_controller.dart';
 import 'package:imin/helpers/constance.dart';
 
 // ignore: must_be_immutable
@@ -12,57 +11,17 @@ class ExpansionPanelScreen extends StatelessWidget {
   }) : super(key: key);
 
   // final controller = Get.put(ExpansionPanelController());
+  final onWillPopController = Get.put(OnWillPopController());
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    Future<bool> _onWillPop() async {
-      return (await showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Text(
-                'แจ้งเตือน',
-                style: TextStyle(
-                  fontFamily: fontRegular,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              content: Text('คุณต้องการออกจากแอปใช่หรือไม่ ?'),
-              actions: [
-                TextButton(
-                  // onPressed: () => Navigator.of(context).pop(true),
-                  onPressed: () => exit(0),
-                  child: Text(
-                    'ใช่',
-                    style: TextStyle(
-                      fontFamily: fontRegular,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.green,
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(false),
-                  child: Text(
-                    'ไม่ใช่',
-                    style: TextStyle(
-                      fontFamily: fontRegular,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red,
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          )) ??
-          false;
-    }
+    //  Dialog Exit App
+    onWillPopController.context = context;
 
     return WillPopScope(
-      onWillPop: _onWillPop,
+      onWillPop: onWillPopController.onWillPop,
       child: Scaffold(
         body: Row(
           children: [

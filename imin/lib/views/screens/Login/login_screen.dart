@@ -101,13 +101,16 @@ class LoginScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Text(
-                          "ลืมรหัสผ่าน?",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontFamily: fontRegular,
-                            fontWeight: FontWeight.w400,
+                        TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "ลืมรหัสผ่าน?",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontFamily: fontRegular,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                         ),
                       ],

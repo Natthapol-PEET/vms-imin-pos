@@ -1,9 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:imin/helpers/constance.dart';
+import 'package:imin/views/widgets/profile_image.dart';
+import 'package:imin/views/widgets/round_button.dart';
 import 'package:imin/views/widgets/round_button_outline.dart';
+import 'package:imin/views/widgets/round_input_form_field.dart';
 
+// ignore: must_be_immutable
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  ProfileScreen({Key? key}) : super(key: key);
+
+  final _formKey = GlobalKey<FormState>();
+  final emailControl = TextEditingController(text: 'Suchin12@gmail.com');
+  final fullnameControl = TextEditingController(text: 'สุจิน สว่างเนตร');
+  final levelControl = TextEditingController(text: 'รปภ.');
+  final passwordControl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -38,19 +49,7 @@ class ProfileScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                height: size.height * 0.25,
-                width: size.height * 0.25,
-                decoration: BoxDecoration(
-                  color: iconGoldColor,
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                child: Image.asset(
-                  'assets/images/people-icon.png',
-                  scale: 1.8,
-                ),
-              ),
-              SizedBox(width: size.width * 0.1),
+              ProfileImage(),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,9 +60,9 @@ class ProfileScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          subTitleText('อีเมล'),
-                          subTitleText('ชื่อ-นามสกุล'),
-                          subTitleText('ระดับ'),
+                          subTitleText('อีเมล', 20),
+                          subTitleText('ชื่อ-นามสกุล', 20),
+                          subTitleText('ระดับ', 20),
                         ],
                       ),
                       SizedBox(width: size.width * 0.03),
@@ -81,7 +80,16 @@ class ProfileScreen extends StatelessWidget {
                   // RoundButton
                   RoundButtonOutline(
                     title: 'แก้ไขข้อมูลส่วนตัว',
-                    press: () {},
+                    // press: () async => editInfomation(
+                    //   context,
+                    //   size,
+                    //   _formKey,
+                    //   emailControl,
+                    //   emailControl,
+                    //   emailControl,
+                    // ),
+                    // press: () async => confirmEditInfomation(context, size),
+                    press: () async => saveInfomationStatus(context, size),
                   ),
                 ],
               ),
@@ -92,31 +100,196 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Padding subTitleText(String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: Text(
-        text,
-        style: TextStyle(
-          fontFamily: fontRegular,
-          fontSize: 18,
-          fontWeight: FontWeight.w600,
+  Future saveInfomationStatus(BuildContext context, Size size) async {
+    return await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        scrollable: true,
+        content: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              margin: EdgeInsets.only(bottom: size.height * 0.02),
+              width: size.width * 0.07,
+              height: size.width * 0.07,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(100)),
+                color: false ? greenDoneColor : Colors.redAccent.shade200,
+              ),
+              child: Icon(
+                false ? Icons.done : Icons.close,
+                color: Colors.white,
+                size: 70,
+              ),
+            ),
+            Text(
+              false ? 'บันทึกสำเร็จ' : 'รหัสผ่านไม่ถูกต้อง',
+              style: TextStyle(fontFamily: fontRegular, fontSize: 16),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Padding subDetailText(String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: Text(
-        text,
-        style: TextStyle(
-          fontFamily: fontRegular,
-          fontWeight: FontWeight.w400,
-          fontSize: 18,
+  Future confirmEditInfomation(BuildContext context, Size size) async {
+    return await showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => AlertDialog(
+        scrollable: true,
+        title: Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'ยืนยันการแก้ไขข้อมูลส่วนตัว',
+                    style: TextStyle(
+                      fontFamily: fontRegular,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () => Get.back(),
+                    child: Icon(
+                      Icons.close,
+                      color: grey3Color,
+                      size: 24,
+                    ),
+                  ),
+                ],
+              ),
+              Divider(color: dividerColor),
+            ],
+          ),
         ),
+        content: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              subTitleText('กรุณาใส่รหัสผ่านเพื่อยืนยันตัวตน', 10),
+              RoundInputFormField(
+                textControl: passwordControl,
+                hintText: 'กรุณาพิมพ์รหัสผ่าน',
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          RoundButton(title: 'ตกลง', press: () => Get.back()),
+        ],
       ),
     );
   }
+}
+
+Future editInfomation(
+    BuildContext context,
+    Size size,
+    GlobalKey _formKey,
+    TextEditingController emailControl,
+    TextEditingController fullnameControl,
+    TextEditingController levelControl) async {
+  return await showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (context) => AlertDialog(
+      scrollable: true,
+      title: Container(
+        width: size.width * 0.7,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'แก้ไขข้อมูลส่วนตัว',
+                  style: TextStyle(
+                    fontFamily: fontRegular,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                InkWell(
+                  onTap: () => Get.back(),
+                  child: Icon(
+                    Icons.close,
+                    color: grey3Color,
+                    size: 24,
+                  ),
+                ),
+              ],
+            ),
+            Divider(color: dividerColor),
+          ],
+        ),
+      ),
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          ProfileImage(),
+          Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                subTitleText('อีเมล', 10),
+                RoundInputFormField(
+                  textControl: emailControl,
+                ),
+                subTitleText('ชื่อ-นามสกุล', 10),
+                RoundInputFormField(
+                  textControl: fullnameControl,
+                ),
+                subTitleText('ระดับ', 10),
+                RoundInputFormField(
+                  textControl: levelControl,
+                  readOnly: true,
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+      actions: [
+        RoundButton(title: 'บันทึก', press: () => Get.back()),
+      ],
+    ),
+  );
+}
+
+Padding subTitleText(String text, double padding) {
+  return Padding(
+    padding: EdgeInsets.only(bottom: padding),
+    child: Text(
+      text,
+      style: TextStyle(
+        fontFamily: fontRegular,
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
+      ),
+    ),
+  );
+}
+
+Padding subDetailText(String text) {
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 20),
+    child: Text(
+      text,
+      style: TextStyle(
+        fontFamily: fontRegular,
+        fontWeight: FontWeight.w400,
+        fontSize: 18,
+      ),
+    ),
+  );
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:imin/views/screens/ChangePassword/change_password_screen.dart';
+import 'package:imin/views/screens/Demo/popup_menu_screen.dart';
 import 'package:imin/views/screens/Demo/select.dart';
 import 'package:imin/views/screens/EntranceProject/entrance_project_screen.dart';
 import 'package:imin/views/screens/ExitProject/exit_project_screen.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/login',
+      initialRoute: '/expansion_panel',
       getPages: [
         // Screens
         GetPage(name: '/login', page: () => LoginScreen()),
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
         // demos
         GetPage(name: '/demo', page: () => ExpansionPanelDemo()),
         GetPage(name: '/select', page: () => Selector()),
+        GetPage(name: '/popup_menu', page: () => PopupMenuScreen()),
       ],
     );
   }

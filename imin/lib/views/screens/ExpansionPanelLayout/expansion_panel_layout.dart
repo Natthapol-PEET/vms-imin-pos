@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/controllers/on_will_pop_controller.dart';
 import 'package:imin/helpers/constance.dart';
+import 'package:imin/views/widgets/top_app_bar.dart';
 
 // ignore: must_be_immutable
 class ExpansionPanelScreen extends StatelessWidget {
@@ -32,10 +33,11 @@ class ExpansionPanelScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(
-                          top: size.height * 0.05, bottom: size.height * 0.015),
-                      child: Image.asset("assets/images/Artani-Logo.png",
-                          scale: 2.5),
+                      padding: EdgeInsets.only(top: size.height * 0.05),
+                      child: Image.asset(
+                        "assets/images/Artani-Logo-Security.png",
+                        scale: 0.2,
+                      ),
                     ),
                     GetBuilder<ExpansionPanelController>(
                       id: 'aVeryUniqueID', // here
@@ -53,14 +55,18 @@ class ExpansionPanelScreen extends StatelessWidget {
                 ),
               ),
             ),
-            // child,
             Expanded(
               flex: 4,
               child: GetBuilder<ExpansionPanelController>(
                 id: 'aopbmsbbffdgkb', // here
                 init: ExpansionPanelController(),
-                builder: (controller) => Container(
-                  child: controller.currentContent,
+                builder: (controller) => Column(
+                  children: [
+                    TopAppBar(),
+                    Expanded(
+                      child: controller.currentContent,
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -70,9 +76,9 @@ class ExpansionPanelScreen extends StatelessWidget {
     );
   }
 
-  InkWell logout(Size size) {
-    return InkWell(
-      onTap: () => Get.toNamed('/login'),
+  TextButton logout(Size size) {
+    return TextButton(
+      onPressed: () => Get.toNamed('/login'),
       child: Padding(
         padding: EdgeInsets.symmetric(
             vertical: size.height * 0.02, horizontal: size.width * 0.01),
@@ -108,7 +114,7 @@ class ExpansionPanelScreen extends StatelessWidget {
               initiallyExpanded: index == controller.selected, //attention,
               expandedAlignment: Alignment.topLeft,
               expandedCrossAxisAlignment: CrossAxisAlignment.start,
-              backgroundColor: goldColor,
+              backgroundColor: Colors.white,
               // collapsedIconColor: Colors.white,
               // iconColor: Colors.white,
               collapsedIconColor: controller.itemData[index].subItem.length > 0
@@ -121,15 +127,15 @@ class ExpansionPanelScreen extends StatelessWidget {
                 children: [
                   Icon(controller.itemData[index].icon,
                       color: index == controller.selected
-                          ? Colors.white
-                          : Colors.grey.shade300),
+                          ? hilightTextColor
+                          : Colors.white),
                   SizedBox(width: size.width * 0.01),
                   Text(
                     controller.itemData[index].titleItem,
                     style: TextStyle(
                       color: index == controller.selected
-                          ? Colors.white
-                          : Colors.grey.shade300,
+                          ? hilightTextColor
+                          : Colors.white,
                       fontFamily: fontRegular,
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
@@ -153,8 +159,8 @@ class ExpansionPanelScreen extends StatelessWidget {
                         controller.itemData[index].subItem[i],
                         style: TextStyle(
                           color: controller.itemData[index].subItemSelect[i]
-                              ? Colors.white
-                              : Colors.grey.shade300,
+                              ? hilightTextColor
+                              : textColor,
                           fontFamily: fontRegular,
                           fontSize: 16,
                           fontWeight: FontWeight.w400,

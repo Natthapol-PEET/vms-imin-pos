@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/views/widgets/profile_image.dart';
 import 'package:imin/views/widgets/round_button.dart';
-import 'package:imin/views/widgets/round_button_outline.dart';
 import 'package:imin/views/widgets/round_input_form_field.dart';
 
 // ignore: must_be_immutable
@@ -20,79 +19,62 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return Column(
-      // mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Stack(
+      alignment: AlignmentDirectional.topCenter,
       children: [
-        Flexible(
-          flex: 1,
-          child: Padding(
-            padding: EdgeInsets.only(
-                top: size.height * 0.05, left: size.width * 0.03),
-            child: Text(
-              'ข้อมูลส่วนตัว',
-              style: TextStyle(
-                color: Colors.black,
-                fontFamily: fontNunitoSans,
-                fontWeight: FontWeight.w600,
-                fontSize: 28,
-              ),
-            ),
-          ),
-        ),
-
-        // content
-        Flexible(
-          flex: 3,
-          fit: FlexFit.tight,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+        // Background
+        Image.asset('assets/images/background-profile.png'),
+        // prolile large
+        Positioned(
+          top: size.height * 0.05,
+          child: Column(
             children: [
-              ProfileImage(),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          subTitleText('อีเมล', 20),
-                          subTitleText('ชื่อ-นามสกุล', 20),
-                          subTitleText('ระดับ', 20),
-                        ],
-                      ),
-                      SizedBox(width: size.width * 0.03),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          subDetailText('Suchin12@gmail.com'),
-                          subDetailText('สุจิน สว่างเนตร'),
-                          subDetailText('รปภ.'),
-                        ],
-                      ),
-                    ],
-                  ),
-                  // RoundButton
-                  RoundButtonOutline(
-                    title: 'แก้ไขข้อมูลส่วนตัว',
-                    // press: () async => editInfomation(
-                    //   context,
-                    //   size,
-                    //   _formKey,
-                    //   emailControl,
-                    //   emailControl,
-                    //   emailControl,
-                    // ),
-                    // press: () async => confirmEditInfomation(context, size),
-                    press: () async => saveInfomationStatus(context, size),
-                  ),
-                ],
+              Image.asset('assets/images/profile.png', scale: 3),
+
+              // Content
+              SizedBox(height: size.height * 0.03),
+              Padding(
+                padding: EdgeInsets.only(left: size.width * 0.05),
+                child: Row(
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        subTitleText('อีเมล', 20),
+                        subTitleText('ชื่อ-นามสกุล', 20),
+                        subTitleText('เบอร์โทรศัพท์', 20),
+                        subTitleText('ระดับ', 20),
+                      ],
+                    ),
+                    SizedBox(width: size.width * 0.03),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        subDetailText('Suchin12@gmail.com'),
+                        subDetailText('สุจิน สว่างเนตร'),
+                        subDetailText('093-1851721'),
+                        subDetailText('หัวหน้ารปภ.'),
+                      ],
+                    ),
+                  ],
+                ),
               ),
+              // RoundButton
+              // RoundButtonOutline(
+              //   title: 'แก้ไขข้อมูลส่วนตัว',
+              //   press: () async => editInfomation(
+              //     context,
+              //     size,
+              //     _formKey,
+              //     emailControl,
+              //     fullnameControl,
+              //     levelControl,
+              //   ),
+              //   // press: () async => confirmEditInfomation(context, size),
+              //   // press: () async => saveInfomationStatus(context, size),
+              // ),
             ],
           ),
         ),

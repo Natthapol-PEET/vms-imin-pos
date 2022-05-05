@@ -61,8 +61,14 @@ flutter:
   assets:
     - assets/images/Artani-Logo.png
     - assets/images/Artani-Logo.svg
+    - assets/images/Artani-Logo-Security.png
     - assets/images/BG-Login.png
     - assets/images/people-icon.png
+    - assets/images/thai-icon.png
+    - assets/images/bell-icon.png
+    - assets/images/profile-mini.png
+    - assets/images/profile.png
+    - assets/images/background-profile.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

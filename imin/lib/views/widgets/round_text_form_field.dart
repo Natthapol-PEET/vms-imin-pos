@@ -46,6 +46,7 @@ class RoundTextFormField extends StatelessWidget {
                       ? false
                       : true,
               decoration: InputDecoration(
+                border: InputBorder.none,
                 hintText: textTitle,
                 // prefixIconConstraints:
                 //     BoxConstraints(minWidth: 23, maxHeight: 20),
@@ -58,8 +59,8 @@ class RoundTextFormField extends StatelessWidget {
                         onTap: onClickVisibility,
                         child: Icon(
                           isVisibility == true
-                              ? Icons.visibility
-                              : Icons.visibility_off,
+                              ? Icons.visibility_outlined
+                              : Icons.visibility_off_outlined,
                           color:
                               isVisibility == true ? Colors.black : Colors.grey,
                         ),

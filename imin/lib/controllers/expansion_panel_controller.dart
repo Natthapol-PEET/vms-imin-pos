@@ -13,17 +13,6 @@ class ExpansionPanelController extends GetxController {
 
   List<ItemModel> itemData = <ItemModel>[
     ItemModel(
-      icon: Icons.supervisor_account,
-      titleItem: 'สุจิน สว่างเนตร',
-      currentContent: ProfileScreen(),
-      subItem: ['ข้อมูลส่วนตัว', 'เปลี่ยนรหัสผ่าน'],
-      subItemSelect: [true, false],
-      onClick: [
-        ProfileScreen(),
-        ChangePasswordScreen(),
-      ],
-    ),
-    ItemModel(
       icon: Icons.timer,
       titleItem: 'เวลาเข้าโครงการ',
       currentContent: EntranceProjectScreen(),
@@ -37,6 +26,17 @@ class ExpansionPanelController extends GetxController {
       currentContent: ExitProjectScreen(),
       subItem: [],
       onClick: [],
+    ),
+    ItemModel(
+      icon: Icons.settings,
+      titleItem: 'ตั้งค่า',
+      currentContent: ProfileScreen(),
+      subItem: ['ข้อมูลส่วนตัว', 'เปลี่ยนรหัสผ่าน'],
+      subItemSelect: [true, false],
+      onClick: [
+        ProfileScreen(),
+        ChangePasswordScreen(),
+      ],
     ),
   ];
 
@@ -98,17 +98,6 @@ class ExpansionPanelController extends GetxController {
 
     itemData = <ItemModel>[
       ItemModel(
-        icon: Icons.supervisor_account,
-        titleItem: 'สุจิน สว่างเนตร',
-        currentContent: ProfileScreen(),
-        subItem: ['ข้อมูลส่วนตัว', 'เปลี่ยนรหัสผ่าน'],
-        subItemSelect: [true, false],
-        onClick: [
-          ProfileScreen(),
-          ChangePasswordScreen(),
-        ],
-      ),
-      ItemModel(
         icon: Icons.timer,
         titleItem: 'เวลาเข้าโครงการ',
         currentContent: EntranceProjectScreen(),
@@ -122,6 +111,17 @@ class ExpansionPanelController extends GetxController {
         currentContent: ExitProjectScreen(),
         subItem: [],
         onClick: [],
+      ),
+      ItemModel(
+        icon: Icons.settings,
+        titleItem: 'ตั้งค่า',
+        currentContent: ProfileScreen(),
+        subItem: ['ข้อมูลส่วนตัว', 'เปลี่ยนรหัสผ่าน'],
+        subItemSelect: [true, false],
+        onClick: [
+          ProfileScreen(),
+          ChangePasswordScreen(),
+        ],
       ),
     ];
 

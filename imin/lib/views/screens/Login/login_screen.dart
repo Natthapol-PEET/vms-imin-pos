@@ -43,23 +43,27 @@ class LoginScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // Logo
-                    Image.asset("assets/images/Artani-Logo.png", scale: 2),
+                    Image.asset(
+                      "assets/images/Artani-Logo-Security.png",
+                      height: size.height * 0.3,
+                      fit: BoxFit.fitHeight,
+                    ),
 
                     // E-mail
                     // Password
                     Container(
-                      margin: EdgeInsets.only(top: size.height * 0.05),
+                      // margin: EdgeInsets.only(top: size.height * 0.05),
                       child: Form(
                         // key: _formKey,
                         child: Column(
                           children: [
                             RoundTextFormField(
-                              icon: Icons.person,
+                              icon: Icons.person_outline,
                               textTitle: "อีเมลผู้ใช้",
                             ),
                             Obx(
                               () => RoundTextFormField(
-                                icon: Icons.lock,
+                                icon: Icons.lock_outline,
                                 textTitle: "รหัสผ่าน",
                                 isVisibility: controller.isVisibility.value,
                                 onClickVisibility: () => controller.isVisibility
@@ -80,7 +84,17 @@ class LoginScreen extends StatelessWidget {
                             Obx(
                               () => Checkbox(
                                   value: controller.isRememberAccount.value,
-                                  activeColor: goldColor,
+                                  activeColor: hilightTextColor,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5)),
+                                  fillColor: MaterialStateProperty.resolveWith(
+                                      (states) {
+                                    if (states
+                                        .contains(MaterialState.selected)) {
+                                      return hilightTextColor;
+                                    }
+                                    return Colors.white;
+                                  }),
                                   onChanged: (bool? v) {
                                     if (v == true) {
                                       controller.isRememberAccount.value = true;

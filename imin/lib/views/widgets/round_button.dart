@@ -17,6 +17,11 @@ class RoundButton extends StatelessWidget {
 
     return ElevatedButton(
       style: ButtonStyle(
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
         padding: MaterialStateProperty.all<EdgeInsets>(
           EdgeInsets.symmetric(
             horizontal: size.width * 0.05,
@@ -26,10 +31,10 @@ class RoundButton extends StatelessWidget {
         backgroundColor: MaterialStateProperty.resolveWith<Color>(
           (Set<MaterialState> states) {
             if (states.contains(MaterialState.pressed))
-              return goldColor;
+              return hilightTextColor;
             else if (states.contains(MaterialState.disabled))
               return Colors.grey;
-            return goldColor;
+            return hilightTextColor;
           },
         ),
       ),

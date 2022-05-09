@@ -17,7 +17,7 @@ class TitleContent extends StatelessWidget {
       flex: 1,
       child: Padding(
         padding:
-            EdgeInsets.only(top: size.height * 0.05, left: size.width * 0.03),
+            EdgeInsets.only(top: size.height * 0.03, left: size.width * 0.03),
         child: Text(
           text,
           style: TextStyle(

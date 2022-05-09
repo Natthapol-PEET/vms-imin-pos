@@ -1,6 +1,7 @@
 # imin
 
 ## run
+// @dart=2.9
 flutter run --no-sound-null-safety
 
 ## build apk

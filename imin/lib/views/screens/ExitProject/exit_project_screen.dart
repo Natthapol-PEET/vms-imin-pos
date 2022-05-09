@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:imin/controllers/exit_project_controller.dart';
 import 'package:imin/helpers/constance.dart';
+import 'package:imin/views/widgets/popup_item.dart';
 import 'package:imin/views/widgets/title_content.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class ExitProjectScreen extends StatefulWidget {
   ExitProjectScreen({Key? key}) : super(key: key);
@@ -10,57 +14,7 @@ class ExitProjectScreen extends StatefulWidget {
 }
 
 class _ExitProjectScreenState extends State<ExitProjectScreen> {
-  // List<Item> _items = [];
-
-  // List<Item> _generateItems() {
-  //   return List.generate(5, (int index) {
-  //     return Item(
-  //       id_card: index,
-  //       name: 'Item $index',
-  //       price: index * 1000.00,
-  //       description: 'Details of item $index',
-  //     );
-  //   });
-  // }
-
-  // TableRow _buildTableRow(Item item) {
-  //   return TableRow(
-  //       key: ValueKey(item.id),
-  //       decoration: BoxDecoration(
-  //         color: Colors.lightBlueAccent,
-  //       ),
-  //       children: [
-  //         TableCell(
-  //           verticalAlignment: TableCellVerticalAlignment.bottom,
-  //           child: SizedBox(
-  //             height: 50,
-  //             child: Center(
-  //               child: Text(item.id.toString()),
-  //             ),
-  //           ),
-  //         ),
-  //         TableCell(
-  //           verticalAlignment: TableCellVerticalAlignment.middle,
-  //           child: Padding(
-  //             padding: const EdgeInsets.all(5),
-  //             child: Text(item.name),
-  //           ),
-  //         ),
-  //         TableCell(
-  //           verticalAlignment: TableCellVerticalAlignment.middle,
-  //           child: Padding(
-  //             padding: const EdgeInsets.all(5),
-  //             child: Text(item.price.toString()),
-  //           ),
-  //         ),
-  //         TableCell(
-  //           child: Padding(
-  //             padding: const EdgeInsets.all(5),
-  //             child: Text(item.description),
-  //           ),
-  //         ),
-  //       ]);
-  // }
+  final controller = Get.put(ExitProjectController());
 
   @override
   void initState() {
@@ -83,11 +37,10 @@ class _ExitProjectScreenState extends State<ExitProjectScreen> {
                 label: Text(
               item,
               style: TextStyle(
-                fontFamily: fontRegular,
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
-                color: Colors.white
-              ),
+                  fontFamily: fontRegular,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  color: Colors.white),
             )))
         .toList();
   }
@@ -141,45 +94,190 @@ class _ExitProjectScreenState extends State<ExitProjectScreen> {
     ];
   }
 
+  TextEditingController findControl = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        TitleContent(text: 'เวลาออกจากโครงการ'),
-        // child: Theme(
-        //   data: Theme.of(context)
-        //       .copyWith(dividerColor: Colors.transparent),
-        //   child:
-        Container(
-          // padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
-          decoration: BoxDecoration(
-            // border: Border.all(
-            //   color: Colors.black,
-            //   width: 8,
-            // ),
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.1),
-                spreadRadius: 5,
-                blurRadius: 7,
-                offset: Offset(0, 3), // changes position of shadow
+    return CustomScrollView(
+      slivers: [
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TitleContent(text: 'เวลาออกจากโครงการ'),
+              Row(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(
+                        top: 15, bottom: 15, left: 40, right: 15),
+                    width: size.width * 0.33,
+                    height: size.height * 0.05,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: textColor),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(Icons.calendar_today),
+                              SizedBox(width: 10),
+                              Obx(
+                                () => Text(
+                                  // 'ช่วงวัน : 1 มิถุนายน 2564 - 1 กรกฎาคม 2564',
+                                  'ช่วงวัน : ' + controller.startEndRange.value,
+                                  style: TextStyle(
+                                    fontFamily: fontRegular,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          PopupMenuButton(
+                            offset: Offset(80, size.height * 0.06),
+                            icon: Icon(Icons.expand_more, color: Colors.black),
+                            itemBuilder: (_) {
+                              return [
+                                PopupItem(
+                                  child: Container(
+                                    width: size.width * 0.8,
+                                    child: SfDateRangePicker(
+                                      showActionButtons: true,
+                                      // enableMultiView: true,
+                                      // viewSpacing: 20,
+                                      // era: EraMode.BUDDHIST_YEAR,
+                                      selectionMode:
+                                          DateRangePickerSelectionMode.range,
+                                      view: DateRangePickerView.month,
+                                      selectionShape:
+                                          DateRangePickerSelectionShape
+                                              .rectangle,
+                                      selectionTextStyle: TextStyle(
+                                        fontFamily: fontRegular,
+                                        color: Colors.white,
+                                      ),
+                                      todayHighlightColor: purpleBlueColor,
+                                      headerStyle: DateRangePickerHeaderStyle(
+                                        textAlign: TextAlign.center,
+                                        textStyle: TextStyle(
+                                          fontFamily: fontRegular,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+
+                                      monthViewSettings:
+                                          DateRangePickerMonthViewSettings(
+                                        viewHeaderStyle:
+                                            DateRangePickerViewHeaderStyle(
+                                          textStyle: TextStyle(
+                                            fontFamily: fontRegular,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+
+                                      rangeTextStyle: TextStyle(
+                                          fontFamily: fontRegular,
+                                          color: Colors.black),
+                                      selectionColor: purpleBlueColor,
+                                      startRangeSelectionColor: purpleBlueColor,
+                                      endRangeSelectionColor: purpleBlueColor,
+                                      // rangeSelectionColor: Colors.purpleAccent,
+
+                                      monthCellStyle:
+                                          DateRangePickerMonthCellStyle(
+                                        textStyle: TextStyle(
+                                            fontFamily: fontRegular,
+                                            color: Colors.black),
+                                        todayTextStyle: TextStyle(
+                                          fontFamily: fontRegular,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      yearCellStyle:
+                                          DateRangePickerYearCellStyle(
+                                        textStyle: TextStyle(
+                                          fontFamily: fontRegular,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+
+                                      confirmText: 'ตกลง',
+                                      onSubmit: (v) =>
+                                          controller.submitSelectRangeTime(),
+                                      cancelText: 'ยกเลิก',
+                                      onCancel: () => Get.back(),
+                                      onSelectionChanged: (v) =>
+                                          controller.cleanAndCreateDummy(
+                                              v.value.startDate,
+                                              v.value.endDate),
+                                    ),
+                                  ),
+                                ),
+                              ];
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: size.width * 0.3,
+                    height: size.height * 0.05,
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.search, color: Colors.black),
+                        border: OutlineInputBorder(),
+                        hintText: 'ค้นหาเลขทะเบียนรถ, บ้านเลขที่, ชื่อนามสกุล',
+                        contentPadding: EdgeInsets.symmetric(vertical: 10),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: textColor)),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: purpleBlueColor),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.1),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                margin: EdgeInsets.symmetric(
+                    horizontal: size.width * 0.03,
+                    vertical: size.height * 0.01),
+                child: Theme(
+                  data: Theme.of(context)
+                      .copyWith(dividerColor: dividerTableColor),
+                  child: DataTable(
+                    dividerThickness: 0.5,
+                    columnSpacing: 40,
+                    headingRowColor: MaterialStateColor.resolveWith(
+                        (states) => purpleBlueColor),
+                    columns: _createColumns(),
+                    rows: _createRows(),
+                  ),
+                ),
               ),
             ],
-          ),
-          margin: EdgeInsets.symmetric(
-              horizontal: size.width * 0.03, vertical: size.height * 0.01),
-          child: DataTable(
-            dividerThickness: 0.0,
-            columnSpacing: 40,
-            headingRowColor:
-                MaterialStateColor.resolveWith((states) => purpleBlueColor),
-            columns: _createColumns(),
-            // columns: _columnItem.map((item) => _createColumns(item)).toList(),
-            rows: _createRows(),
           ),
         ),
       ],

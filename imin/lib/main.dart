@@ -1,15 +1,21 @@
+// @dart=2.9
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:imin/views/screens/ChangePassword/change_password_screen.dart';
+import 'package:imin/views/screens/Demo/calendar_screen.dart';
 import 'package:imin/views/screens/Demo/popup_menu_screen.dart';
 import 'package:imin/views/screens/Demo/select.dart';
 import 'package:imin/views/screens/EntranceProject/entrance_project_screen.dart';
 import 'package:imin/views/screens/ExitProject/exit_project_screen.dart';
 import 'package:imin/views/screens/ExpansionPanelLayout/expansion_panel_layout.dart';
+import 'package:imin/views/screens/ForgotPassword/forgot_password_screen.dart';
 import 'package:imin/views/screens/Login/login_screen.dart';
 import 'package:imin/views/screens/Demo/demo.dart';
 import 'package:imin/views/screens/Profile/profile_screen.dart';
+import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 import 'package:wakelock/wakelock.dart';
 
 void main() {
@@ -37,11 +43,25 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/expansion_panel',
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        DefaultCupertinoLocalizations.delegate,
+        GlobalCupertinoLocalizations
+            .delegate, // Add global cupertino localiztions.
+      ],
+      supportedLocales: [
+        const Locale('en', 'US'), // English
+        const Locale('th', 'TH'), // Thai
+      ],
+      locale: const Locale('th', 'TH'),
+
+      initialRoute: '/login',
       getPages: [
         // Screens
         GetPage(name: '/login', page: () => LoginScreen()),
         GetPage(name: '/expansion_panel', page: () => ExpansionPanelScreen()),
+        GetPage(name: '/forgot_password', page: () => ForgotPassword()),
 
         // Components
         GetPage(name: '/profile', page: () => ProfileScreen()),
@@ -53,6 +73,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/demo', page: () => ExpansionPanelDemo()),
         GetPage(name: '/select', page: () => Selector()),
         GetPage(name: '/popup_menu', page: () => PopupMenuScreen()),
+        GetPage(name: '/calendar', page: () => CalendarScreen()),
       ],
     );
   }

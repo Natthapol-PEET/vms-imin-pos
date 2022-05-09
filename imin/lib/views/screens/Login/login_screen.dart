@@ -116,7 +116,7 @@ class LoginScreen extends StatelessWidget {
                           ],
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () => Get.toNamed('forgot_password'),
                           child: Text(
                             "ลืมรหัสผ่าน?",
                             style: TextStyle(

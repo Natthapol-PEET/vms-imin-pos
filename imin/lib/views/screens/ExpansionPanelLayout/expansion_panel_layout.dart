@@ -24,6 +24,7 @@ class ExpansionPanelScreen extends StatelessWidget {
     return WillPopScope(
       onWillPop: onWillPopController.onWillPop,
       child: Scaffold(
+        backgroundColor: contentColor,
         body: Row(
           children: [
             Expanded(
@@ -33,7 +34,7 @@ class ExpansionPanelScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(top: size.height * 0.05),
+                      padding: EdgeInsets.only(top: size.height * 0.03),
                       child: Image.asset(
                         "assets/images/Artani-Logo-Security.png",
                         scale: 0.2,

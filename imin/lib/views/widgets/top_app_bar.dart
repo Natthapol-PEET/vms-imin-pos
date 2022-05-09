@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:imin/helpers/constance.dart';
@@ -16,22 +14,14 @@ class TopAppBar extends StatefulWidget {
 
 class _TopAppBarState extends State<TopAppBar>
     with SingleTickerProviderStateMixin {
-  var animationController;
-  bool _menuShown = false;
-
   @override
   void initState() {
-    animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-
-    Animation<double> opacityAnimation =
-        Tween(begin: 0.0, end: 1.0).animate(animationController);
 
     return Container(
       color: themeBgColor,
@@ -196,13 +186,6 @@ class _TopAppBarState extends State<TopAppBar>
   }
 
   Widget _buildPopupDialog(BuildContext context, Size size) {
-    // return Dialog(
-    //   child: Container(
-    //     width: 100,
-    //     height: 100,
-    //     color: Colors.green,
-    //   ),
-    // );
     return SimpleDialog(
       insetPadding:
           EdgeInsets.only(bottom: size.height * 0.5, left: size.width * 0.6),
@@ -215,21 +198,6 @@ class _TopAppBarState extends State<TopAppBar>
       ],
     );
   }
-}
-
-class PopupItem extends PopupMenuItem {
-  const PopupItem({
-    required Widget child,
-    Key? key,
-  }) : super(key: key, child: child);
-
-  @override
-  _PopupItemState createState() => _PopupItemState();
-}
-
-class _PopupItemState extends PopupMenuItemState {
-  @override
-  void handleTap() {}
 }
 
 class _ShapedWidget extends StatelessWidget {
@@ -342,7 +310,6 @@ class CardAlertSecurity extends StatelessWidget {
               Flexible(
                 child: Text(
                   title,
-                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontFamily: fontRegular,
                     fontSize: 13,

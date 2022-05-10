@@ -27,10 +27,8 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
       'เลขทะเบียนรถ',
       'ชื่อ - นามสกุล',
       'บ้านเลขที่',
-      //ระดับ
-      //วันที่นัดหมาย
-      'เวลาเข้า',
-      'เวลาออก',
+      'ระดับ',
+      'วันที่นัดหมาย',
       'สถานะ',
     ];
 
@@ -55,9 +53,9 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
           DataCell(Text('ยน 2310')),
           DataCell(Container(width: 100, child: Text('จิรายุ เนียลกุล'))),
           DataCell(Text('1/2')),
-          DataCell(Text('01/06/64 08:20')),
-          DataCell(Text('01/06/64 08:55')),
-          DataCell(Text('ยังไม่ได้รับการแสตมป์')),
+          DataCell(Text('นัดหมายเข้าโครงการ')),
+          DataCell(Text('01/06/64')),
+          DataCell(Text('อยู่ในโครงการ')),
         ],
       ),
       DataRow(
@@ -66,31 +64,31 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
           DataCell(Text('พห 5417')),
           DataCell(Container(width: 100, child: Text('สิธาณี ลิ้นบุญ'))),
           DataCell(Text('2/5')),
-          DataCell(Text('01/06/64 09:50')),
-          DataCell(Text('01/06/64 10:50')),
-          DataCell(Text('ออกจากโครงการแล้ว')),
+          DataCell(Text('นัดหมายเข้าโครงการ')),
+          DataCell(Text('01/06/64')),
+          DataCell(Text('อยู่ในโครงการ')),
         ],
       ),
       DataRow(
         cells: [
-          DataCell(Text('18009770000')),
-          DataCell(Text('พห 5417')),
-          DataCell(Container(width: 100, child: Text('สิธาณี ลิ้นบุญ'))),
+          DataCell(Text('1103300112546')),
+          DataCell(Text('กก 8517')),
+          DataCell(Container(width: 100, child: Text('อานนท์ ลิ้มเจริญ'))),
           DataCell(Text('2/5')),
-          DataCell(Text('01/06/64 09:50')),
-          DataCell(Text('01/06/64 10:50')),
-          DataCell(Text('ออกจากโครงการแล้ว')),
+          DataCell(Text('รับเชิญพิเศษ')),
+          DataCell(Text('-')),
+          DataCell(Text('อยู่ในโครงการ')),
         ],
       ),
       DataRow(
         cells: [
-          DataCell(Text('18009770000')),
-          DataCell(Text('พห 5417')),
-          DataCell(Container(width: 100, child: Text('สิธาณี ลิ้นบุญ'))),
+          DataCell(Text('1101100223641')),
+          DataCell(Text('กด 6541')),
+          DataCell(Container(width: 100, child: Text('วารี ลิ้นสุวรรณ'))),
           DataCell(Text('2/5')),
-          DataCell(Text('01/06/64 09:50')),
-          DataCell(Text('01/06/64 10:50')),
-          DataCell(Text('ออกจากโครงการแล้ว')),
+          DataCell(Text('ไม่มีสิทธิ์เข้าโครงการ')),
+          DataCell(Text('-')),
+          DataCell(Text('-')),
         ],
       ),
     ];
@@ -112,7 +110,6 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
               TitleContent(text: 'เวลาเข้าโครงการ'),
               Row(
                 children: [
-               
                   Container(
                     margin: EdgeInsets.only(
                         top: 15, bottom: 15, left: 40, right: 15),
@@ -180,8 +177,8 @@ class Item {
     required this.license,
     required this.fullname,
     required this.home_number,
-    required this.time_in,
-    required this.time_out,
+    required this.level_status,
+    required this.date_in,
     required this.status,
   });
 
@@ -189,7 +186,7 @@ class Item {
   String license;
   String fullname;
   String home_number;
-  String time_in;
-  String time_out;
+  String level_status;
+  String date_in;
   String status;
 }

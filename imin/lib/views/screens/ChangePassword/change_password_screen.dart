@@ -75,7 +75,7 @@ class ChangePasswordScreen extends StatelessWidget {
                           i < controller.check.value.lenght;
                           i++) ...[
                         Container(
-                          width: size.width / 14.3,
+                          width: size.width / 11.0,
                           height: size.height / 38,
                           padding: EdgeInsets.symmetric(horizontal: 2),
                           child: Divider(
@@ -98,7 +98,7 @@ class ChangePasswordScreen extends StatelessWidget {
                     children: [
                       if (controller.check.value.lenght > 0) ...[
                         Text(
-                          '*รหัสผ่านต้องมีตัวอักษรพิมพ์เล็กและพิมพ์ใหญ่',
+                          controller.warningText,
                           textAlign: TextAlign.left,
                           style: TextStyle(
                             fontFamily: fontRegular,

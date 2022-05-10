@@ -6,6 +6,7 @@ class RePasswordController extends GetxController {
   var isVisibilityOld = false.obs;
   var isVisibilityNew = false.obs;
   var isVisibilityReNew = false.obs;
+  var warningText = '';
 
   var checkList = [
     CheckPasswordSecret(text: '', color: Colors.white, lenght: 0), // non secret
@@ -24,14 +25,49 @@ class RePasswordController extends GetxController {
   // }
 
   void onChangeNewPassword(v) {
+    var levelPassword = 0;
+    bool validateCharactor(String value) {
+      String pattern =
+          // r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+          r'^(?=.*?[A-Z])(?=.*?[a-z]).{0,}$';
+      RegExp regExp = new RegExp(pattern);
+      return regExp.hasMatch(value);
+    }
+
+    bool validateNumber(String value) {
+      String pattern =
+          // r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+          r'^(?=.*?[0-9]).{0,}$';
+      RegExp regExp = new RegExp(pattern);
+      return regExp.hasMatch(value);
+    }
+
+    if (v.length >= 8 && v.length <= 32) {
+      levelPassword = levelPassword + 1;
+    } else {
+      warningText = '*รหัสผ่านต้องมีตัวอักษร 8 ถึง 32 ตัวอักษร';
+    }
+    if (validateCharactor(v)) {
+      levelPassword = levelPassword + 1;
+    } else {
+      warningText = '*รหัสผ่านต้องมีตัวอักษรพิมพ์เล็กและพิมพ์ใหญ่';
+    }
+    if (validateNumber(v)) {
+      levelPassword = levelPassword + 1;
+    } else {
+      warningText = '*รหัสผ่านต้องมีอย่างน้อยหนึ่งหมายเลข';
+    }
     if (v.length == 0) {
       check.value = checkList[0];
-    } else if (v.length == 1) {
+    } else if (levelPassword == 1) {
       check.value = checkList[1];
-    } else if (v.length == 2) {
+    } else if (levelPassword == 2) {
       check.value = checkList[2];
-    } else {
+    } else if (levelPassword == 3) {
       check.value = checkList[3];
+      warningText = '';
+    } else {
+      check.value = checkList[1];
     }
   }
 }

@@ -157,7 +157,7 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
                           child: Text(
                             'เพิ่มผู้เข้าโครงการ',
                             style: TextStyle(
-                              color: Colors.white,
+                              color: textColorContrast,
                               fontSize: 18,
                               fontFamily: fontRegular,
                               fontWeight: FontWeight.w500,

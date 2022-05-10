@@ -93,19 +93,22 @@ class ChangePasswordScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-
-                Row(
-                  children: [
-                    Text(
-                      '*รหัสผ่านต้องมีตัวอักษรพิมพ์เล็กและพิมพ์ใหญ่',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontFamily: fontRegular,
-                        fontSize: 14,
-                        color: Colors.redAccent,
-                      ),
-                    ),
-                  ],
+                Obx(
+                  () => Row(
+                    children: [
+                      if (controller.check.value.lenght > 0) ...[
+                        Text(
+                          '*รหัสผ่านต้องมีตัวอักษรพิมพ์เล็กและพิมพ์ใหญ่',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            fontFamily: fontRegular,
+                            fontSize: 14,
+                            color: Colors.redAccent,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
                 ),
 
                 Obx(

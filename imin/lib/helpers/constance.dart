@@ -11,6 +11,7 @@ const Color borderTableColor = Color(0xFFE5E5E5);
 const Color purpleBlueColor = Color(0xFF3059D1);
 const Color hilightTextColor = Color(0xFF2049DB);
 const Color textColor = Color(0xFF171616);
+const Color textColorContrast = Color(0xFFFFFFFF);
 const Color iconCloseColor = Color(0xFF171616);
 const Color contentColor = Color(0xFFF9F9F9);
 const Color dividerTableColor = Color(0xFF6C6C6C);

@@ -34,10 +34,10 @@ class RoundButtonOutline extends StatelessWidget {
       //   ),
       // ),
       style: ElevatedButton.styleFrom(
-        primary: Colors.white,
+        primary: hilightTextColor,
         side: BorderSide(
           width: 1,
-          color: goldColor,
+          color: hilightTextColor,
         ),
       ),
       // onPressed: () {
@@ -58,7 +58,7 @@ class RoundButtonOutline extends StatelessWidget {
       child: Text(
         title,
         style: TextStyle(
-          color: goldColor,
+          color: textColorContrast,
           fontSize: 18,
           fontFamily: fontRegular,
           fontWeight: FontWeight.w500,

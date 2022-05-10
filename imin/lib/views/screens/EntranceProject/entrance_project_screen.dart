@@ -30,6 +30,7 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
       'ระดับ',
       'วันที่นัดหมาย',
       'สถานะ',
+      // 'สถานะ2',
     ];
 
     return headerItems
@@ -56,6 +57,7 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
           DataCell(Text('นัดหมายเข้าโครงการ')),
           DataCell(Text('01/06/64')),
           DataCell(Text('อยู่ในโครงการ')),
+          // DataCell(FloatingActionButton(onPressed: () {})),
         ],
       ),
       DataRow(
@@ -67,6 +69,7 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
           DataCell(Text('นัดหมายเข้าโครงการ')),
           DataCell(Text('01/06/64')),
           DataCell(Text('อยู่ในโครงการ')),
+          // DataCell(FloatingActionButton(onPressed: () {})),
         ],
       ),
       DataRow(
@@ -78,6 +81,7 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
           DataCell(Text('รับเชิญพิเศษ')),
           DataCell(Text('-')),
           DataCell(Text('อยู่ในโครงการ')),
+          // DataCell(FloatingActionButton(onPressed: () {})),
         ],
       ),
       DataRow(
@@ -89,6 +93,7 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
           DataCell(Text('ไม่มีสิทธิ์เข้าโครงการ')),
           DataCell(Text('-')),
           DataCell(Text('-')),
+          // DataCell(FloatingActionButton(onPressed: () {})),
         ],
       ),
     ];
@@ -108,32 +113,61 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TitleContent(text: 'เวลาเข้าโครงการ'),
-              Row(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(
-                        top: 15, bottom: 15, left: 40, right: 15),
-                    width: size.width * 0.33,
-                    height: size.height * 0.05,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: textColor),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.search, color: Colors.black),
-                        border: OutlineInputBorder(),
-                        hintText: 'ค้นหาเลขทะเบียนรถ, บ้านเลขที่, ชื่อนามสกุล',
-                        contentPadding: EdgeInsets.symmetric(vertical: 10),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: textColor)),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: purpleBlueColor),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(
+                          top: 15, bottom: 15, left: 0, right: 0),
+                      width: size.width * 0.33,
+                      height: size.height * 0.05,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: textColor),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.search, color: Colors.black),
+                          border: OutlineInputBorder(),
+                          hintText:
+                              'ค้นหาเลขทะเบียนรถ, บ้านเลขที่, ชื่อนามสกุล',
+                          contentPadding: EdgeInsets.symmetric(vertical: 10),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: textColor)),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: purpleBlueColor),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                    Row(
+                      // mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: purpleBlueColor,
+                            side: BorderSide(
+                              width: 1,
+                              color: purpleBlueColor,
+                            ),
+                          ),
+                          onPressed: () {},
+                          child: Text(
+                            'เพิ่มผู้เข้าโครงการ',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontFamily: fontRegular,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
               Container(
                 decoration: BoxDecoration(

@@ -54,7 +54,7 @@ class RePasswordController extends GetxController {
     }
     if (validateNumber(v)) {
       levelPassword = levelPassword + 1;
-    } else {
+    } else if (!validateNumber(v)) {
       warningText = '*รหัสผ่านต้องมีอย่างน้อยหนึ่งหมายเลข';
     }
     if (v.length == 0) {

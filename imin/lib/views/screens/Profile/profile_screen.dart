@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:imin/controllers/login_controller.dart';
+import 'package:imin/helpers/configs.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/views/widgets/profile_image.dart';
 import 'package:imin/views/widgets/round_button.dart';
@@ -29,7 +31,17 @@ class ProfileScreen extends StatelessWidget {
           top: size.height * 0.05,
           child: Column(
             children: [
-              Image.asset('assets/images/profile.png', scale: 3),
+              // Image.asset('assets/images/profile.png', scale: 3),
+              GetBuilder<LoginController>(
+                init: LoginController(),
+                builder: (controller) => CircleAvatar(
+                  radius: 120,
+                  backgroundImage: NetworkImage(ipServer +
+                      '/guard/profile_image/' +
+                      controller.dataProfile.profilePath),
+                  backgroundColor: Colors.transparent,
+                ),
+              ),
 
               // Content
               SizedBox(height: size.height * 0.03),
@@ -52,10 +64,23 @@ class ProfileScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        subDetailText('Suchin12@gmail.com'),
-                        subDetailText('สุจิน สว่างเนตร'),
-                        subDetailText('093-1851721'),
-                        subDetailText('หัวหน้ารปภ.'),
+                        GetBuilder<LoginController>(
+                          builder: (v) => subDetailText(v.dataProfile.email),
+                        ),
+                        GetBuilder<LoginController>(
+                          builder: (v) => subDetailText(
+                              '${v.dataProfile.firstname} ${v.dataProfile.lastname}'),
+                        ),
+                        GetBuilder<LoginController>(
+                          builder: (v) =>
+                              subDetailText(v.dataProfile.phoneNumber),
+                        ),
+                        GetBuilder<LoginController>(
+                          builder: (v) => subDetailText(
+                              v.dataProfile.role == 'guard'
+                                  ? 'รปภ.'
+                                  : 'หัวหน้า รปภ.'),
+                        ),
                       ],
                     ),
                   ],

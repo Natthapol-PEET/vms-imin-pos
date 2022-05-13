@@ -1,4 +1,3 @@
-
 class LoginModel {
   final int guardId;
   final String firstname;
@@ -10,6 +9,8 @@ class LoginModel {
   final String loginDateTime;
   final String createDateTime;
   final String token;
+  final String email;
+  final String phoneNumber;
 
   const LoginModel({
     required this.guardId,
@@ -22,6 +23,8 @@ class LoginModel {
     required this.loginDateTime,
     required this.createDateTime,
     required this.token,
+    required this.email,
+    required this.phoneNumber,
   });
 
   factory LoginModel.fromJson(Map<String, dynamic> json) {
@@ -32,10 +35,12 @@ class LoginModel {
       username: json['username'],
       activeUser: json['active_user'],
       role: json['role'],
+      email: json['email'],
       profilePath: json['profile_path'],
       loginDateTime: json['login_dateTime'],
       createDateTime: json['create_dateTime'],
       token: json['token'],
+      phoneNumber: json['phone_number'],
     );
   }
 }

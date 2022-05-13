@@ -5,10 +5,10 @@ import 'package:sqflite/sqflite.dart';
 class Account {
   Future getDatabase() async {
     final database = openDatabase(
-      join(await getDatabasesPath(), 'account_database.db'),
+      join(await getDatabasesPath(), 'accounts_database.db'),
       onCreate: (db, version) {
         return db.execute(
-          'CREATE TABLE account(id INTEGER PRIMARY KEY, username TEXT, password TEXT)',
+          'CREATE TABLE accounts(id INTEGER PRIMARY KEY, username TEXT, password TEXT, isLogin INTEGER)',
         );
       },
       version: 1,
@@ -19,8 +19,9 @@ class Account {
 
   Future initAccount() async {
     final db = await getDatabase();
-
     var result = await accounts();
+
+    print('result.isNotEmpty: ${result.isNotEmpty}');
 
     if (result.isNotEmpty) {
       return;
@@ -30,10 +31,11 @@ class Account {
       id: 1,
       username: '',
       password: '',
+      isLogin: 0,
     );
 
     await db.insert(
-      'account',
+      'accounts',
       data.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
@@ -43,7 +45,7 @@ class Account {
     final db = await getDatabase();
 
     await db.insert(
-      'account',
+      'accounts',
       account.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
@@ -52,13 +54,16 @@ class Account {
   Future<List<AccountModel>> accounts() async {
     final db = await getDatabase();
 
-    final List<Map<String, dynamic>> maps = await db.query('account');
+    final List<Map<String, dynamic>> maps = await db.query(
+      'accounts',
+    );
 
     return List.generate(maps.length, (i) {
       return AccountModel(
         id: maps[i]['id'],
         username: maps[i]['username'],
         password: maps[i]['password'],
+        isLogin: maps[i]['isLogin'],
       );
     });
   }
@@ -67,7 +72,7 @@ class Account {
     final db = await getDatabase();
 
     await db.update(
-      'account',
+      'accounts',
       account.toMap(),
       where: 'id = ?',
       whereArgs: [account.id],
@@ -78,10 +83,17 @@ class Account {
     final db = await getDatabase();
 
     await db.delete(
-      'account',
+      'accounts',
       where: 'id = ?',
       whereArgs: [id],
     );
+  }
+
+  void dropTable() async {
+    String sql = "DROP TABLE accounts";
+    final db = await getDatabase();
+
+    await db.execute(sql);
   }
 
   void test() async {
@@ -90,6 +102,7 @@ class Account {
       id: 1,
       username: 'user',
       password: 'password',
+      isLogin: 0,
     );
 
     // insert
@@ -101,6 +114,7 @@ class Account {
       id: 1,
       username: 'admin',
       password: 'secret',
+      isLogin: 0,
     );
     // await updateAccount(peet);
     // print(await accounts());

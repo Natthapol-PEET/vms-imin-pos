@@ -11,7 +11,6 @@ import 'package:imin/helpers/constance.dart';
 import 'package:imin/models/account_model.dart';
 import 'package:imin/models/login_model.dart';
 import 'package:imin/services/login_service.dart';
-import 'package:imin/services/profile_servicec.dart';
 import 'package:imin/views/widgets/bg_image.dart';
 import 'package:imin/views/widgets/round_button.dart';
 import 'package:imin/views/widgets/round_text_form_field.dart';
@@ -186,6 +185,13 @@ class LoginScreen extends StatelessWidget {
                     RoundButton(
                       title: 'เข้าสู่ระบบ',
                       press: () async {
+                        // EasyLoading.addStatusCallback((status) {
+                        //   // print('EasyLoading Status $status');
+                        //   Timer(Duration(seconds: 2),
+                        //       () => EasyLoading.dismiss());
+                        // });
+                        EasyLoading.show(status: 'loading...');
+
                         bool check = false;
 
                         if (controller.usernameControl.value.text == "") {
@@ -204,32 +210,35 @@ class LoginScreen extends StatelessWidget {
 
                         if (check) return;
 
-                        var data = await loginApi(
+                        controller.dataProfile = await loginApi(
                             controller.usernameControl.value.text,
                             controller.passwordControl.value.text);
 
-                        if (data is LoginModel &&
+                        if (controller.dataProfile is LoginModel &&
                             controller.isRememberAccount.value) {
                           var account = AccountModel(
                             id: 1,
                             username: controller.usernameControl.value.text,
                             password: controller.passwordControl.value.text,
+                            isLogin: 1,
                           );
                           Account().updateAccount(account);
 
-                          // print(data.profilePath);
-                          // var image = await getProfileImage(data.profilePath);
-                          // print(image.runtimeType);
-
-                          // EasyLoading.addStatusCallback((status) {
-                          //   // print('EasyLoading Status $status');
-                          //   Timer(Duration(seconds: 2),
-                          //       () => EasyLoading.dismiss());
-                          // });
-                          // EasyLoading.show(status: 'loading...');
-
-                          Get.toNamed('/expansion_panel');
+                          EasyLoading.dismiss();
+                          EasyLoading.showSuccess('Login Success');
                           expandController.setDefaultValues();
+
+                          // Timer(Duration(seconds: 1), () {
+                          //   EasyLoading.dismiss();
+                          //   Get.toNamed('/expansion_panel');
+                          // });
+
+                          EasyLoading.dismiss();
+                          Timer(Duration(microseconds: 200),
+                              () => Get.toNamed('/expansion_panel'));
+                        } else {
+                          EasyLoading.dismiss();
+                          EasyLoading.showError('Invalid Username or Password');
                         }
 
                         // print(data.token);

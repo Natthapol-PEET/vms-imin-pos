@@ -9,7 +9,7 @@ import 'package:imin/views/screens/Profile/profile_screen.dart';
 class ExpansionPanelController extends GetxController {
   int selected = -1.obs; //attention
   int rememberSelected = -1.obs;
-  Widget currentContent = ProfileScreen();
+  Widget currentContent = EntranceProjectScreen();
 
   List<ItemModel> itemData = <ItemModel>[
     ItemModel(
@@ -94,7 +94,7 @@ class ExpansionPanelController extends GetxController {
   setDefaultValues() {
     selected = -1.obs; //attention
     rememberSelected = -1.obs;
-    currentContent = ProfileScreen();
+    currentContent = EntranceProjectScreen();
 
     itemData = <ItemModel>[
       ItemModel(

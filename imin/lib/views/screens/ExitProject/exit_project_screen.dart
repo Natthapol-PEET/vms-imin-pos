@@ -34,6 +34,7 @@ class _ExitProjectScreenState extends State<ExitProjectScreen> {
 
     return headerItems
         .map((item) => DataColumn(
+          
                 label: Text(
               item,
               style: TextStyle(
@@ -48,6 +49,7 @@ class _ExitProjectScreenState extends State<ExitProjectScreen> {
   List<DataRow> _createRows() {
     return [
       DataRow(
+        onSelectChanged: (state) => print('พห 5417'),
         cells: [
           DataCell(Text('18009880000')),
           DataCell(Text('ยน 2310')),
@@ -59,6 +61,7 @@ class _ExitProjectScreenState extends State<ExitProjectScreen> {
         ],
       ),
       DataRow(
+        onSelectChanged: (state) => print('พห 5417'),
         cells: [
           DataCell(Text('18009770000')),
           DataCell(Text('พห 5417')),
@@ -70,6 +73,7 @@ class _ExitProjectScreenState extends State<ExitProjectScreen> {
         ],
       ),
       DataRow(
+        onSelectChanged: (state) => print('พห 5417'),
         cells: [
           DataCell(Text('18009770000')),
           DataCell(Text('พห 5417')),
@@ -81,6 +85,7 @@ class _ExitProjectScreenState extends State<ExitProjectScreen> {
         ],
       ),
       DataRow(
+        onSelectChanged: (state) => print('พห 5417'),
         cells: [
           DataCell(Text('18009770000')),
           DataCell(Text('พห 5417')),
@@ -268,6 +273,7 @@ class _ExitProjectScreenState extends State<ExitProjectScreen> {
                   data: Theme.of(context)
                       .copyWith(dividerColor: dividerTableColor),
                   child: DataTable(
+                    showCheckboxColumn: false,
                     dividerThickness: 0.5,
                     columnSpacing: 40,
                     headingRowColor: MaterialStateColor.resolveWith(

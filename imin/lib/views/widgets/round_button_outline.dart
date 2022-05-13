@@ -6,14 +6,37 @@ class RoundButtonOutline extends StatelessWidget {
     Key? key,
     required this.title,
     required this.press,
+    this.width = 150,
+    this.height = 40,
   }) : super(key: key);
 
   final String title;
   final VoidCallback? press;
+  final double width;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
+    return ButtonTheme(
+      minWidth: width,
+      height: height,
+      child: OutlineButton(
+        // color: purpleBlueColor,
+        borderSide: BorderSide(color: purpleBlueColor),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+        onPressed: press,
+        child: Text(
+          title,
+          style: TextStyle(
+            color: purpleBlueColor,
+            fontSize: 18,
+            fontFamily: fontRegular,
+          ),
+        ),
+      ),
+    );
 
     return ElevatedButton(
       // style: ButtonStyle(
@@ -37,7 +60,7 @@ class RoundButtonOutline extends StatelessWidget {
         primary: Colors.white,
         side: BorderSide(
           width: 1,
-          color: goldColor,
+          color: purpleBlueColor,
         ),
       ),
       // onPressed: () {
@@ -58,7 +81,7 @@ class RoundButtonOutline extends StatelessWidget {
       child: Text(
         title,
         style: TextStyle(
-          color: goldColor,
+          color: purpleBlueColor,
           fontSize: 18,
           fontFamily: fontRegular,
           fontWeight: FontWeight.w500,

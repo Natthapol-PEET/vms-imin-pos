@@ -1,11 +1,16 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:imin/controllers/camera_controller.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/services/upload_personal_service.dart';
+import 'package:imin/views/widgets/not_connect_internet.dart';
 
 class TakePictureScreen extends StatelessWidget {
   TakePictureScreen({Key? key}) : super(key: key);
@@ -31,10 +36,10 @@ class TakePictureScreen extends StatelessWidget {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        width: size.width * 0.6,
-                        height: size.height * 0.6,
-                        color: Colors.white,
+                      Image.asset(
+                        'assets/images/crop-personal.png',
+                        fit: BoxFit.fitWidth,
+                        width: size.width * 0.7,
                       ),
                       SizedBox(height: size.height * 0.025),
                       Text(
@@ -60,23 +65,25 @@ class TakePictureScreen extends StatelessWidget {
                             // EasyLoading.show(status: 'loading...');
                             await c.initializeControllerFuture;
                             final image = await c.controller.takePicture();
-                            c.imagePath.value = image.path;
 
                             var response = await uploadPersonal(image.path);
                             response.stream
                                 .transform(utf8.decoder)
                                 .listen((value) {
-                              Map<String, dynamic> json = jsonDecode(value);
-                              print(json);
-                              print(json.runtimeType);
-                              print(json['firstname']);
-                              c.response.value = json;
-                            });
+                              try {
+                                Map<String, dynamic> json = jsonDecode(value);
 
-                            // Timer(Duration(seconds: 1), () {
-                            //   EasyLoading.dismiss();
-                            //   Get.back();
-                            // });
+                                if (json['firstname'] != null) {
+                                  c.imagePath.value = image.path;
+                                  c.response.value = json;
+                                } else {
+                                  EasyLoading.showError(json['message']);
+                                }
+                              } catch (e) {
+                                // ระบบมีปัญหา กรุณาลองใหม่อีกครั้งในภายหลัง
+                                alertSystemOnConnectInternet().show(context);
+                              }
+                            });
 
                             Get.back();
                           } catch (e) {

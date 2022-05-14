@@ -8,6 +8,7 @@ import 'package:imin/data/account.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/models/login_model.dart';
 import 'package:imin/services/login_service.dart';
+import 'package:imin/views/widgets/not_connect_internet.dart';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({Key? key}) : super(key: key);
@@ -46,6 +47,11 @@ class _LoadingScreenState extends State<LoadingScreen> {
         loginController.username.value,
         loginController.password.value,
       );
+
+      if (loginController.dataProfile is bool) {
+        alertSystemOnConnectInternet().show(context);
+        return;
+      }
 
       if (!(loginController.dataProfile is LoginModel)) {
         path = '/login';

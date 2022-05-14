@@ -12,6 +12,7 @@ import 'package:imin/models/account_model.dart';
 import 'package:imin/models/login_model.dart';
 import 'package:imin/services/login_service.dart';
 import 'package:imin/views/widgets/bg_image.dart';
+import 'package:imin/views/widgets/not_connect_internet.dart';
 import 'package:imin/views/widgets/round_button.dart';
 import 'package:imin/views/widgets/round_text_form_field.dart';
 
@@ -208,11 +209,21 @@ class LoginScreen extends StatelessWidget {
                           controller.passwordCheck(true);
                         }
 
-                        if (check) return;
+                        if (check) {
+                          EasyLoading.dismiss();
+                          return;
+                        }
 
                         controller.dataProfile = await loginApi(
-                            controller.usernameControl.value.text,
-                            controller.passwordControl.value.text);
+                          controller.usernameControl.value.text,
+                          controller.passwordControl.value.text,
+                        );
+
+                        if (controller.dataProfile is bool) {
+                          EasyLoading.dismiss();
+                          alertSystemOnConnectInternet().show(context);
+                          return;
+                        }
 
                         if (controller.dataProfile is LoginModel &&
                             controller.isRememberAccount.value) {

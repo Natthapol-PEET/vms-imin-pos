@@ -65,7 +65,7 @@ class RoundButton extends StatelessWidget {
           color: Colors.white,
           fontSize: 16,
           fontFamily: fontRegular,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.bold,
         ),
       ),
     );

@@ -1,53 +1,67 @@
+import 'dart:async';
 import 'dart:io';
-
+import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:imin/helpers/constance.dart';
+import 'package:imin/views/widgets/round_button.dart';
+import 'package:imin/views/widgets/round_button_outline.dart';
 
 class OnWillPopController extends GetxController {
   var context;
 
   Future<bool> onWillPop() async {
-    return (await showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text(
-              'แจ้งเตือน',
+    return EasyDialog(
+          closeButton: false,
+          height: 240,
+          width: 450,
+          contentList: [
+            // title
+            Text(
+              "แจ้งเตือน",
               style: TextStyle(
                 fontFamily: fontRegular,
+                fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            content: Text('คุณต้องการออกจากแอปใช่หรือไม่ ?'),
-            actions: [
-              TextButton(
-                // onPressed: () => Navigator.of(context).pop(true),
-                onPressed: () => exit(0),
-                child: Text(
-                  'ใช่',
-                  style: TextStyle(
-                    fontFamily: fontRegular,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.green,
-                    fontSize: 16,
-                  ),
-                ),
+            Divider(
+              color: dividerColor,
+              thickness: 1,
+            ),
+            SizedBox(height: 20),
+            Text(
+              "คุณต้องการออกจากแอปใช่หรือไม่ ?",
+              style: TextStyle(
+                fontFamily: fontRegular,
+                fontSize: 20,
               ),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: Text(
-                  'ไม่ใช่',
-                  style: TextStyle(
-                    fontFamily: fontRegular,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.red,
-                    fontSize: 16,
-                  ),
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                RoundButton(
+                  title: "ยืนยัน",
+                  press: () async {
+                    EasyLoading.show(status: 'loading...');
+
+                    Timer(Duration(seconds: 1), () {
+                      EasyLoading.dismiss();
+                      exit(0);
+                    });
+                  },
                 ),
-              ),
-            ],
-          ),
-        )) ??
+                SizedBox(width: 20),
+                RoundButtonOutline(
+                  title: "ยกเลิก",
+                  press: () => Get.back(),
+                ),
+              ],
+            ),
+          ],
+        ).show(context) ??
         false;
   }
 }

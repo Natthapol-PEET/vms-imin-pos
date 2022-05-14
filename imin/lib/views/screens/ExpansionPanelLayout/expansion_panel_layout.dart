@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,8 @@ import 'package:imin/data/account.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/models/account_model.dart';
 import 'package:imin/views/screens/EntranceProject/upload_personal_screen.dart';
+import 'package:imin/views/widgets/round_button.dart';
+import 'package:imin/views/widgets/round_button_outline.dart';
 import 'package:imin/views/widgets/top_app_bar.dart';
 
 // ignore: must_be_immutable
@@ -18,7 +21,6 @@ class ExpansionPanelScreen extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  // final controller = Get.put(ExpansionPanelController());
   final onWillPopController = Get.put(OnWillPopController());
   final loginController = Get.put(LoginController());
 
@@ -55,7 +57,7 @@ class ExpansionPanelScreen extends StatelessWidget {
                         child: Column(
                           children: [
                             buildMenu(controller, size),
-                            logout(size),
+                            logout(size, context),
                           ],
                         ),
                       ),
@@ -86,25 +88,67 @@ class ExpansionPanelScreen extends StatelessWidget {
     );
   }
 
-  TextButton logout(Size size) {
+  TextButton logout(Size size, BuildContext context) {
     return TextButton(
       onPressed: () async {
-        EasyLoading.show(status: 'loading...');
+        EasyDialog(
+          closeButton: false,
+          height: 240,
+          width: 450,
+          contentList: [
+            // title
+            Text(
+              "แจ้งเตือน",
+              style: TextStyle(
+                fontFamily: fontRegular,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Divider(
+              color: dividerColor,
+              thickness: 1,
+            ),
+            SizedBox(height: 20),
+            Text(
+              "ต้องการออกจากระบบหรือไม่ ?",
+              style: TextStyle(
+                fontFamily: fontRegular,
+                fontSize: 20,
+              ),
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                RoundButton(
+                  title: "ยืนยัน",
+                  press: () async {
+                    EasyLoading.show(status: 'loading...');
 
-        var account = AccountModel(
-          id: 1,
-          username: loginController.username.value,
-          password: loginController.password.value,
-          isLogin: 0,
-        );
-        await Account().updateAccount(account);
+                    var account = AccountModel(
+                      id: 1,
+                      username: loginController.username.value,
+                      password: loginController.password.value,
+                      isLogin: 0,
+                    );
+                    await Account().updateAccount(account);
 
-        // Timer(Duration(seconds: 1), () {
-        //   EasyLoading.dismiss();
-        //   Get.toNamed('/login');
-        // });
-        EasyLoading.dismiss();
-        Get.toNamed('/login');
+                    Timer(Duration(seconds: 1), () {
+                      EasyLoading.dismiss();
+                      Get.toNamed('/login');
+                    });
+                  },
+                ),
+                SizedBox(width: 20),
+                RoundButtonOutline(
+                  title: "ยกเลิก",
+                  press: () => Get.back(),
+                ),
+              ],
+            ),
+          ],
+        ).show(context);
       },
       child: Padding(
         padding: EdgeInsets.symmetric(

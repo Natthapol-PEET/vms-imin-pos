@@ -1,4 +1,5 @@
 // ip service
 
-const String ipServer = "http://192.168.1.5:8000/web_api";
-const String ipServerIminService = "http://192.168.1.5:8000/imin_walkin_api";
+const String domainName = "http://vms-service.ngrok.io";
+const String ipServer = domainName + "/web_api";
+const String ipServerIminService = domainName +  "/imin_walkin_api";

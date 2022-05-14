@@ -15,6 +15,7 @@ class TakePictureController extends GetxController {
       "firstname": "",
       "lastname": "",
       "idCard": "",
+      "code": "",
     };
 
     super.onInit();

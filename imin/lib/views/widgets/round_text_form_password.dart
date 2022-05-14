@@ -9,6 +9,7 @@ class RoundTextFormPassword extends StatelessWidget {
     this.isVisibility,
     this.onClickVisibility,
     required this.onChange,
+    this.matchPassword,
   }) : super(key: key);
 
   final IconData icon;
@@ -16,6 +17,7 @@ class RoundTextFormPassword extends StatelessWidget {
   final bool? isVisibility;
   final VoidCallback? onClickVisibility;
   final onChange;
+  final bool? matchPassword;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,12 @@ class RoundTextFormPassword extends StatelessWidget {
               color: Colors.white,
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: Colors.grey.shade400,
+                // color: Colors.grey.shade400,
+                color: (textTitle != 'รหัสผ่านเก่า')
+                    ? (matchPassword == true)
+                        ? Colors.grey.shade400
+                        : Colors.red
+                    : Colors.grey.shade400,
                 width: 1,
               ),
             ),

@@ -52,7 +52,7 @@ class ChangePasswordScreen extends StatelessWidget {
                     isVisibility: controller.isVisibilityOld.value,
                     onClickVisibility: () => controller.isVisibilityOld.value =
                         !controller.isVisibilityOld.value,
-                    onChange: (v) {},
+                    onChange: (v) => controller.onChangeOldPassword(v),
                   ),
                 ),
 
@@ -64,6 +64,7 @@ class ChangePasswordScreen extends StatelessWidget {
                     onClickVisibility: () => controller.isVisibilityNew.value =
                         !controller.isVisibilityNew.value,
                     onChange: (v) => controller.onChangeNewPassword(v),
+                    matchPassword: controller.checkMatchPassword.value,
                   ),
                 ),
 
@@ -98,7 +99,7 @@ class ChangePasswordScreen extends StatelessWidget {
                     children: [
                       if (controller.check.value.lenght > 0) ...[
                         Text(
-                          controller.warningText,
+                          controller.warningText.value.text,
                           textAlign: TextAlign.left,
                           style: TextStyle(
                             fontFamily: fontRegular,
@@ -118,21 +119,41 @@ class ChangePasswordScreen extends StatelessWidget {
                     isVisibility: controller.isVisibilityReNew.value,
                     onClickVisibility: () => controller.isVisibilityReNew
                         .value = !controller.isVisibilityReNew.value,
-                    onChange: (v) {},
+                    onChange: (v) => controller.onChangeNewPasswordAgain(v),
+                    matchPassword: controller.checkMatchPassword.value,
                   ),
                 ),
-
-                // RoundButton
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    RoundButtonOutline(
-                      title: 'บันทึก',
-                      press: () {},
-                      // () async => saveInfomationStatus(context, size),
-                    ),
-                  ],
+                Obx(
+                  () => Row(
+                    children: [
+                      if (!controller.checkMatchPassword.value) ...[
+                        Text(
+                          '*รหัสผ่านไม่ตรงกัน',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            fontFamily: fontRegular,
+                            fontSize: 14,
+                            color: Colors.redAccent,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
                 ),
+                Obx(
+                  () => Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      RoundButtonOutline(
+                        title: 'บันทึก',
+                        press: () => controller.resetPassword(),
+                        checkValidate: controller.checkValidatePassword.value,
+                        // () async => saveInfomationStatus(context, size),
+                      ),
+                    ],
+                  ),
+                ),
+                // RoundButton
               ],
             ),
           ),

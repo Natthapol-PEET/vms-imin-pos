@@ -6,55 +6,26 @@ class RoundButtonOutline extends StatelessWidget {
     Key? key,
     required this.title,
     required this.press,
+    this.checkValidate,
   }) : super(key: key);
 
   final String title;
   final VoidCallback? press;
+  final bool? checkValidate;
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
     return ElevatedButton(
-      // style: ButtonStyle(
-      //   padding: MaterialStateProperty.all<EdgeInsets>(
-      //     EdgeInsets.symmetric(
-      //       horizontal: size.width * 0.05,
-      //       vertical: size.height * 0.012,
-      //     ),
-      //   ),
-      //   backgroundColor: MaterialStateProperty.resolveWith<Color>(
-      //     (Set<MaterialState> states) {
-      //       if (states.contains(MaterialState.pressed))
-      //         return Colors.white;
-      //       else if (states.contains(MaterialState.disabled))
-      //         return Colors.grey;
-      //       return Colors.white;
-      //     },
-      //   ),
-      // ),
       style: ElevatedButton.styleFrom(
-        primary: hilightTextColor,
-        side: BorderSide(
-          width: 1,
-          color: hilightTextColor,
-        ),
+        primary: (checkValidate == false) ? Colors.grey : hilightTextColor,
+        // side: BorderSide(
+        //   width: 1,
+        //   color: hilightTextColor,
+        // ),
       ),
-      // onPressed: () {
-      //   if (_formKey.currentState!.validate()) {
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //     SnackBar(
-      //       content: Text(
-      //         'เข้าสู่ระบบ',
-      //         style: TextStyle(
-      //           color: Colors.white,
-      //         ),
-      //       ),
-      //     ),
-      //   );
-      //   }
-      // },
-      onPressed: press,
+      onPressed: (checkValidate == false) ? null : press,
       child: Text(
         title,
         style: TextStyle(

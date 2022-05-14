@@ -1,8 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
+import 'package:imin/controllers/login_controller.dart';
 import 'package:imin/controllers/on_will_pop_controller.dart';
+import 'package:imin/data/account.dart';
 import 'package:imin/helpers/constance.dart';
+import 'package:imin/models/account_model.dart';
+import 'package:imin/views/screens/EntranceProject/upload_personal_screen.dart';
 import 'package:imin/views/widgets/top_app_bar.dart';
 
 // ignore: must_be_immutable
@@ -13,6 +20,7 @@ class ExpansionPanelScreen extends StatelessWidget {
 
   // final controller = Get.put(ExpansionPanelController());
   final onWillPopController = Get.put(OnWillPopController());
+  final loginController = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +73,8 @@ class ExpansionPanelScreen extends StatelessWidget {
                   children: [
                     TopAppBar(),
                     Expanded(
-                      child: controller.currentContent,
+                      // child: controller.currentContent,
+                      child: UploadPersonalScreen(),
                     ),
                   ],
                 ),
@@ -79,7 +88,24 @@ class ExpansionPanelScreen extends StatelessWidget {
 
   TextButton logout(Size size) {
     return TextButton(
-      onPressed: () => Get.toNamed('/login'),
+      onPressed: () async {
+        EasyLoading.show(status: 'loading...');
+
+        var account = AccountModel(
+          id: 1,
+          username: loginController.username.value,
+          password: loginController.password.value,
+          isLogin: 0,
+        );
+        await Account().updateAccount(account);
+
+        // Timer(Duration(seconds: 1), () {
+        //   EasyLoading.dismiss();
+        //   Get.toNamed('/login');
+        // });
+        EasyLoading.dismiss();
+        Get.toNamed('/login');
+      },
       child: Padding(
         padding: EdgeInsets.symmetric(
             vertical: size.height * 0.02, horizontal: size.width * 0.01),

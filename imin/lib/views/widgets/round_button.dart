@@ -6,10 +6,14 @@ class RoundButton extends StatelessWidget {
     Key? key,
     required this.title,
     required this.press,
+    this.horizontal = 64.0,
+    this.vertical = 9.6,
   }) : super(key: key);
 
   final String title;
   final VoidCallback? press;
+  final double horizontal;
+  final double vertical;
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +28,10 @@ class RoundButton extends StatelessWidget {
         ),
         padding: MaterialStateProperty.all<EdgeInsets>(
           EdgeInsets.symmetric(
-            horizontal: size.width * 0.05,
-            vertical: size.height * 0.012,
+            // horizontal: size.width * 0.05,
+            // vertical: size.height * 0.012,
+            horizontal: horizontal,
+            vertical: vertical,
           ),
         ),
         backgroundColor: MaterialStateProperty.resolveWith<Color>(

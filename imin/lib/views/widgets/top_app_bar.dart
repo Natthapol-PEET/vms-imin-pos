@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:imin/controllers/login_controller.dart';
+import 'package:imin/helpers/configs.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/views/widgets/round_button.dart';
 
@@ -14,6 +16,8 @@ class TopAppBar extends StatefulWidget {
 
 class _TopAppBarState extends State<TopAppBar>
     with SingleTickerProviderStateMixin {
+  final loginController = Get.put(LoginController());
+
   @override
   void initState() {
     super.initState();
@@ -47,38 +51,6 @@ class _TopAppBarState extends State<TopAppBar>
                   fontSize: 14,
                 ),
               ),
-              // SizedBox(width: size.width * 0.01),
-
-              // bell
-              // MaterialButton(
-              //   onPressed: () => showDialog(
-              //     barrierDismissible: false,
-              //     context: context,
-              //     builder: (BuildContext context) =>
-              //         _buildPopupDialog(context, size),
-              //   ),
-              //   minWidth: 0,
-              //   child: Image.asset(
-              //     'assets/images/bell-icon.png',
-              //     scale: 1.2,
-              //   ),
-              // ),
-              // PopupMenuButton(
-              //   icon: Image.asset(
-              //     'assets/images/bell-icon.png',
-              //     scale: 1.2,
-              //   ),
-              //   onSelected: (newValue) {
-              //     // add this property
-              //     print(newValue);
-              //   },
-              //   itemBuilder: (context) => [
-              //     PopupMenuItem(
-              //       child: Text("Settings"),
-              //       value: 0,
-              //     ),
-              //   ],
-              // ),
 
               TextButton(
                 onPressed: () {},
@@ -148,25 +120,42 @@ class _TopAppBarState extends State<TopAppBar>
               ),
 
               // profile
-              Image.asset('assets/images/profile-mini.png'),
+              // Image.asset('assets/images/profile-mini.png'),
+              GetBuilder<LoginController>(
+                init: LoginController(),
+                builder: (controller) => CircleAvatar(
+                  radius: 20,
+                  backgroundImage: NetworkImage(ipServer +
+                      '/guard/profile_image/' +
+                      controller.dataProfile.profilePath),
+                  backgroundColor: Colors.transparent,
+                ),
+              ),
               SizedBox(width: size.width * 0.005),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'พิทยา จริณพร',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: fontRegular,
+                  GetBuilder<LoginController>(
+                    builder: (controller) => Text(
+                      '${controller.dataProfile.firstname} ${controller.dataProfile.lastname}',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: fontRegular,
+                      ),
                     ),
                   ),
-                  Text(
-                    'หัวหน้า รปภ.',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: fontRegular,
-                      fontSize: 12,
+                  GetBuilder<LoginController>(
+                    builder: (controller) => Text(
+                      // 'หัวหน้า รปภ.',
+                      controller.dataProfile.role == 'guard'
+                          ? 'รปภ.'
+                          : 'หัวหน้า รปภ.',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: fontRegular,
+                        fontSize: 12,
+                      ),
                     ),
                   ),
                 ],

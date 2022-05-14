@@ -2,23 +2,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:imin/views/screens/ChangePassword/change_password_screen.dart';
 import 'package:imin/views/screens/Demo/calendar_screen.dart';
+import 'package:imin/views/screens/Demo/camera_screen.dart';
+import 'package:imin/views/screens/Demo/image_profile.dart';
 import 'package:imin/views/screens/Demo/popup_menu_screen.dart';
 import 'package:imin/views/screens/Demo/select.dart';
 import 'package:imin/views/screens/EntranceProject/entrance_project_screen.dart';
+import 'package:imin/views/screens/EntranceProject/upload_personal_screen.dart';
 import 'package:imin/views/screens/ExitProject/exit_project_screen.dart';
 import 'package:imin/views/screens/ExpansionPanelLayout/expansion_panel_layout.dart';
 import 'package:imin/views/screens/ForgotPassword/forgot_password_screen.dart';
+import 'package:imin/views/screens/Loading/loading_screen.dart';
 import 'package:imin/views/screens/Login/login_screen.dart';
 import 'package:imin/views/screens/Demo/demo.dart';
 import 'package:imin/views/screens/Profile/profile_screen.dart';
-import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 import 'package:wakelock/wakelock.dart';
 
-void main() {
+void main() async {
   runApp(MyApp());
 
   // The following line will enable the Android and iOS wakelock.
@@ -32,6 +36,8 @@ void main() {
     DeviceOrientation.landscapeRight,
     DeviceOrientation.landscapeLeft,
   ]);
+
+
 }
 
 class MyApp extends StatelessWidget {
@@ -55,12 +61,21 @@ class MyApp extends StatelessWidget {
         const Locale('th', 'TH'), // Thai
       ],
       locale: const Locale('th', 'TH'),
-
-      initialRoute: '/login',
+      builder: EasyLoading.init(),
+      initialRoute: '/loading',
       getPages: [
         // Screens
-        GetPage(name: '/login', page: () => LoginScreen()),
-        GetPage(name: '/expansion_panel', page: () => ExpansionPanelScreen()),
+        GetPage(name: '/loading', page: () => LoadingScreen()),
+        GetPage(
+            name: '/login',
+            page: () => LoginScreen(),
+            transitionDuration: Duration(microseconds: 600),
+            transition: Transition.fadeIn),
+        GetPage(
+            name: '/expansion_panel',
+            page: () => ExpansionPanelScreen(),
+            transitionDuration: Duration(microseconds: 600),
+            transition: Transition.fadeIn),
         GetPage(name: '/forgot_password', page: () => ForgotPassword()),
 
         // Components
@@ -68,12 +83,15 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/change_password', page: () => ChangePasswordScreen()),
         GetPage(name: '/entrance_project', page: () => EntranceProjectScreen()),
         GetPage(name: '/exit_project', page: () => ExitProjectScreen()),
+        GetPage(name: '/upload_personal', page: () => UploadPersonalScreen()),
+        GetPage(name: '/camera', page: () => TakePictureScreen()),
 
         // demos
         GetPage(name: '/demo', page: () => ExpansionPanelDemo()),
         GetPage(name: '/select', page: () => Selector()),
         GetPage(name: '/popup_menu', page: () => PopupMenuScreen()),
         GetPage(name: '/calendar', page: () => CalendarScreen()),
+        GetPage(name: '/image', page: () => ImageProfile()),
       ],
     );
   }

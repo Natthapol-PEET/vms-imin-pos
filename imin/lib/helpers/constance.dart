@@ -23,3 +23,4 @@ const Color orangeAlertColor = Color(0xFFF5A54E);
 // Font
 const String fontRegular = "Sarabun";
 const String fontNunitoSans = "NunitoSans";
+const String fontPromptRegular = "Prompt";

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:imin/helpers/constance.dart';
 
+// ignore: must_be_immutable
 class RoundTextFormField extends StatelessWidget {
   RoundTextFormField({
     Key? key,
@@ -8,12 +9,20 @@ class RoundTextFormField extends StatelessWidget {
     required this.textTitle,
     this.isVisibility,
     this.onClickVisibility,
+    this.textController,
+    this.invalid = true,
+    this.onChange,
+    this.initialValue,
   }) : super(key: key);
 
   final IconData icon;
   final String textTitle;
   final bool? isVisibility;
   final VoidCallback? onClickVisibility;
+  var textController;
+  final bool invalid;
+  final Function(String)? onChange;
+  String? initialValue;
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +49,29 @@ class RoundTextFormField extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
             child: TextFormField(
+              initialValue: initialValue,
+              // controller: textController,
+              onChanged: onChange,
               obscureText: textTitle != "รหัสผ่าน"
                   ? false
                   : isVisibility == true
                       ? false
                       : true,
               decoration: InputDecoration(
+                contentPadding: EdgeInsets.zero,
                 border: InputBorder.none,
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: invalid ? Colors.transparent : Colors.red,
+                    width: 1.5,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: invalid ? Colors.transparent : Colors.red,
+                    width: 1.5,
+                  ),
+                ),
                 hintText: textTitle,
                 // prefixIconConstraints:
                 //     BoxConstraints(minWidth: 23, maxHeight: 20),
@@ -67,12 +92,13 @@ class RoundTextFormField extends StatelessWidget {
                       )
                     : null,
               ),
-              validator: (v) {
-                // if (v == null || v.isEmpty) {
-                //   return 'Please enter some text';
-                // }
-                // return null;
-              },
+              // validator: (v) {
+              //   // if (v == null || v.isEmpty) {
+              //   //   return 'Please enter some text';
+              //   // }
+              //   // return null;
+              //   print(v);
+              // },
             ),
           ),
         ],

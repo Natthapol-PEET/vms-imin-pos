@@ -1,13 +1,21 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/controllers/login_controller.dart';
 import 'package:imin/controllers/on_will_pop_controller.dart';
+import 'package:imin/data/account.dart';
 import 'package:imin/helpers/constance.dart';
+import 'package:imin/models/account_model.dart';
+import 'package:imin/models/login_model.dart';
+import 'package:imin/services/login_service.dart';
 import 'package:imin/views/widgets/bg_image.dart';
 import 'package:imin/views/widgets/round_button.dart';
 import 'package:imin/views/widgets/round_text_form_field.dart';
 
+// ignore: must_be_immutable
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
 
@@ -55,22 +63,64 @@ class LoginScreen extends StatelessWidget {
                       // margin: EdgeInsets.only(top: size.height * 0.05),
                       child: Form(
                         // key: _formKey,
-                        child: Column(
-                          children: [
-                            RoundTextFormField(
-                              icon: Icons.person_outline,
-                              textTitle: "อีเมลผู้ใช้",
-                            ),
-                            Obx(
-                              () => RoundTextFormField(
+                        child: Obx(
+                          () => Column(
+                            children: [
+                              RoundTextFormField(
+                                icon: Icons.person_outline,
+                                textTitle: "ชื่อผู้ใช้",
+                                textController: controller.usernameControl,
+                                invalid: controller.userCheck.value,
+                                initialValue: controller.username.value,
+                                onChange: (v) =>
+                                    controller.usernameControl.value.text = v,
+                              ),
+                              if (!controller.userCheck.value) ...[
+                                Padding(
+                                  padding: EdgeInsets.only(top: 5),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        '*กรุณากรอกชื่อผู้ใช้',
+                                        style: TextStyle(
+                                          fontFamily: fontRegular,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                              RoundTextFormField(
                                 icon: Icons.lock_outline,
                                 textTitle: "รหัสผ่าน",
                                 isVisibility: controller.isVisibility.value,
                                 onClickVisibility: () => controller.isVisibility
                                     .value = !controller.isVisibility.value,
+                                textController: controller.passwordControl,
+                                invalid: controller.passwordCheck.value,
+                                initialValue: controller.password.value,
+                                onChange: (v) =>
+                                    controller.passwordControl.value.text = v,
                               ),
-                            ),
-                          ],
+                              if (!controller.passwordCheck.value) ...[
+                                Padding(
+                                  padding: EdgeInsets.only(top: 5),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        '*กรุณากรอกรหัสผ่าน',
+                                        style: TextStyle(
+                                          fontFamily: fontRegular,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -134,9 +184,64 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(height: size.height * 0.008),
                     RoundButton(
                       title: 'เข้าสู่ระบบ',
-                      press: () {
-                        Get.toNamed('/expansion_panel');
-                        expandController.setDefaultValues();
+                      press: () async {
+                        // EasyLoading.addStatusCallback((status) {
+                        //   // print('EasyLoading Status $status');
+                        //   Timer(Duration(seconds: 2),
+                        //       () => EasyLoading.dismiss());
+                        // });
+                        EasyLoading.show(status: 'loading...');
+
+                        bool check = false;
+
+                        if (controller.usernameControl.value.text == "") {
+                          controller.userCheck(false);
+                          check = true;
+                        } else {
+                          controller.userCheck(true);
+                        }
+
+                        if (controller.passwordControl.value.text == "") {
+                          controller.passwordCheck(false);
+                          check = true;
+                        } else {
+                          controller.passwordCheck(true);
+                        }
+
+                        if (check) return;
+
+                        controller.dataProfile = await loginApi(
+                            controller.usernameControl.value.text,
+                            controller.passwordControl.value.text);
+
+                        if (controller.dataProfile is LoginModel &&
+                            controller.isRememberAccount.value) {
+                          var account = AccountModel(
+                            id: 1,
+                            username: controller.usernameControl.value.text,
+                            password: controller.passwordControl.value.text,
+                            isLogin: 1,
+                          );
+                          Account().updateAccount(account);
+
+                          EasyLoading.dismiss();
+                          EasyLoading.showSuccess('Login Success');
+                          expandController.setDefaultValues();
+
+                          // Timer(Duration(seconds: 1), () {
+                          //   EasyLoading.dismiss();
+                          //   Get.toNamed('/expansion_panel');
+                          // });
+
+                          EasyLoading.dismiss();
+                          Timer(Duration(microseconds: 200),
+                              () => Get.toNamed('/expansion_panel'));
+                        } else {
+                          EasyLoading.dismiss();
+                          EasyLoading.showError('Invalid Username or Password');
+                        }
+
+                        // print(data.token);
                       },
                     ),
                   ],

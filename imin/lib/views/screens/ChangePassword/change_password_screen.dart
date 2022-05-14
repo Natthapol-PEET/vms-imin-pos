@@ -4,6 +4,7 @@ import 'package:imin/controllers/on_will_pop_controller.dart';
 import 'package:imin/controllers/repassword_controller.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/views/widgets/round_button_outline.dart';
+import 'package:imin/views/widgets/round_button_repassword.dart';
 import 'package:imin/views/widgets/round_text_form_password.dart';
 
 class ChangePasswordScreen extends StatelessWidget {
@@ -144,7 +145,7 @@ class ChangePasswordScreen extends StatelessWidget {
                   () => Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      RoundButtonOutline(
+                      RoundButtonRePassword(
                         title: 'บันทึก',
                         press: () => controller.resetPassword(),
                         checkValidate: controller.checkValidatePassword.value,

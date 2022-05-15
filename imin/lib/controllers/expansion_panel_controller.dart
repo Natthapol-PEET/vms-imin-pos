@@ -41,28 +41,22 @@ class ExpansionPanelController extends GetxController {
   ];
 
   onExpansionChanged(bool v, int index) {
-    if (rememberSelected == index) {
+    if (rememberSelected == index && v == false) {
+      selected = -1;
+      update(['aVeryUniqueID']);
       return;
     }
 
     rememberSelected = index;
     itemData[index].expanded = v;
     currentContent = itemData[index].currentContent;
-    print('doing ...');
 
     // clear selected index 0
     if (itemData[index].subItemSelect.length > 0) {
       itemData[index].subItemSelect = [true, false];
     }
 
-    // if (v) {
-    //   selected = index;
-    // } else {
-    //   selected = -1;
-    // }
-
     selected = index;
-    print('selected: $selected');
 
     // update menu
     update(['aVeryUniqueID']); // and then here

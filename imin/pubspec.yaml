@@ -131,6 +131,12 @@ flutter:
       fonts:
         - asset: assets/fonts/Prompt/Prompt-Regular.ttf
           weight: 400
+
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto/Roboto-Regular.ttf
+          weight: 400
+
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

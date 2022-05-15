@@ -34,7 +34,6 @@ class _ExitProjectScreenState extends State<ExitProjectScreen> {
 
     return headerItems
         .map((item) => DataColumn(
-          
                 label: Text(
               item,
               style: TextStyle(
@@ -58,6 +57,78 @@ class _ExitProjectScreenState extends State<ExitProjectScreen> {
           DataCell(Text('01/06/64 08:20')),
           DataCell(Text('01/06/64 08:55')),
           DataCell(Text('ยังไม่ได้รับการแสตมป์')),
+        ],
+      ),
+      DataRow(
+        onSelectChanged: (state) => print('พห 5417'),
+        cells: [
+          DataCell(Text('18009770000')),
+          DataCell(Text('พห 5417')),
+          DataCell(Container(width: 100, child: Text('สิธาณี ลิ้นบุญ'))),
+          DataCell(Text('2/5')),
+          DataCell(Text('01/06/64 09:50')),
+          DataCell(Text('01/06/64 10:50')),
+          DataCell(Text('ออกจากโครงการแล้ว')),
+        ],
+      ),
+      DataRow(
+        onSelectChanged: (state) => print('พห 5417'),
+        cells: [
+          DataCell(Text('18009770000')),
+          DataCell(Text('พห 5417')),
+          DataCell(Container(width: 100, child: Text('สิธาณี ลิ้นบุญ'))),
+          DataCell(Text('2/5')),
+          DataCell(Text('01/06/64 09:50')),
+          DataCell(Text('01/06/64 10:50')),
+          DataCell(Text('ออกจากโครงการแล้ว')),
+        ],
+      ),
+      DataRow(
+        onSelectChanged: (state) => print('พห 5417'),
+        cells: [
+          DataCell(Text('18009770000')),
+          DataCell(Text('พห 5417')),
+          DataCell(Container(width: 100, child: Text('สิธาณี ลิ้นบุญ'))),
+          DataCell(Text('2/5')),
+          DataCell(Text('01/06/64 09:50')),
+          DataCell(Text('01/06/64 10:50')),
+          DataCell(Text('ออกจากโครงการแล้ว')),
+        ],
+      ),
+      DataRow(
+        onSelectChanged: (state) => print('พห 5417'),
+        cells: [
+          DataCell(Text('18009770000')),
+          DataCell(Text('พห 5417')),
+          DataCell(Container(width: 100, child: Text('สิธาณี ลิ้นบุญ'))),
+          DataCell(Text('2/5')),
+          DataCell(Text('01/06/64 09:50')),
+          DataCell(Text('01/06/64 10:50')),
+          DataCell(Text('ออกจากโครงการแล้ว')),
+        ],
+      ),
+      DataRow(
+        onSelectChanged: (state) => print('พห 5417'),
+        cells: [
+          DataCell(Text('18009770000')),
+          DataCell(Text('พห 5417')),
+          DataCell(Container(width: 100, child: Text('สิธาณี ลิ้นบุญ'))),
+          DataCell(Text('2/5')),
+          DataCell(Text('01/06/64 09:50')),
+          DataCell(Text('01/06/64 10:50')),
+          DataCell(Text('ออกจากโครงการแล้ว')),
+        ],
+      ),
+      DataRow(
+        onSelectChanged: (state) => print('พห 5417'),
+        cells: [
+          DataCell(Text('18009770000')),
+          DataCell(Text('พห 5417')),
+          DataCell(Container(width: 100, child: Text('สิธาณี ลิ้นบุญ'))),
+          DataCell(Text('2/5')),
+          DataCell(Text('01/06/64 09:50')),
+          DataCell(Text('01/06/64 10:50')),
+          DataCell(Text('ออกจากโครงการแล้ว')),
         ],
       ),
       DataRow(
@@ -266,9 +337,12 @@ class _ExitProjectScreenState extends State<ExitProjectScreen> {
                     ),
                   ],
                 ),
-                margin: EdgeInsets.symmetric(
-                    horizontal: size.width * 0.03,
-                    vertical: size.height * 0.01),
+                margin: EdgeInsets.only(
+                  left: size.width * 0.03,
+                  right: size.width * 0.03,
+                  top: size.height * 0.01,
+                  bottom: size.height * 0.02,
+                ),
                 child: Theme(
                   data: Theme.of(context)
                       .copyWith(dividerColor: dividerTableColor),
@@ -283,6 +357,32 @@ class _ExitProjectScreenState extends State<ExitProjectScreen> {
                   ),
                 ),
               ),
+
+              // Button Group
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: size.width * 0.03),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    RoundButtonIcon(icon: Icons.arrow_back_ios_new),
+                    for (int i = 1; i < 5; i++) ...[
+                      RoundButtonNumber(
+                        index: i.toString(),
+                        selectd: true,
+                      ),
+                    ],
+                    Point(),
+                    for (int i = 8; i < 10; i++) ...[
+                      RoundButtonNumber(
+                        index: i.toString(),
+                        selectd: false,
+                      ),
+                    ],
+                    RoundButtonIcon(icon: Icons.arrow_forward_ios),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -291,22 +391,99 @@ class _ExitProjectScreenState extends State<ExitProjectScreen> {
   }
 }
 
-class Item {
-  Item({
-    required this.id_card,
-    required this.license,
-    required this.fullname,
-    required this.home_number,
-    required this.time_in,
-    required this.time_out,
-    required this.status,
-  });
+class Point extends StatelessWidget {
+  const Point({
+    Key? key,
+  }) : super(key: key);
 
-  String id_card;
-  String license;
-  String fullname;
-  String home_number;
-  String time_in;
-  String time_out;
-  String status;
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      "•••",
+      textAlign: TextAlign.end,
+      style: TextStyle(
+        fontFamily: fontRobotoRegular,
+        color: Colors.grey.shade700,
+        fontSize: 26,
+      ),
+    );
+  }
+}
+
+class RoundButtonNumber extends StatelessWidget {
+  const RoundButtonNumber({
+    Key? key,
+    required this.index,
+    required this.selectd,
+  }) : super(key: key);
+
+  final String index;
+  final bool selectd;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        print("index: $index");
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 3),
+        width: 30,
+        height: 30,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: selectd ? hilightTextColor : textColor,
+            width: 1.5,
+          ),
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Center(
+          child: Text(
+            index,
+            style: TextStyle(
+              fontFamily: fontRobotoRegular,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: selectd ? hilightTextColor : textColor,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class RoundButtonIcon extends StatelessWidget {
+  const RoundButtonIcon({
+    Key? key,
+    required this.icon,
+  }) : super(key: key);
+
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        print(icon);
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 3),
+        width: 30,
+        height: 30,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: textColor,
+            width: 1.5,
+          ),
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Icon(
+          icon,
+          size: 18,
+          color: Colors.grey.shade700,
+        ),
+      ),
+    );
+  }
 }

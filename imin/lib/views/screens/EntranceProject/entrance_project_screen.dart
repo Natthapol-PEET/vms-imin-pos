@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:imin/controllers/exit_project_controller.dart';
+import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/helpers/constance.dart';
-import 'package:imin/views/widgets/popup_item.dart';
+import 'package:imin/views/screens/EntranceProject/upload_personal_screen.dart';
 import 'package:imin/views/widgets/title_content.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class EntranceProjectScreen extends StatefulWidget {
   EntranceProjectScreen({Key? key}) : super(key: key);
@@ -145,22 +145,27 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
                     Row(
                       // mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: purpleBlueColor,
-                            side: BorderSide(
-                              width: 1,
-                              color: purpleBlueColor,
+                        GetBuilder<ExpansionPanelController>(
+                          builder: (c) => ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: purpleBlueColor,
+                              side: BorderSide(
+                                width: 1,
+                                color: purpleBlueColor,
+                              ),
                             ),
-                          ),
-                          onPressed: () {},
-                          child: Text(
-                            'เพิ่มผู้เข้าโครงการ',
-                            style: TextStyle(
-                              color: textColorContrast,
-                              fontSize: 18,
-                              fontFamily: fontRegular,
-                              fontWeight: FontWeight.w500,
+                            onPressed: () {
+                              c.currentContent = UploadPersonalScreen();
+                              c.update(['aopbmsbbffdgkb']);
+                            },
+                            child: Text(
+                              'เพิ่มผู้เข้าโครงการ',
+                              style: TextStyle(
+                                color: textColorContrast,
+                                fontSize: 18,
+                                fontFamily: fontRegular,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
                         ),

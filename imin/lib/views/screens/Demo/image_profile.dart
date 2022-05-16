@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:imin/helpers/configs.dart';
 
 class ImageProfile extends StatefulWidget {
   const ImageProfile({Key? key}) : super(key: key);
@@ -16,7 +17,7 @@ class _ImageProfileState extends State<ImageProfile> {
     // );
 
     return Image.network(
-      'http://192.168.1.5:8000/web_api/guard/profile_image/guard_profile.jpg',
+      ipServer + '/guard/profile_image/guard_profile.jpg',
     );
   }
 }

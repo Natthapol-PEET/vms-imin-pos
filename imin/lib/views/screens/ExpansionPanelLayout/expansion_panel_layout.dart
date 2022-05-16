@@ -73,8 +73,8 @@ class ExpansionPanelScreen extends StatelessWidget {
                   children: [
                     TopAppBar(),
                     Expanded(
-                      // child: controller.currentContent,
-                      child: UploadPersonalScreen(),
+                      child: controller.currentContent,
+                      // child: UploadPersonalScreen(),
                     ),
                   ],
                 ),

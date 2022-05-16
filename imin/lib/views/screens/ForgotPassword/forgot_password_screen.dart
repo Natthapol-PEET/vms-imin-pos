@@ -45,20 +45,13 @@ class ForgotPassword extends StatelessWidget {
                 child: Container(
                   width: size.width / 1,
                   height: size.height,
-                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
+                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.375),
                   // color: themeBgColor,
                   // color: themeBgColor.withOpacity(0.7),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Logo
-                      // Image.asset("assets/images/Artani-Logo.png", scale: 2),
-
-                      // E-mail
-                      // Password
-
                       Container(
-                        // margin: EdgeIns  ets.only(top: size.height * 0.05),
                         width: size.width / 3,
                         height: size.height / 1.8,
                         padding:
@@ -98,20 +91,71 @@ class ForgotPassword extends StatelessWidget {
                                 ),
                               ),
                               // email
-                              RoundTextFormField(
-                                icon: Icons.person,
-                                textTitle: "อีเมลผู้ใช้",
-                              ),
-                              SizedBox(height: size.height * 0.008),
-                              // button
-                              RoundButton(
-                                title: 'เข้าสู่ระบบ',
-                                press: () {
-                                  Get.toNamed('/expansion_panel');
-                                  expandController.setDefaultValues();
-                                },
+                              Container(
+                                margin:
+                                    EdgeInsets.only(top: size.height * 0.017),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: TextFormField(
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: 'กรอกอีเมล',
+                                    contentPadding: EdgeInsets.only(left: 20),
+                                  ),
+                                ),
                               ),
 
+                              SizedBox(height: size.height * 0.017),
+                              // button
+                              // RoundButton(
+                              //   title: 'เข้าสู่ระบบ',
+                              //   press: () {
+                              //     Get.toNamed('/expansion_panel');
+                              //     expandController.setDefaultValues();
+                              //   },
+                              // ),
+                              ElevatedButton(
+                                style: ButtonStyle(
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  padding:
+                                      MaterialStateProperty.all<EdgeInsets>(
+                                    EdgeInsets.symmetric(
+                                      horizontal: size.width * 0.118,
+                                      vertical: size.height * 0.02,
+                                    ),
+                                  ),
+                                  backgroundColor:
+                                      MaterialStateProperty.resolveWith<Color>(
+                                    (Set<MaterialState> states) {
+                                      if (states
+                                          .contains(MaterialState.pressed))
+                                        return hilightTextColor;
+                                      else if (states
+                                          .contains(MaterialState.disabled))
+                                        return Colors.grey;
+                                      return hilightTextColor;
+                                    },
+                                  ),
+                                ),
+                                onPressed: () => Get.back(),
+                                child: Text(
+                                  'ส่ง',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontFamily: fontRegular,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              // textBack
                               TextButton(
                                 onPressed: () => Get.back(),
                                 child: Text(
@@ -133,7 +177,14 @@ class ForgotPassword extends StatelessWidget {
                     ],
                   ),
                 ),
-              )
+              ),
+              Positioned(
+                  child: Padding(
+                padding: EdgeInsets.all(20),
+                child: Image.asset(
+                  'assets/images/logo_horizontal.png',
+                ),
+              ))
             ],
           ),
         ),

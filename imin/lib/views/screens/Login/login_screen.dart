@@ -186,11 +186,6 @@ class LoginScreen extends StatelessWidget {
                     RoundButton(
                       title: 'เข้าสู่ระบบ',
                       press: () async {
-                        // EasyLoading.addStatusCallback((status) {
-                        //   // print('EasyLoading Status $status');
-                        //   Timer(Duration(seconds: 2),
-                        //       () => EasyLoading.dismiss());
-                        // });
                         EasyLoading.show(status: 'loading...');
 
                         bool check = false;
@@ -251,8 +246,7 @@ class LoginScreen extends StatelessWidget {
                           EasyLoading.dismiss();
                           EasyLoading.showError('Invalid Username or Password');
                         }
-
-                        // print(data.token);
+                        // Get.toNamed('/expansion_panel');
                       },
                     ),
                   ],

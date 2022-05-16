@@ -46,7 +46,7 @@ class ExpansionPanelScreen extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.only(top: size.height * 0.03),
                       child: Image.asset(
-                        "assets/images/Artani-Logo-Security.png",
+                        "assets/images/logo_horizontal.png",
                         scale: 0.2,
                       ),
                     ),

@@ -49,7 +49,7 @@ class TakePictureController extends GetxController {
         try {
           Map<String, dynamic> json = jsonDecode(value);
 
-          if (json['firstname'] != null) {
+          if (json['fullname'] != null) {
             imagePath.value = image.path;
             response.value = json;
             EasyLoading.dismiss();

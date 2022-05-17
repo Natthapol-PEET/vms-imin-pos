@@ -3,8 +3,10 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class Account {
+  late Database db;
+
   Future getDatabase() async {
-    final database = openDatabase(
+    db = await openDatabase(
       join(await getDatabasesPath(), 'accounts_database.db'),
       onCreate: (db, version) {
         return db.execute(
@@ -13,12 +15,10 @@ class Account {
       },
       version: 1,
     );
-
-    return database;
   }
 
   Future initAccount() async {
-    final db = await getDatabase();
+    // final db = await getDatabase();
     var result = await accounts();
 
     print('result.isNotEmpty: ${result.isNotEmpty}');
@@ -39,29 +39,24 @@ class Account {
       data.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-
-    await db.close();
   }
 
   Future<void> insertAccount(AccountModel account) async {
-    final db = await getDatabase();
+    // final db = await getDatabase();
 
     await db.insert(
       'accounts',
       account.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-
-    await db.close();
   }
 
   Future<List<AccountModel>> accounts() async {
-    final db = await getDatabase();
+    // final db = await getDatabase();
 
     final List<Map<String, dynamic>> maps = await db.query(
       'accounts',
     );
-    await db.close();
 
     return List.generate(maps.length, (i) {
       return AccountModel(
@@ -74,7 +69,7 @@ class Account {
   }
 
   Future<void> updateAccount(AccountModel account) async {
-    final db = await getDatabase();
+    // final db = await getDatabase();
 
     await db.update(
       'accounts',
@@ -82,29 +77,26 @@ class Account {
       where: 'id = ?',
       whereArgs: [account.id],
     );
-
-    await db.close();
   }
 
   Future<void> deleteAccount(int id) async {
-    final db = await getDatabase();
+    // final db = await getDatabase();
 
     await db.delete(
       'accounts',
       where: 'id = ?',
       whereArgs: [id],
     );
-
-    await db.close();
   }
 
   void dropTable() async {
     String sql = "DROP TABLE accounts";
-    final db = await getDatabase();
+    // final db = await getDatabase();
 
     await db.execute(sql);
-    await db.close();
   }
+
+  Future close() async => db.close();
 
   void test() async {
     // --------- Test ------------------------

@@ -16,8 +16,7 @@ class TakePictureController extends GetxController {
   @override
   void onInit() {
     response.value = {
-      "firstname": "",
-      "lastname": "",
+      "fullname": "",
       "idCard": "",
       "code": "",
     };

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:imin/helpers/configs.dart';
 
-Future registerWalkinApi(String firstname, String lastname, String idCard,
+Future registerWalkinApi(String firstname, String fullname, String idCard,
     String code, String homeNumber, String licensePlate) async {
   try {
     final response = await http.post(
@@ -10,7 +10,7 @@ Future registerWalkinApi(String firstname, String lastname, String idCard,
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(<String, String>{
         "firstname": firstname,
-        "lastname": lastname,
+        "fullname": fullname,
         "idCard": idCard,
         "code": code,
         "homeNumber": homeNumber,

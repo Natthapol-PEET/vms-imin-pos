@@ -121,10 +121,7 @@ class UploadPersonalScreen extends StatelessWidget {
                             () => TextInputAddVisitor(
                               title: 'ชื่อ - นามสกุล',
                               hintText: '',
-                              initValue:
-                                  cameraController.response['firstname'] +
-                                      " " +
-                                      cameraController.response['lastname'],
+                              initValue: cameraController.response['fullname'],
                             ),
                           ),
                           Obx(
@@ -199,8 +196,7 @@ class UploadPersonalScreen extends StatelessWidget {
                                   }
 
                                   var statusCode = c.checkInput(
-                                    cameraController.response['firstname'],
-                                    cameraController.response['lastname'],
+                                    cameraController.response['fullname'],
                                     cameraController.response['idCard'],
                                     cameraController.response['code'],
                                   );

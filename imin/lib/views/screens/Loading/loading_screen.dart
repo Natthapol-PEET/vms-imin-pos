@@ -21,6 +21,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
   final loginController = Get.put(LoginController());
   final cameraController = Get.put(TakePictureController());
 
+  Account acc = Account();
+
   @override
   void initState() {
     cameraController.initCamera();
@@ -32,9 +34,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   initAsync() async {
     // Init Database
-    // Account().dropTable();
-    await Account().initAccount();
-    // print(await Account().accounts());
+    // acc.dropTable();
+    await acc.getDatabase();
+    await acc.initAccount();
+    // print(await acc.accounts());
 
     // login
     await loginController.getAccount();

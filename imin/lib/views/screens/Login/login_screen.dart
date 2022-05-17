@@ -185,65 +185,8 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(height: size.height * 0.008),
                     RoundButton(
                       title: 'เข้าสู่ระบบ',
-                      press: () async {
-                        EasyLoading.show(status: 'กรุณารอสักครู่...');
-
-                        bool check = false;
-
-                        if (controller.usernameControl.value.text == "") {
-                          controller.userCheck(false);
-                          check = true;
-                        } else {
-                          controller.userCheck(true);
-                        }
-
-                        if (controller.passwordControl.value.text == "") {
-                          controller.passwordCheck(false);
-                          check = true;
-                        } else {
-                          controller.passwordCheck(true);
-                        }
-
-                        if (check) {
-                          EasyLoading.dismiss();
-                          return;
-                        }
-
-                        controller.dataProfile = await loginApi(
-                          controller.usernameControl.value.text,
-                          controller.passwordControl.value.text,
-                        );
-
-                        if (controller.dataProfile is bool) {
-                          EasyLoading.dismiss();
-                          alertSystemOnConnectInternet().show(context);
-                          return;
-                        }
-
-                        if (controller.dataProfile is LoginModel) {
-                          if (controller.isRememberAccount.value) {
-                            var account = AccountModel(
-                              id: 1,
-                              username: controller.usernameControl.value.text,
-                              password: controller.passwordControl.value.text,
-                              isLogin: 1,
-                            );
-                            Account().updateAccount(account);
-                          }
-
-                          EasyLoading.dismiss();
-                          EasyLoading.showSuccess('เข้าสู่ระบบสำเร็จ');
-                          expandController.setDefaultValues();
-
-                          EasyLoading.dismiss();
-                          Timer(Duration(microseconds: 200),
-                              () => Get.toNamed('/expansion_panel'));
-                        } else {
-                          EasyLoading.dismiss();
-                          EasyLoading.showError(
-                              'ข้อมูลผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
-                        }
-                      },
+                      press: () async =>
+                          await controller.login(context, expandController),
                     ),
                   ],
                 ),

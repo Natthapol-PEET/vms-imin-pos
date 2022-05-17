@@ -120,22 +120,7 @@ class ExpansionPanelScreen extends StatelessWidget {
               children: [
                 RoundButton(
                   title: "ยืนยัน",
-                  press: () async {
-                    EasyLoading.show(status: 'กรุณารอสักครู่...');
-
-                    var account = AccountModel(
-                      id: 1,
-                      username: loginController.username.value,
-                      password: loginController.password.value,
-                      isLogin: 0,
-                    );
-                    await Account().updateAccount(account);
-
-                    Timer(Duration(seconds: 1), () {
-                      EasyLoading.dismiss();
-                      Get.toNamed('/login');
-                    });
-                  },
+                  press: () async => await loginController.logout(),
                 ),
                 SizedBox(width: 20),
                 RoundButtonOutline(

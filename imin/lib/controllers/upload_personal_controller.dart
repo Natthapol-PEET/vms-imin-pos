@@ -16,7 +16,7 @@ class UploadPersonalController extends GetxController {
     licensePlate.value = "";
   }
 
-  checkInput(String fname, String lname, String idCard, String code) {
+  checkInput(String fullname, String idCard, String code) {
     // check home number is null
     if (homeNumber.value == "") {
       checkHomeNumber(false);
@@ -33,14 +33,15 @@ class UploadPersonalController extends GetxController {
 
     // call api
     if (checkHomeNumber.value && checkLicensePlate.value) {
-      print("fname: $fname");
-      print("lname: $lname");
+      print("fullname: $fullname");
       print("idCard: $idCard");
       print("checkHomeNumber: $checkHomeNumber");
       print("checkLicensePlate: $checkLicensePlate");
 
-      return registerWalkinApi(
-          fname, lname, idCard, homeNumber.value, code, licensePlate.value);
+      return 201;
+
+      // return registerWalkinApi(
+      //     fname, lname, idCard, homeNumber.value, code, licensePlate.value);
     }
   }
 }

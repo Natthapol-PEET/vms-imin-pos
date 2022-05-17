@@ -1,17 +1,15 @@
+import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:imin/controllers/expansion_panel_controller.dart';
-import 'package:imin/controllers/login_controller.dart';
+import 'package:imin/controllers/forgot_password_controller.dart';
 import 'package:imin/controllers/on_will_pop_controller.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/views/widgets/round_button.dart';
-import 'package:imin/views/widgets/round_text_form_field.dart';
 
 class ForgotPassword extends StatelessWidget {
   ForgotPassword({Key? key}) : super(key: key);
 
-  final controller = Get.put(LoginController());
-  final expandController = Get.put(ExpansionPanelController());
+  final controller = Get.put(ForgotPasswordController());
   final onWillPopController = Get.put(OnWillPopController());
 
   // สร้างฟอร์ม key หรือ id ของฟอร์มสำหรับอ้างอิง
@@ -99,6 +97,8 @@ class ForgotPassword extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: TextFormField(
+                                  onChanged: (value) =>
+                                      controller.emailValue.value = value,
                                   decoration: InputDecoration(
                                     border: InputBorder.none,
                                     hintText: 'กรอกอีเมล',
@@ -108,53 +108,64 @@ class ForgotPassword extends StatelessWidget {
                               ),
 
                               SizedBox(height: size.height * 0.017),
-                              // button
-                              // RoundButton(
-                              //   title: 'เข้าสู่ระบบ',
-                              //   press: () {
-                              //     Get.toNamed('/expansion_panel');
-                              //     expandController.setDefaultValues();
-                              //   },
-                              // ),
-                              ElevatedButton(
-                                style: ButtonStyle(
-                                  shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
-                                  padding:
-                                      MaterialStateProperty.all<EdgeInsets>(
-                                    EdgeInsets.symmetric(
-                                      horizontal: size.width * 0.118,
-                                      vertical: size.height * 0.02,
-                                    ),
-                                  ),
-                                  backgroundColor:
-                                      MaterialStateProperty.resolveWith<Color>(
-                                    (Set<MaterialState> states) {
-                                      if (states
-                                          .contains(MaterialState.pressed))
-                                        return hilightTextColor;
-                                      else if (states
-                                          .contains(MaterialState.disabled))
-                                        return Colors.grey;
-                                      return hilightTextColor;
-                                    },
-                                  ),
-                                ),
-                                onPressed: () => Get.back(),
-                                child: Text(
-                                  'ส่ง',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontFamily: fontRegular,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
+
+                              //send button
+                              sendRequestForgot(size, context),
+                              // Obx(() => Row(
+                              //       children: [
+                              //         if (controller.checkEmail.value ==
+                              //             true) ...[
+                              //           EasyDialog(
+                              //             closeButton: false,
+                              //             height: 200,
+                              //             width: 590,
+                              //             contentList: [
+                              //               // title
+                              //               Text(
+                              //                 "ลืมรหัสผ่าน",
+                              //                 style: TextStyle(
+                              //                   fontFamily: fontRegular,
+                              //                   fontSize: 24,
+                              //                   fontWeight: FontWeight.bold,
+                              //                 ),
+                              //               ),
+                              //               Divider(
+                              //                 color: dividerColor,
+                              //                 thickness: 1,
+                              //               ),
+                              //               SizedBox(height: 20),
+                              //               Text(
+                              //                 "ระบบได้ส่งข้อความไปที่อีเมล ${controller.emailValue.value} ",
+                              //                 style: TextStyle(
+                              //                   fontFamily: fontRegular,
+                              //                   fontSize: 20,
+                              //                 ),
+                              //               ),
+
+                              //               SizedBox(height: 20),
+                              //               Row(
+                              //                 mainAxisAlignment:
+                              //                     MainAxisAlignment.center,
+                              //                 children: [
+                              //                   RoundButton(
+                              //                     title: "ตกลง",
+                              //                     press: () => {
+                              //                       controller.clear(),
+                              //                       Get.toNamed('/login')
+                              //                     },
+                              //                   ),
+                              //                   SizedBox(width: 20),
+                              //                   // RoundButtonOutline(
+                              //                   //   title: "ยกเลิก",
+                              //                   //   press: () => Get.back(),
+                              //                   // ),
+                              //                 ],
+                              //               ),
+                              //             ],
+                              //           ).show(context)
+                              //         ]
+                              //       ],
+                              //     )),
                               // textBack
                               TextButton(
                                 onPressed: () => Get.back(),
@@ -189,6 +200,96 @@ class ForgotPassword extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Row sendRequestForgot(Size size, BuildContext context) {
+    return Row(
+      children: [
+        ElevatedButton(
+          style: ButtonStyle(
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            padding: MaterialStateProperty.all<EdgeInsets>(
+              EdgeInsets.symmetric(
+                horizontal: size.width * 0.118,
+                vertical: size.height * 0.02,
+              ),
+            ),
+            backgroundColor: MaterialStateProperty.resolveWith<Color>(
+              (Set<MaterialState> states) {
+                if (states.contains(MaterialState.pressed))
+                  return hilightTextColor;
+                else if (states.contains(MaterialState.disabled))
+                  return Colors.grey;
+                return hilightTextColor;
+              },
+            ),
+          ),
+          onPressed: () => {
+            controller.requestEmail(context)
+            // EasyDialog(
+            //   closeButton: false,
+            //   height: 200,
+            //   width: 590,
+            //   contentList: [
+            //     // title
+            //     Text(
+            //       "ลืมรหัสผ่าน",
+            //       style: TextStyle(
+            //         fontFamily: fontRegular,
+            //         fontSize: 24,
+            //         fontWeight: FontWeight.bold,
+            //       ),
+            //     ),
+            //     Divider(
+            //       color: dividerColor,
+            //       thickness: 1,
+            //     ),
+            //     SizedBox(height: 20),
+            //     Text(
+            //       "ระบบได้ส่งข้อความไปที่อีเมล ${controller.emailValue.value} ",
+            //       style: TextStyle(
+            //         fontFamily: fontRegular,
+            //         fontSize: 20,
+            //       ),
+            //     ),
+
+            //     SizedBox(height: 20),
+            //     Row(
+            //       mainAxisAlignment: MainAxisAlignment.center,
+            //       children: [
+            //         RoundButton(
+            //           title: "ตกลง",
+            //           press: () => {
+            //             controller.clear(),
+            //             Get.toNamed('/login')
+            //           },
+            //         ),
+            //         SizedBox(width: 20),
+            //         // RoundButtonOutline(
+            //         //   title: "ยกเลิก",
+            //         //   press: () => Get.back(),
+            //         // ),
+            //       ],
+            //     ),
+            //   ],
+            // ).show(context);
+          },
+          child: Text(
+            'ส่ง',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontFamily: fontRegular,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

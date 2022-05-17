@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:imin/controllers/repassword_controller.dart';
 import 'package:imin/models/item_model.dart';
 import 'package:imin/views/screens/ChangePassword/change_password_screen.dart';
 import 'package:imin/views/screens/EntranceProject/entrance_project_screen.dart';
@@ -10,6 +11,8 @@ class ExpansionPanelController extends GetxController {
   int selected = -1.obs; //attention
   int rememberSelected = -1.obs;
   Widget currentContent = EntranceProjectScreen();
+
+  final reController = Get.put(RePasswordController());
 
   List<ItemModel> itemData = <ItemModel>[
     ItemModel(
@@ -58,6 +61,8 @@ class ExpansionPanelController extends GetxController {
 
     selected = index;
 
+    reController.clear();
+
     // update menu
     update(['aVeryUniqueID']); // and then here
 
@@ -75,6 +80,8 @@ class ExpansionPanelController extends GetxController {
       }
     }
     // print('selector: ${itemData[itemDataIndex].subItemSelect[i]}');
+
+    reController.clear();
 
     // update menu
     update(['aVeryUniqueID']); // and then here

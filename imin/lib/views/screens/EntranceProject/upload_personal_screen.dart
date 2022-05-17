@@ -64,7 +64,7 @@ class UploadPersonalScreen extends StatelessWidget {
                       children: [
                         Obx(
                           () => Container(
-                            child: cameraController.imagePath.value == ""
+                            child: cameraController.imageUrl.value == ""
                                 ? Image.asset(
                                     'assets/images/id-card-image.png',
                                     scale: 2,
@@ -72,9 +72,7 @@ class UploadPersonalScreen extends StatelessWidget {
                                 // : Image.file(
                                 //     File(cameraController.imagePath.value)),
                                 : Image.network(
-                                    ipServerIminService +
-                                        '/' +
-                                        cameraController.response['code'],
+                                    cameraController.imageUrl.value,
                                     fit: BoxFit.fitHeight,
                                     height: 200,
                                   ),
@@ -93,7 +91,7 @@ class UploadPersonalScreen extends StatelessWidget {
                         ),
                         Obx(
                           () => RoundButtonOutline(
-                            title: cameraController.imagePath.value == ""
+                            title: cameraController.imageUrl.value == ""
                                 ? 'ถ่ายภาพ'
                                 : 'ถ่ายภาพใหม่',
                             press: () => Get.toNamed('/camera'),
@@ -125,7 +123,7 @@ class UploadPersonalScreen extends StatelessWidget {
                             ),
                           ),
                           Obx(
-                            () => cameraController.imagePath.value != ""
+                            () => cameraController.imageUrl.value != ""
                                 ? ShowEarningText(
                                     text: 'กรุณาตรวจสอบชื่อ - นามสกุล',
                                     color: Colors.orange,
@@ -140,7 +138,7 @@ class UploadPersonalScreen extends StatelessWidget {
                             ),
                           ),
                           Obx(
-                            () => cameraController.imagePath.value != ""
+                            () => cameraController.imageUrl.value != ""
                                 ? ShowEarningText(
                                     text: 'กรุณาตรวจสอบเลขประจำตัวประชาชน',
                                     color: Colors.orange,
@@ -189,7 +187,7 @@ class UploadPersonalScreen extends StatelessWidget {
                                 vertical: size.height * 0.015,
                                 title: 'บันทึก',
                                 press: () {
-                                  if (cameraController.imagePath.value == "") {
+                                  if (cameraController.imageUrl.value == "") {
                                     EasyLoading.showInfo(
                                         'กรุณาถ่ายภาพบัตรประชาชน');
                                     return;
@@ -288,7 +286,7 @@ class TextInputAddVisitor extends StatelessWidget {
           child: TextFormField(
             // enabled: false,
             // readOnly: true,
-            controller: initValue == "" ? controller : controller
+            controller: initValue == "" ? controller : TextEditingController()
               ?..text = initValue,
             onChanged: onChanged,
             cursorColor: dividerTableColor,

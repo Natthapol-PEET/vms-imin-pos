@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:camera/camera.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:imin/helpers/configs.dart';
 import 'package:imin/services/upload_personal_service.dart';
 
 class TakePictureController extends GetxController {
@@ -12,6 +13,7 @@ class TakePictureController extends GetxController {
 
   var imagePath = "".obs;
   var response = Map<String, dynamic>().obs;
+  var imageUrl = "".obs;
 
   @override
   void onInit() {
@@ -44,21 +46,42 @@ class TakePictureController extends GetxController {
       await initializeControllerFuture;
       final image = await controller.takePicture();
 
-      var response = await uploadPersonal(image.path);
-      response.stream.transform(utf8.decoder).listen((value) {
-        try {
-          Map<String, dynamic> json = jsonDecode(value);
+      var responseApi = await uploadPersonal(image.path);
+      responseApi.stream.transform(utf8.decoder).listen((value) {
+        Map<String, dynamic> json = jsonDecode(value);
 
-          if (json['fullname'] != null) {
-            imagePath.value = image.path;
-            response.value = json;
-            EasyLoading.dismiss();
-          } else {
-            EasyLoading.showError(json['message']);
-          }
-        } catch (e) {
-          EasyLoading.showError('ระบบมีปัญหา กรุณาลองใหม่อีกครั้งในภายหลัง');
+        print(json);
+        print(json['fullname']);
+        print(json['fullname'] != null);
+
+        if (json['fullname'] != null) {
+          // imagePath.value = image.path;
+          response.value = json;
+          imageUrl.value = ipServerIminService + '/' + json['code'];
+          EasyLoading.dismiss();
+
+          print(response['fullname']);
+        } else {
+          EasyLoading.showError(json['message']);
         }
+        // try {
+        //   Map<String, dynamic> json = jsonDecode(value);
+
+        //   print(json);
+        //   print(json['fullname']);
+        //   print(json['fullname'] != null);
+
+        //   if (json['fullname'] != null) {
+        //     imagePath.value = image.path;
+        //     response.value = json;
+        //     imageUrl.value = ipServerIminService + '/' + json['code'];
+        //     EasyLoading.dismiss();
+        //   } else {
+        //     EasyLoading.showError(json['message']);
+        //   }
+        // } catch (e) {
+        //   EasyLoading.showError('ระบบมีปัญหา กรุณาลองใหม่อีกครั้งในภายหลัง');
+        // }
       });
     } catch (e) {
       print(e);

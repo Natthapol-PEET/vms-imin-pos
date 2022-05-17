@@ -220,33 +220,29 @@ class LoginScreen extends StatelessWidget {
                           return;
                         }
 
-                        if (controller.dataProfile is LoginModel &&
-                            controller.isRememberAccount.value) {
-                          var account = AccountModel(
-                            id: 1,
-                            username: controller.usernameControl.value.text,
-                            password: controller.passwordControl.value.text,
-                            isLogin: 1,
-                          );
-                          Account().updateAccount(account);
+                        if (controller.dataProfile is LoginModel) {
+                          if (controller.isRememberAccount.value) {
+                            var account = AccountModel(
+                              id: 1,
+                              username: controller.usernameControl.value.text,
+                              password: controller.passwordControl.value.text,
+                              isLogin: 1,
+                            );
+                            Account().updateAccount(account);
+                          }
 
                           EasyLoading.dismiss();
                           EasyLoading.showSuccess('เข้าสู่ระบบสำเร็จ');
                           expandController.setDefaultValues();
-
-                          // Timer(Duration(seconds: 1), () {
-                          //   EasyLoading.dismiss();
-                          //   Get.toNamed('/expansion_panel');
-                          // });
 
                           EasyLoading.dismiss();
                           Timer(Duration(microseconds: 200),
                               () => Get.toNamed('/expansion_panel'));
                         } else {
                           EasyLoading.dismiss();
-                          EasyLoading.showError('ข้อมูลผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
+                          EasyLoading.showError(
+                              'ข้อมูลผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
                         }
-                        // Get.toNamed('/expansion_panel');
                       },
                     ),
                   ],

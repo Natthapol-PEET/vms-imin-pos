@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:imin/controllers/camera_controller.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/controllers/upload_personal_controller.dart';
+import 'package:imin/helpers/configs.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/views/widgets/round_button.dart';
 import 'package:imin/views/widgets/round_button_outline.dart';
@@ -68,8 +69,15 @@ class UploadPersonalScreen extends StatelessWidget {
                                     'assets/images/id-card-image.png',
                                     scale: 2,
                                   )
-                                : Image.file(
-                                    File(cameraController.imagePath.value)),
+                                // : Image.file(
+                                //     File(cameraController.imagePath.value)),
+                                : Image.network(
+                                    ipServerIminService +
+                                        '/' +
+                                        cameraController.response['code'],
+                                    fit: BoxFit.fitHeight,
+                                    height: 200,
+                                  ),
                           ),
                         ),
                         Padding(
@@ -190,11 +198,17 @@ class UploadPersonalScreen extends StatelessWidget {
                                     return;
                                   }
 
-                                  c.checkInput(
+                                  var statusCode = c.checkInput(
                                     cameraController.response['firstname'],
                                     cameraController.response['lastname'],
                                     cameraController.response['idCard'],
+                                    cameraController.response['code'],
                                   );
+
+                                  if (int.parse(statusCode) == 201) {
+                                    EasyLoading.showSuccess(
+                                        'บันทึกข้อมูลเรียบร้อยแล้ว');
+                                  }
                                 }),
                           ),
                           SizedBox(width: size.width * 0.055),

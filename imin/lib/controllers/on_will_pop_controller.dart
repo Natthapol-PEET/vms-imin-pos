@@ -45,7 +45,7 @@ class OnWillPopController extends GetxController {
                 RoundButton(
                   title: "ยืนยัน",
                   press: () async {
-                    EasyLoading.show(status: 'loading...');
+                    EasyLoading.show(status: 'กรุณารอสักครู่...');
 
                     Timer(Duration(seconds: 1), () {
                       EasyLoading.dismiss();

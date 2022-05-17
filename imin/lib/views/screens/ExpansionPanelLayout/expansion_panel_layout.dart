@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -10,7 +9,6 @@ import 'package:imin/controllers/on_will_pop_controller.dart';
 import 'package:imin/data/account.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/models/account_model.dart';
-import 'package:imin/views/screens/EntranceProject/upload_personal_screen.dart';
 import 'package:imin/views/widgets/round_button.dart';
 import 'package:imin/views/widgets/round_button_outline.dart';
 import 'package:imin/views/widgets/top_app_bar.dart';
@@ -76,7 +74,6 @@ class ExpansionPanelScreen extends StatelessWidget {
                     TopAppBar(),
                     Expanded(
                       child: controller.currentContent,
-                      // child: UploadPersonalScreen(),
                     ),
                   ],
                 ),
@@ -124,7 +121,7 @@ class ExpansionPanelScreen extends StatelessWidget {
                 RoundButton(
                   title: "ยืนยัน",
                   press: () async {
-                    EasyLoading.show(status: 'loading...');
+                    EasyLoading.show(status: 'กรุณารอสักครู่...');
 
                     var account = AccountModel(
                       id: 1,

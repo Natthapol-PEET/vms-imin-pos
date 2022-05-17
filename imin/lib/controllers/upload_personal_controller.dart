@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:imin/services/register_walkin_service.dart';
 
 class UploadPersonalController extends GetxController {
   var checkHomeNumber = true.obs;
@@ -7,7 +8,15 @@ class UploadPersonalController extends GetxController {
   var homeNumber = "".obs;
   var licensePlate = "".obs;
 
-  checkInput(String fname, String lname, String idCard) {
+  initValue() {
+    checkHomeNumber.value = true;
+    checkLicensePlate.value = true;
+
+    homeNumber.value = "";
+    licensePlate.value = "";
+  }
+
+  checkInput(String fname, String lname, String idCard, String code) {
     // check home number is null
     if (homeNumber.value == "") {
       checkHomeNumber(false);
@@ -29,6 +38,9 @@ class UploadPersonalController extends GetxController {
       print("idCard: $idCard");
       print("checkHomeNumber: $checkHomeNumber");
       print("checkLicensePlate: $checkLicensePlate");
+
+      return registerWalkinApi(
+          fname, lname, idCard, homeNumber.value, code, licensePlate.value);
     }
   }
 }

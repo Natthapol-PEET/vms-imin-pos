@@ -60,36 +60,7 @@ class TakePictureScreen extends StatelessWidget {
                           size: 40,
                           color: Colors.white,
                         ),
-                        onPressed: () async {
-                          try {
-                            // EasyLoading.show(status: 'loading...');
-                            await c.initializeControllerFuture;
-                            final image = await c.controller.takePicture();
-
-                            var response = await uploadPersonal(image.path);
-                            response.stream
-                                .transform(utf8.decoder)
-                                .listen((value) {
-                              try {
-                                Map<String, dynamic> json = jsonDecode(value);
-
-                                if (json['firstname'] != null) {
-                                  c.imagePath.value = image.path;
-                                  c.response.value = json;
-                                } else {
-                                  EasyLoading.showError(json['message']);
-                                }
-                              } catch (e) {
-                                // ระบบมีปัญหา กรุณาลองใหม่อีกครั้งในภายหลัง
-                                alertSystemOnConnectInternet().show(context);
-                              }
-                            });
-
-                            Get.back();
-                          } catch (e) {
-                            print(e);
-                          }
-                        },
+                        onPressed: () async => c.takePicture(),
                       ),
                     ],
                   ),

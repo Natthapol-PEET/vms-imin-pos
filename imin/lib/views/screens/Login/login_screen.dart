@@ -186,7 +186,7 @@ class LoginScreen extends StatelessWidget {
                     RoundButton(
                       title: 'เข้าสู่ระบบ',
                       press: () async {
-                        EasyLoading.show(status: 'loading...');
+                        EasyLoading.show(status: 'กรุณารอสักครู่...');
 
                         bool check = false;
 
@@ -231,7 +231,7 @@ class LoginScreen extends StatelessWidget {
                           Account().updateAccount(account);
 
                           EasyLoading.dismiss();
-                          EasyLoading.showSuccess('Login Success');
+                          EasyLoading.showSuccess('เข้าสู่ระบบสำเร็จ');
                           expandController.setDefaultValues();
 
                           // Timer(Duration(seconds: 1), () {
@@ -244,7 +244,7 @@ class LoginScreen extends StatelessWidget {
                               () => Get.toNamed('/expansion_panel'));
                         } else {
                           EasyLoading.dismiss();
-                          EasyLoading.showError('Invalid Username or Password');
+                          EasyLoading.showError('ข้อมูลผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
                         }
                         // Get.toNamed('/expansion_panel');
                       },

@@ -39,6 +39,8 @@ class Account {
       data.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+
+    await db.close();
   }
 
   Future<void> insertAccount(AccountModel account) async {
@@ -49,6 +51,8 @@ class Account {
       account.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+
+    await db.close();
   }
 
   Future<List<AccountModel>> accounts() async {
@@ -57,6 +61,7 @@ class Account {
     final List<Map<String, dynamic>> maps = await db.query(
       'accounts',
     );
+    await db.close();
 
     return List.generate(maps.length, (i) {
       return AccountModel(
@@ -77,6 +82,8 @@ class Account {
       where: 'id = ?',
       whereArgs: [account.id],
     );
+
+    await db.close();
   }
 
   Future<void> deleteAccount(int id) async {
@@ -87,6 +94,8 @@ class Account {
       where: 'id = ?',
       whereArgs: [id],
     );
+
+    await db.close();
   }
 
   void dropTable() async {
@@ -94,6 +103,7 @@ class Account {
     final db = await getDatabase();
 
     await db.execute(sql);
+    await db.close();
   }
 
   void test() async {

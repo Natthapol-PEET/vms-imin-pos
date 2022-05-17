@@ -50,6 +50,9 @@ class RoundTextFormField extends StatelessWidget {
             ),
             child: TextFormField(
               initialValue: initialValue,
+              // controller: initialValue != ""
+              //     ? (TextEditingController()..text = initialValue as String)
+              //     : null,
               // controller: textController,
               onChanged: onChange,
               obscureText: textTitle != "รหัสผ่าน"

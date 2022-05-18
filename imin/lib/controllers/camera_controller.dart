@@ -38,51 +38,37 @@ class TakePictureController extends GetxController {
     initializeControllerFuture = controller.initialize();
   }
 
+  uploadPersonalApi(XFile image) async {
+    EasyLoading.show(status: 'กรุณารอสักครู่...');
+    var responseApi = await uploadPersonal(image.path);
+    responseApi.stream.transform(utf8.decoder).listen((value) {
+      Map<String, dynamic> json = jsonDecode(value);
+
+      print(json);
+      print(json['fullname']);
+      print(json['fullname'] != null);
+
+      if (json['fullname'] != null) {
+        // imagePath.value = image.path;
+        response.value = json;
+        imageUrl.value = ipServerIminService + '/' + json['code'];
+        EasyLoading.dismiss();
+
+        print(response['fullname']);
+      } else {
+        EasyLoading.showError(json['message']);
+      }
+    });
+  }
+
   Future takePicture() async {
     Get.back();
-    EasyLoading.show(status: 'กรุณารอสักครู่...');
 
     try {
       await initializeControllerFuture;
-      final image = await controller.takePicture();
+      XFile image = await controller.takePicture();
 
-      var responseApi = await uploadPersonal(image.path);
-      responseApi.stream.transform(utf8.decoder).listen((value) {
-        Map<String, dynamic> json = jsonDecode(value);
-
-        print(json);
-        print(json['fullname']);
-        print(json['fullname'] != null);
-
-        if (json['fullname'] != null) {
-          // imagePath.value = image.path;
-          response.value = json;
-          imageUrl.value = ipServerIminService + '/' + json['code'];
-          EasyLoading.dismiss();
-
-          print(response['fullname']);
-        } else {
-          EasyLoading.showError(json['message']);
-        }
-        // try {
-        //   Map<String, dynamic> json = jsonDecode(value);
-
-        //   print(json);
-        //   print(json['fullname']);
-        //   print(json['fullname'] != null);
-
-        //   if (json['fullname'] != null) {
-        //     imagePath.value = image.path;
-        //     response.value = json;
-        //     imageUrl.value = ipServerIminService + '/' + json['code'];
-        //     EasyLoading.dismiss();
-        //   } else {
-        //     EasyLoading.showError(json['message']);
-        //   }
-        // } catch (e) {
-        //   EasyLoading.showError('ระบบมีปัญหา กรุณาลองใหม่อีกครั้งในภายหลัง');
-        // }
-      });
+      uploadPersonalApi(image);
     } catch (e) {
       print(e);
     }

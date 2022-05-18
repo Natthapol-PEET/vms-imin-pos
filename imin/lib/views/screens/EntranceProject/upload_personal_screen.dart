@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:imin/controllers/camera_controller.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/controllers/upload_personal_controller.dart';
@@ -95,6 +96,46 @@ class UploadPersonalScreen extends StatelessWidget {
                                 ? 'ถ่ายภาพ'
                                 : 'ถ่ายภาพใหม่',
                             press: () => Get.toNamed('/camera'),
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Obx(
+                          () => RoundButtonOutline(
+                            title: cameraController.imageUrl.value == ""
+                                ? 'ถ่ายภาพ'
+                                : 'ถ่ายภาพใหม่',
+                            press: () async {
+                              final _imagePicker = ImagePicker();
+
+                              XFile _pickedFile = await _imagePicker.pickImage(
+                                source: ImageSource.camera,
+                                maxHeight: 480,
+                                maxWidth: 640,
+                                // imageQuality: 0-100
+                                imageQuality: 50,
+                              ) as XFile;
+                              // File _imageFilePicked = File(_pickedFile.path);
+                              // print(_imageFilePicked);
+                              cameraController.uploadPersonalApi(_pickedFile);
+                            },
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Obx(
+                          () => RoundButtonOutline(
+                            title: cameraController.imageUrl.value == ""
+                                ? 'อัพโหลดภาพ'
+                                : 'อัพโหลดภาพใหม่',
+                            press: () async {
+                              final _imagePicker = ImagePicker();
+
+                              XFile _pickedFile = await _imagePicker.pickImage(
+                                  source: ImageSource.gallery) as XFile;
+                              // File _imageFilePicked = File(_pickedFile);
+                              // print(_pickedFile);
+
+                              cameraController.uploadPersonalApi(_pickedFile);
+                            },
                           ),
                         ),
                       ],

@@ -164,8 +164,12 @@ class RePasswordController extends GetxController {
 
         return;
       }
-
-      EasyLoading.showError(json['detail']);
+      if (json['detail'] == 'Invalid Old Password') {
+        EasyLoading.showError('รหัสผ่านไม่ถูกต้อง');
+        Get.back();
+      } else {
+        EasyLoading.showError(json['detail']);
+      }
     }
   }
 }

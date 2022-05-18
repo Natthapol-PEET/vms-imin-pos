@@ -21,12 +21,12 @@ class ForgotPasswordController extends GetxController {
   void requestEmail(context) async {
     EasyLoading.show(status: 'loading...');
     var response = await requestRecoveryPasswordApi(emailValue.value);
-    // Map<String, dynamic> json = jsonDecode(response.body);
+    Map<String, dynamic> json = jsonDecode(response.body);
     // print(response.body.detail);
-    // if (response.statusCode == 200 &&
-    //     json['message'] == 'Send link to E-mail Successful') {
-    print('response.statusCode: ${response.statusCode}');
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 &&
+        json['message'] == 'Send link to E-mail Successful') {
+      // print('response.statusCode: ${response.statusCode}');
+      // if (response.statusCode == 200) {
       EasyLoading.dismiss();
       // EasyDialog(
       //   closeButton: false,
@@ -72,13 +72,17 @@ class ForgotPasswordController extends GetxController {
       //     ),
       //   ],
       // ).show(context);
-      EasyLoading.showSuccess('ส่งสำเร็จ(test)');
+      EasyLoading.showSuccess('ส่งสำเร็จ');
       Timer(Duration(seconds: 1), () {
         Get.toNamed('/login');
       });
       return;
     }
-    // EasyLoading.showError(json['detail']);
-    EasyLoading.showError('ads');
+    if (json['detail'] == 'Invalid E-mail Address') {
+      EasyLoading.showError('อีเมลไม่ถูกต้อง');
+    } else {
+      EasyLoading.showError(json['detail']);
+    }
+    // EasyLoading.showError('ads');
   }
 }

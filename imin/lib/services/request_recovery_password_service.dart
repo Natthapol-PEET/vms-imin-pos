@@ -6,7 +6,7 @@ import 'package:imin/models/login_model.dart';
 Future requestRecoveryPasswordApi(String email) async {
   try {
     return await http.post(
-      Uri.parse(ipServer + '/change_password_guard/'),
+      Uri.parse(ipServer + '/guard/recovery'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(
           <String, String>{"email": email, "url": "http://domain.com/"}),

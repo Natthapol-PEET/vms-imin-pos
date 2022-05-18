@@ -130,7 +130,8 @@ class UploadPersonalScreen extends StatelessWidget {
                               final _imagePicker = ImagePicker();
 
                               XFile _pickedFile = await _imagePicker.pickImage(
-                                  source: ImageSource.gallery) as XFile;
+                                source: ImageSource.gallery,
+                              ) as XFile;
                               // File _imageFilePicked = File(_pickedFile);
                               // print(_pickedFile);
 

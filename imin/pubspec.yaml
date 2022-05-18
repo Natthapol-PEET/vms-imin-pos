@@ -67,7 +67,7 @@ dependencies:
   camera: ^0.8.1+1
   path_provider: ^2.0.0
 
-  # get image from 
+  # get image from camera & gallery
   image_picker: ^0.8.0
 
 dev_dependencies:

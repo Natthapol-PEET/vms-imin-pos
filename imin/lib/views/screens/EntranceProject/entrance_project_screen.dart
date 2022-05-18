@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:imin/controllers/entrance_project_controller.dart';
 import 'package:imin/controllers/exit_project_controller.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/helpers/constance.dart';
@@ -14,7 +15,7 @@ class EntranceProjectScreen extends StatefulWidget {
 }
 
 class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
-  final controller = Get.put(ExitProjectController());
+  final controller = Get.put(EntranceProjectController());
 
   @override
   void initState() {
@@ -142,6 +143,9 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
                         ),
                       ),
                     ),
+                    TextButton(
+                        onPressed: () => controller.getDataEntrance(),
+                        child: Text('pulldata')),
                     Row(
                       // mainAxisAlignment: MainAxisAlignment.end,
                       children: [

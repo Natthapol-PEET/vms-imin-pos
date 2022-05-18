@@ -16,19 +16,7 @@ Future changePasswordApi(
       }),
     );
 
-    // print('response.statusCode: ${response.statusCode}');
-    // print('response: ${response.body}');
-
-    // print('username:' + username);
-    // print('oldPassword:' + oldPassword);
-    // print('newPassword:' + newPassword);
-
-    // if (response.statusCode == 200) {
-    //   return LoginModel.fromJson(json.decode(utf8.decode(response.bodyBytes)));
-    // } else {
-    //   return false;
-    return true;
-    // }
+   
   } catch (e) {
     print("e: $e");
     return false;

@@ -8,8 +8,10 @@ Future requestRecoveryPasswordApi(String email) async {
     return await http.post(
       Uri.parse(ipServer + '/guard/recovery'),
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(
-          <String, String>{"email": email, "url": "http://domain.com/"}),
+      body: jsonEncode(<String, String>{
+        "email": email,
+        "url": "http://192.168.1.70:3000/guardhouse/recoverypassword/"
+      }),
     );
 
     // print('response.statusCode: ${response.statusCode}');

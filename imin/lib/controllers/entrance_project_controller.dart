@@ -5,7 +5,7 @@ import 'package:imin/services/get_enteance_project_service.dart';
 
 class EntranceProjectController extends GetxController {
   var dataEntrance = [].obs;
-  
+
   var logg = Get.put(LoginController());
 
   String token = "";
@@ -19,7 +19,7 @@ class EntranceProjectController extends GetxController {
 
   getDataEntrance() async {
     dataEntrance.value = await getEntranceProjectApi(token);
-    print(dataEntrance);
+    print(dataEntrance.value[1].hashCode["home_id"]);
     // print('getData: ${getData}');
     // print('getDataEn');
   }

@@ -16,14 +16,13 @@ class EntranceProjectScreen extends StatefulWidget {
 }
 
 class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
-
   final controller = Get.put(EntranceProjectController());
   final uploadController = Get.put(UploadPersonalController());
-  final List<Map<String, String>> _data =
-  [
+  final List<Map<String, String>> _data = [
     {'Country': 'China', 'Population': '1400'},
     {'Country': 'India', 'Population': '1360'},
   ];
+  // final List _data = Get.put(EntranceProjectController()).dataEntrance;
   late List<String> _columnNames;
 
   void _addColumn(String newColumn) {
@@ -61,7 +60,6 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
       _data.add(newRow);
     });
   }
-
 
   @override
   void initState() {
@@ -244,46 +242,57 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
                 child: Theme(
                   data: Theme.of(context)
                       .copyWith(dividerColor: dividerTableColor),
-                  child:
-                      // DataTable(
-                      //   dividerThickness: 0.5,
-                      //   columnSpacing: 40,
-                      //   headingRowColor: MaterialStateColor.resolveWith(
-                      //       (states) => purpleBlueColor),
-                      //   columns: _createColumns(),
-                      //   rows: _createRows(),
-                      // ),
-                      //
-                      DataTable(
+                  child: DataTable(
                     dividerThickness: 0.5,
                     columnSpacing: 40,
                     headingRowColor: MaterialStateColor.resolveWith(
                         (states) => purpleBlueColor),
-                    columns: _columnNames.map((columnName) {
-                      return DataColumn(
-                        label: Text(
-                          columnName,
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black),
-                        ),
-                      );
-                    }).toList(),
-                    rows: _data.map((row) {
-                      return DataRow(
-                          cells: row.values.map((cellValue) {
-                        return DataCell(
-                          Text(
-                            cellValue,
-                            style: TextStyle(
-                              color: Colors.black,
-                            ),
-                          ),
-                        );
-                      }).toList());
-                    }).toList(),
+                    columns: _createColumns(),
+                    ///////////////////////////
+                    // rows: controller.dataEntrance
+                    //     .map(
+                    //       (entry) => DataRow(
+                    //         cells: [
+                    //           DataCell(Text(entry.tt)),
+                    //           DataCell(Text(entry.ee)),
+                    //         ],
+                    //       ),
+                    //     )
+                    //     .toList(),
+                    ////////////////////
+                    rows: _createRows(),
                   ),
+                  //
+                  //     DataTable(
+                  //   dividerThickness: 0.5,
+                  //   columnSpacing: 40,
+                  //   headingRowColor: MaterialStateColor.resolveWith(
+                  //       (states) => purpleBlueColor),
+                  //   columns: _columnNames.map((columnName) {
+                  //     return DataColumn(
+                  //       label: Text(
+                  //         columnName,
+                  //         style: TextStyle(
+                  //             fontSize: 18,
+                  //             fontWeight: FontWeight.w600,
+                  //             color: Colors.black),
+                  //       ),
+                  //     );
+                  //   }).toList(),
+                  //   rows: _data.map((row) {
+                  //     return DataRow(
+                  //         cells: row.values.map((cellValue) {
+                  //       return DataCell(
+                  //         Text(
+                  //           cellValue,
+                  //           style: TextStyle(
+                  //             color: Colors.black,
+                  //           ),
+                  //         ),
+                  //       );
+                  //     }).toList());
+                  //   }).toList(),
+                  // ),
                   //
                   //     DataTable(
                   //   columns: _columnNames.map((columnName) {

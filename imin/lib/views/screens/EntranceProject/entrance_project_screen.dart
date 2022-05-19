@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:imin/controllers/entrance_project_controller.dart';
 import 'package:imin/controllers/exit_project_controller.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/controllers/upload_personal_controller.dart';
@@ -15,11 +16,56 @@ class EntranceProjectScreen extends StatefulWidget {
 }
 
 class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
-  final controller = Get.put(ExitProjectController());
+
+  final controller = Get.put(EntranceProjectController());
   final uploadController = Get.put(UploadPersonalController());
+  final List<Map<String, String>> _data =
+  [
+    {'Country': 'China', 'Population': '1400'},
+    {'Country': 'India', 'Population': '1360'},
+  ];
+  late List<String> _columnNames;
+
+  void _addColumn(String newColumn) {
+    if (_columnNames.contains(newColumn)) {
+      return;
+    }
+    setState(() {
+      for (var i = 0; i <= _data.length - 1; i++) {
+        _data[i][newColumn] = '';
+      }
+      _columnNames.add(newColumn);
+    });
+  }
+
+  void _removeColumn(String oldColumn) {
+    if (_columnNames.length == 1 || !_columnNames.contains(oldColumn)) {
+      return;
+    }
+    setState(() {
+      for (var i = 0; i <= _data.length - 1; i++) {
+        _data[i].remove(oldColumn);
+      }
+      _columnNames.remove(oldColumn);
+    });
+  }
+
+  void _addRow(Map<String, String> newRow) {
+    _columnNames.forEach((colName) {
+      if (!newRow.containsKey(colName)) {
+        newRow[colName] = '';
+      }
+    });
+
+    setState(() {
+      _data.add(newRow);
+    });
+  }
+
 
   @override
   void initState() {
+    _columnNames = _data[0].keys.toList();
     super.initState();
   }
 
@@ -144,6 +190,9 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
                         ),
                       ),
                     ),
+                    TextButton(
+                        onPressed: () => controller.getDataEntrance(),
+                        child: Text('pulldata')),
                     Row(
                       // mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -195,14 +244,74 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
                 child: Theme(
                   data: Theme.of(context)
                       .copyWith(dividerColor: dividerTableColor),
-                  child: DataTable(
+                  child:
+                      // DataTable(
+                      //   dividerThickness: 0.5,
+                      //   columnSpacing: 40,
+                      //   headingRowColor: MaterialStateColor.resolveWith(
+                      //       (states) => purpleBlueColor),
+                      //   columns: _createColumns(),
+                      //   rows: _createRows(),
+                      // ),
+                      //
+                      DataTable(
                     dividerThickness: 0.5,
                     columnSpacing: 40,
                     headingRowColor: MaterialStateColor.resolveWith(
                         (states) => purpleBlueColor),
-                    columns: _createColumns(),
-                    rows: _createRows(),
+                    columns: _columnNames.map((columnName) {
+                      return DataColumn(
+                        label: Text(
+                          columnName,
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black),
+                        ),
+                      );
+                    }).toList(),
+                    rows: _data.map((row) {
+                      return DataRow(
+                          cells: row.values.map((cellValue) {
+                        return DataCell(
+                          Text(
+                            cellValue,
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
+                        );
+                      }).toList());
+                    }).toList(),
                   ),
+                  //
+                  //     DataTable(
+                  //   columns: _columnNames.map((columnName) {
+                  //     return DataColumn(
+                  //       label: Text(
+                  //         columnName,
+                  //         style: TextStyle(
+                  //           fontSize: 18,
+                  //           fontWeight: FontWeight.w600,
+                  //         ),
+                  //       ),
+                  //     );
+                  //   }).toList(),
+                  //   rows: _data.map((row) {
+                  //     return DataRow(
+                  //         cells: row.values.map((cellValue) {
+                  //       return DataCell(
+                  //         Text(
+                  //           cellValue,
+                  //           style: TextStyle(
+                  //             color: Colors.white,
+                  //           ),
+                  //         ),
+                  //       );
+                  //     }).toList());
+                  //   }).toList(),
+                  // ),
+                  //
                 ),
               ),
             ],

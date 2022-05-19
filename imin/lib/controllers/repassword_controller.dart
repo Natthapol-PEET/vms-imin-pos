@@ -1,6 +1,13 @@
+import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:imin/controllers/login_controller.dart';
+import 'package:imin/data/account.dart';
+import 'package:imin/models/account_model.dart';
+import 'package:imin/services/change_password_service.dart';
 
 class RePasswordController extends GetxController {
   var isVisibilityOld = false.obs;
@@ -13,8 +20,7 @@ class RePasswordController extends GetxController {
   var checkMatchPassword = true.obs;
   var checkValidatePassword = false.obs;
 
-// var warningText = (String).obs;
-
+  var check = CheckPasswordSecret(text: '', color: Colors.white, lenght: 0).obs;
   var checkList = [
     CheckPasswordSecret(text: '', color: Colors.white, lenght: 0), // non secret
     CheckPasswordSecret(text: 'อ่อน', color: Colors.red, lenght: 1), // 1
@@ -23,7 +29,20 @@ class RePasswordController extends GetxController {
         text: 'เยี่ยม', color: Colors.green, lenght: 3), // 3 secret
   ];
 
-  var check = CheckPasswordSecret(text: '', color: Colors.white, lenght: 0).obs;
+  clear() {
+    isVisibilityOld.value = false;
+    isVisibilityNew.value = false;
+    isVisibilityReNew.value = false;
+    warningText.value = CheckWarning(text: '');
+    oldPasswordValue.value = '';
+    newPasswordValue.value = '';
+    confirmNewPasswordValue.value = '';
+    checkMatchPassword.value = true;
+    checkValidatePassword.value = false;
+    check.value = CheckPasswordSecret(text: '', color: Colors.white, lenght: 0);
+  }
+
+// var warningText = (String).obs;
 
   // @override
   // void onInit() {
@@ -112,11 +131,45 @@ class RePasswordController extends GetxController {
     }
   }
 
-  void resetPassword() {
+  void resetPassword(String username) async {
+    EasyLoading.show(status: 'loading...');
+
     // print('oldPass:' + oldPasswordValue.value);
     // print('newPass:' + newPasswordValue.value);
     if (checkValidatePassword.value == true) {
-      print('success');
+      print('username: $username');
+      var response = await changePasswordApi(
+          username, oldPasswordValue.value, newPasswordValue.value);
+      // print('success: ${checkChangePassword}');
+
+      Map<String, dynamic> json = jsonDecode(response.body);
+
+      print('json: $json');
+
+      if (response.statusCode == 200) {
+        final loginController = Get.put(LoginController());
+
+        var account = AccountModel(
+          id: 1,
+          username: loginController.username.value,
+          password: loginController.password.value,
+          isLogin: 0,
+        );
+        await Account().updateAccount(account);
+
+        Timer(Duration(seconds: 1), () {
+          EasyLoading.dismiss();
+          Get.toNamed('/login');
+        });
+
+        return;
+      }
+      if (json['detail'] == 'Invalid Old Password') {
+        EasyLoading.showError('รหัสผ่านไม่ถูกต้อง');
+        Get.back();
+      } else {
+        EasyLoading.showError(json['detail']);
+      }
     }
   }
 }

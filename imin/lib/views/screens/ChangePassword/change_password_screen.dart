@@ -1,8 +1,12 @@
+import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:imin/controllers/expansion_panel_controller.dart';
+import 'package:imin/controllers/login_controller.dart';
 import 'package:imin/controllers/on_will_pop_controller.dart';
 import 'package:imin/controllers/repassword_controller.dart';
 import 'package:imin/helpers/constance.dart';
+import 'package:imin/views/widgets/round_button.dart';
 import 'package:imin/views/widgets/round_button_outline.dart';
 import 'package:imin/views/widgets/round_button_repassword.dart';
 import 'package:imin/views/widgets/round_text_form_password.dart';
@@ -15,6 +19,7 @@ class ChangePasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    final _formKey = GlobalKey<FormState>();
     // Dialog Exit App
     onWillPopController.context = context;
     return SingleChildScrollView(
@@ -145,12 +150,15 @@ class ChangePasswordScreen extends StatelessWidget {
                   () => Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      RoundButtonRePassword(
-                        title: 'บันทึก',
-                        press: () => controller.resetPassword(),
-                        checkValidate: controller.checkValidatePassword.value,
-                        // () async => saveInfomationStatus(context, size),
-                      ),
+                      // RoundButtonRePassword(
+                      //   title: 'บันทึก',
+                      //   // press: () =>
+                      //   //     logout(size, context), //controller.resetPassword(),
+                      //   press: () => logout(size, context),
+                      //   checkValidate: controller.checkValidatePassword.value,
+                      //   // () async => saveInfomationStatus(context, size),
+                      // ),
+                      ResetPassword(size, context),
                     ],
                   ),
                 ),
@@ -176,4 +184,71 @@ class ChangePasswordScreen extends StatelessWidget {
       ),
     );
   }
+
+  Row ResetPassword(Size size, BuildContext context) {
+    return Row(
+      children: [
+        RoundButtonRePassword(
+          title: 'บันทึก',
+          // press: () =>
+          //     logout(size, context), //controller.resetPassword(),
+          press: () {
+            EasyDialog(
+              closeButton: false,
+              height: 200,
+              width: 590,
+              contentList: [
+                // title
+                Text(
+                  "ยืนยันการเปลี่ยนรหัสผ่าน",
+                  style: TextStyle(
+                    fontFamily: fontRegular,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Divider(
+                  color: dividerColor,
+                  thickness: 1,
+                ),
+                SizedBox(height: 20),
+                Text(
+                  "เมื่อคุณยืนยันการเปลี่ยนรหัสผ่านแล้วให้ทำการล็อคอินเข้าระบบใหม่",
+                  style: TextStyle(
+                    fontFamily: fontRegular,
+                    fontSize: 20,
+                  ),
+                ),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    RoundButton(
+                      title: "ยืนยัน",
+                      press: () {
+                        final loginController = Get.put(LoginController());
+                        
+                        controller.resetPassword(loginController.username.value);
+
+                      },
+                    ),
+                    SizedBox(width: 20),
+                    RoundButtonOutline(
+                      title: "ยกเลิก",
+                      press: () => Get.back(),
+                    ),
+                  ],
+                ),
+              ],
+            ).show(context);
+          },
+          checkValidate: controller.checkValidatePassword.value,
+          // () async => saveInfomationStatus(context, size),
+        ),
+      ],
+    );
+    
+  }
+
+  
 }

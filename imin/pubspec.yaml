@@ -59,7 +59,7 @@ dependencies:
   easy_dialog: ^1.1.0
 
   # calendar selector
-  syncfusion_flutter_datepicker: ^20.1.52
+  syncfusion_flutter_datepicker: 20.1.52
   syncfusion_localizations: 20.1.52
   flutter_rounded_date_picker: 1.0.4
 

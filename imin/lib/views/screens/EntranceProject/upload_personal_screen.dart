@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
@@ -287,6 +288,7 @@ class NextInput extends StatelessWidget {
                 TextInputAddVisitor(
                   title: 'บ้านเลขที่',
                   hintText: 'กรุณาพิมพ์บ้านเลขที่',
+                  initValue: uploadPersonalController.homeNumber.value,
                   onChanged: (v) =>
                       uploadPersonalController.homeNumber.value = v,
                 ),
@@ -328,9 +330,8 @@ class NextInput extends StatelessWidget {
                 TextInputAddVisitor(
                   title: 'เลขทะเบียนรถ',
                   hintText: 'กรุณาพิมพ์เลขทะเบียนรถ',
-                  onChanged: (v) {
-                    uploadPersonalController.licensePlate.value = v;
-                  },
+                  initValue: uploadPersonalController.licensePlate.value ,
+                  onChanged: (v) => uploadPersonalController.licensePlate.value = v,
                 ),
                 Obx(
                   () => uploadPersonalController.checkLicensePlate.value
@@ -363,87 +364,103 @@ class NextInput extends StatelessWidget {
                         vertical: size.height * 0.015,
                         title: 'บันทึก',
                         press: () async {
-                          EasyDialog(
-                            width: 400,
-                            height: size.height * 0.5,
-                            contentListAlignment: CrossAxisAlignment.start,
-                            closeButton: false,
-                            // title: Text("เพิ่มผู้เข้าโครงการ"),
-                            // description: Text("This is a basic dialog"),
-                            contentList: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'เพิ่มผู้เข้าโครงการ',
-                                    style: TextStyle(
-                                      fontFamily: fontRegular,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  TextButton(
-                                    onPressed: () => Get.back(),
-                                    child: Icon(
-                                      Icons.close,
-                                      color: textColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              // SizedBox(height: size.height * 0.01),
-                              Divider(
-                                color: dividerTableColor,
-                                thickness: 2,
-                              ),
-                              SizedBox(height: size.height * 0.01),
-                              Text(
-                                'พิมพ์ใบเสร็จให้กับผู้ที่ต้องการเข้ามาในโครงการ',
-                                style: TextStyle(
-                                  fontFamily: fontRegular,
-                                  fontSize: 18,
-                                ),
-                              ),
-                              SizedBox(height: size.height * 0.03),
-                              Center(
-                                child: Image.asset(
-                                  'assets/images/printer.png',
-                                  scale: 2,
-                                ),
-                              ),
-                              SizedBox(height: size.height * 0.03),
-                              Center(
-                                child: RoundButton(
-                                  title: 'พิมพ์',
-                                  press: () {},
-                                ),
-                              ),
-                            ],
-                          ).show(context);
+                          EasyLoading.show(status: 'กรุณารอสักครู่ ...');
 
-                          // EasyLoading.show(status: 'กรุณารอสักครู่ ...');
+                          var response = await c.checkInput(
+                              code, loginController.dataProfile.guardId);
+                          EasyLoading.dismiss();
 
-                          // int statusCode = await c.checkInput(
-                          //     code, loginController.dataProfile.guardId);
-                          // EasyLoading.dismiss();
+                          if (response.statusCode == 201) {
+                            EasyLoading.showSuccess(
+                                'บันทึกข้อมูลเรียบร้อยแล้ว');
 
-                          // if (statusCode == 201) {
-                          //   EasyLoading.showSuccess(
-                          //       'บันทึกข้อมูลเรียบร้อยแล้ว');
+                            dialogPrinter(size).show(context);
+                          } else {
+                            String text = jsonDecode(response.body)['detail'];
 
-                          //   EasyDialog(
-                          //     title: Text("Basic Easy Dialog Title"),
-                          //     description: Text("This is a basic dialog"),
-                          //     contentList: [],
-                          //   ).show(context);
-                          // }
+                            EasyLoading.showInfo(text == 'Invalid Home'
+                                ? 'ไม่มีข้อมูลบ้านเลขที่นี้'
+                                : text);
+                          }
                         }),
                   ),
                   SizedBox(width: size.width * 0.055),
                 ],
               ),
             ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  EasyDialog dialogPrinter(Size size) {
+    return EasyDialog(
+      width: 400,
+      height: size.height * 0.6,
+      contentListAlignment: CrossAxisAlignment.start,
+      closeButton: false,
+      // title: Text("เพิ่มผู้เข้าโครงการ"),
+      // description: Text("This is a basic dialog"),
+      contentList: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'เพิ่มผู้เข้าโครงการ',
+              style: TextStyle(
+                fontFamily: fontRegular,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            TextButton(
+              onPressed: () => Get.back(),
+              child: Icon(
+                Icons.close,
+                color: textColor,
+              ),
+            ),
+          ],
+        ),
+        // SizedBox(height: size.height * 0.01),
+        Divider(
+          color: dividerTableColor,
+          thickness: 2,
+        ),
+        SizedBox(height: size.height * 0.01),
+        Text(
+          'พิมพ์ใบเสร็จให้กับผู้ที่ต้องการเข้ามาในโครงการ',
+          style: TextStyle(
+            fontFamily: fontRegular,
+            fontSize: 18,
+          ),
+        ),
+        SizedBox(height: size.height * 0.03),
+        Center(
+          child: Image.asset(
+            'assets/images/printer.png',
+            scale: 2,
+          ),
+        ),
+        SizedBox(height: size.height * 0.03),
+        Center(
+          child: RoundButton(
+            title: 'พิมพ์',
+            press: () {},
+          ),
+        ),
+        SizedBox(height: size.height * 0.01),
+        Center(
+          child: GetBuilder<ExpansionPanelController>(
+            builder: (c) => RoundButtonOutline(
+              title: 'กลับสู่หน้าหลัก',
+              press: () {
+                Get.back();
+                c.currentContent = EntranceProjectScreen();
+                c.update(['aopbmsbbffdgkb']);
+              },
+            ),
           ),
         ),
       ],

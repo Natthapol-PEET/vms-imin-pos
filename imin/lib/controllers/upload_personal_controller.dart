@@ -51,16 +51,16 @@ class UploadPersonalController extends GetxController {
     }
 
     // check license plate is null
-    if (licensePlate.value == "") {
-      checkLicensePlate(false);
-    } else {
-      checkLicensePlate(true);
-    }
+    // if (licensePlate.value == "") {
+    //   checkLicensePlate(false);
+    // } else {
+    //   checkLicensePlate(true);
+    // }
 
     print("code: $code");
 
     // call api
-    if (checkHomeNumber.value && checkLicensePlate.value) {
+    if (checkHomeNumber.value) {
       print("checkHomeNumber: $checkHomeNumber");
       print("checkLicensePlate: $checkLicensePlate");
 

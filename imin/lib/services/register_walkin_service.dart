@@ -18,7 +18,7 @@ Future registerWalkinApi(String code, String homeNumber, String licensePlate,
 
     print('response.statusCode: ${response.statusCode}');
 
-    return response.statusCode;
+    return response;
 
     if (response.statusCode == 200) {
       // return LoginModel.fromJson(json.decode(utf8.decode(response.bodyBytes)));

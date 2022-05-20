@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/controllers/login_controller.dart';
 import 'package:imin/controllers/on_will_pop_controller.dart';
+import 'package:imin/controllers/upload_personal_controller.dart';
 import 'package:imin/data/account.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/models/account_model.dart';

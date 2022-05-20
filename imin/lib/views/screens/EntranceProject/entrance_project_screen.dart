@@ -1,5 +1,7 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:imin/controllers/camera_controller.dart';
 import 'package:imin/controllers/entrance_project_controller.dart';
 import 'package:imin/controllers/exit_project_controller.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
@@ -19,6 +21,9 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
 
   final controller = Get.put(EntranceProjectController());
   final uploadController = Get.put(UploadPersonalController());
+  final cameraController = Get.put(TakePictureController());
+
+
   final List<Map<String, String>> _data =
   [
     {'Country': 'China', 'Population': '1400'},
@@ -207,6 +212,7 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
                             ),
                             onPressed: () {
                               uploadController.initValue();
+                              cameraController.clear();
                               c.currentContent = UploadPersonalScreen();
                               c.update(['aopbmsbbffdgkb']);
                             },

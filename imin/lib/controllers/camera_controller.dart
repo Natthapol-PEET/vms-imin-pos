@@ -15,11 +15,17 @@ class TakePictureController extends GetxController {
   var response = Map<String, dynamic>().obs;
   var imageUrl = "".obs;
 
+  clear() {
+    imagePath.value = "";
+    imageUrl.value = "";
+    response.value = {
+      "code": "",
+    };
+  }
+
   @override
   void onInit() {
     response.value = {
-      "fullname": "",
-      "idCard": "",
       "code": "",
     };
 
@@ -38,37 +44,31 @@ class TakePictureController extends GetxController {
     initializeControllerFuture = controller.initialize();
   }
 
-  uploadPersonalApi(XFile image) async {
+  uploadPersonalApi(XFile image, String classCard) async {
     EasyLoading.show(status: 'กรุณารอสักครู่...');
-    var responseApi = await uploadPersonal(image.path);
+    var responseApi = await uploadPersonal(image.path, classCard);
     responseApi.stream.transform(utf8.decoder).listen((value) {
       Map<String, dynamic> json = jsonDecode(value);
 
-      print(json);
-      print(json['fullname']);
-      print(json['fullname'] != null);
-
-      if (json['fullname'] != null) {
+      if (json['code'] != null) {
         // imagePath.value = image.path;
         response.value = json;
         imageUrl.value = ipServerIminService + '/' + json['code'];
         EasyLoading.dismiss();
-
-        print(response['fullname']);
       } else {
         EasyLoading.showError(json['message']);
       }
     });
   }
 
-  Future takePicture() async {
+  Future takePicture(String cardClass) async {
     Get.back();
 
     try {
       await initializeControllerFuture;
       XFile image = await controller.takePicture();
 
-      uploadPersonalApi(image);
+      uploadPersonalApi(image, cardClass);
     } catch (e) {
       print(e);
     }

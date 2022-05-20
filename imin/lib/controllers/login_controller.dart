@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
@@ -8,6 +7,7 @@ import 'package:imin/models/account_model.dart';
 import 'package:imin/models/login_model.dart';
 import 'package:imin/services/login_service.dart';
 import 'package:imin/views/widgets/not_connect_internet.dart';
+
 
 class LoginController extends GetxController {
   var isVisibility = false.obs;

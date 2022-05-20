@@ -4,8 +4,6 @@ import 'package:imin/helpers/configs.dart';
 import 'package:imin/models/login_model.dart';
 
 Future loginApi(String user, String password) async {
-  print("loginApi");
-
   try {
     final response = await http.post(
       Uri.parse(ipServer + '/login_guard/'),

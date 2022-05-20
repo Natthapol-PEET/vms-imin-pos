@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:imin/helpers/configs.dart';
 
-Future uploadPersonal(String filename) async {
+Future uploadPersonal(String filename, String classCard) async {
   var uri = ipServerIminService + '/decode_image';
   // String uri = "http://192.168.1.5:8000/image_ocr_api/upload";
   var request = new http.MultipartRequest("POST", Uri.parse(uri));
@@ -12,7 +12,8 @@ Future uploadPersonal(String filename) async {
       'image',
       File(filename).readAsBytes().asStream(),
       File(filename).lengthSync(),
-      filename: filename.split("/").last,
+      // filename: filename.split("/").last,
+      filename: classCard,
     ),
   );
 

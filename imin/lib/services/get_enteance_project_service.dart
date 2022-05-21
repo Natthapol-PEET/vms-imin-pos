@@ -78,7 +78,17 @@ Future getEntranceProjectApi(String token) async {
     // for (var d in data) {
     //   print(d.runtimeType);
     // }
-
+    List<dynamic> values = <dynamic>[];
+    values = dataAll;
+    if (values.length > 0) {
+      for (int i = 0; i < values.length; i++) {
+        if (values[i] != null) {
+          Map<String, dynamic> map = values[i];
+          // _postList .add(Post.fromJson(map));
+          // print('Id-------${map['home_id']}');
+        }
+      }
+    }
     return dataAll;
   } catch (e) {
     print("e: $e");

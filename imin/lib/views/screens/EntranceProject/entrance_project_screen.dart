@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:imin/controllers/entrance_project_controller.dart';
@@ -18,6 +20,7 @@ class EntranceProjectScreen extends StatefulWidget {
 class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
   final controller = Get.put(EntranceProjectController());
   final uploadController = Get.put(UploadPersonalController());
+  List<dynamic> values = <dynamic>[];
   final List<Map<String, String>> _data = [
     {'Country': 'China', 'Population': '1400'},
     {'Country': 'India', 'Population': '1360'},
@@ -249,18 +252,65 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
                         (states) => purpleBlueColor),
                     columns: _createColumns(),
                     ///////////////////////////
-                    // rows: controller.dataEntrance
-                    //     .map(
-                    //       (entry) => DataRow(
-                    //         cells: [
-                    //           DataCell(Text(entry.tt)),
-                    //           DataCell(Text(entry.ee)),
-                    //         ],
-                    //       ),
-                    //     )
-                    //     .toList(),
+                    rows: controller.dataEntrance
+                        .map(
+                          (entry) => DataRow(
+                            cells: [
+                              // DataCell(Text('asd')),
+                              // DataCell(Text('asd')),
+                              // DataCell(Text('asd')),
+                              // DataCell(Text('asd')),
+                              // DataCell(Text('asd')),
+                              // DataCell(Text('asd')),
+                              // DataCell(Text('asd')),
+                              DataCell(Text(entry['id_card'] != null &&
+                                      entry['id_card'] != ""
+                                  ? '${entry['id_card']}'
+                                  : '-')),
+                              DataCell(
+                                  // Text('${entry['license_plate'] ?? "-"}')),
+                                  Text(entry['license_plate'] != null
+                                      ? '${entry['license_plate']}'
+                                      : '-')),
+                              DataCell(Text(
+                                  '${entry['firstname'] ?? "-"} ${entry['lastname'] ?? ""}')),
+                              DataCell(Text('${entry['home_number'] ?? "-"}')),
+                              DataCell(Text(entry['visitor_id'] != null
+                                  ? 'นัดหมายเข้าโครงการ'
+                                  : entry['whitelist_id'] != null
+                                      ? 'รับเชิญพิเศษ'
+                                      : 'ไม่มีสิทธิ์เข้าโครงการ')),
+                              DataCell(Text((entry['visitor_id'] != null)
+                                  ? entry['invite_date']
+                                  : (entry['whitelist_id'] != null)
+                                      ? '-'
+                                      : '-')),
+                              DataCell(Text((entry['visitor_id'] != null)
+                                  ? (entry['datetime_in'] != null)
+                                      ? (entry['datetime_out'] != null)
+                                          ? 'ออกจากโครงการ'
+                                          : 'อยู่ในโครงการ'
+                                      : 'รอดำเนินการ'
+                                  : (entry['whitelist_id'] != null)
+                                      ? (entry['datetime_in'] != null)
+                                          ? (entry['datetime_out'] != null)
+                                              ? 'รอดำเนินการ'
+                                              : 'อยู่ในโครงการ'
+                                          : 'รอดำเนินการ'
+                                      : '-')),
+                              //                         'เลขประจำตัวประชาชน',
+                              // 'เลขทะเบียนรถ',
+                              // 'ชื่อ - นามสกุล',
+                              // 'บ้านเลขที่',
+                              // 'ระดับ',
+                              // 'วันที่นัดหมาย',
+                              // 'สถานะ',
+                            ],
+                          ),
+                        )
+                        .toList(),
                     ////////////////////
-                    rows: _createRows(),
+                    // rows: _createRows(),
                   ),
                   //
                   //     DataTable(

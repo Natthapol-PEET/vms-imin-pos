@@ -15,6 +15,7 @@ class WhitelistModel {
   String residentStamp;
   String datetimeOut;
   String? adminStamp;
+  String listStatus;
 
   WhitelistModel({
     required this.whitelistId,
@@ -33,6 +34,7 @@ class WhitelistModel {
     required this.residentStamp,
     required this.datetimeOut,
     required this.adminStamp,
+    required this.listStatus,
   });
 
   factory WhitelistModel.fromJson(dynamic json) {
@@ -53,6 +55,7 @@ class WhitelistModel {
       residentStamp: json['resident_stamp'],
       datetimeOut: json['datetime_out'],
       adminStamp: null,
+      listStatus: 'whitelist',
     );
   }
 }

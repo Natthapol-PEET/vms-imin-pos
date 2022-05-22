@@ -1,5 +1,5 @@
-class VisitorModel {
-  int visitorId;
+class BlacklistModel {
+  int blacklistId;
   int homeId;
   String homeNumber;
   String role;
@@ -8,17 +8,14 @@ class VisitorModel {
   String lastname;
   String licensePlate;
   String idCard;
-  String inviteDate;
-  String qrGenId;
   int logId;
   String datetimeIn;
   String residentStamp;
   String datetimeOut;
-  String? adminStamp;
   String listStatus;
 
-  VisitorModel({
-    required this.visitorId,
+  BlacklistModel({
+    required this.blacklistId,
     required this.homeId,
     required this.homeNumber,
     required this.role,
@@ -27,19 +24,16 @@ class VisitorModel {
     required this.lastname,
     required this.licensePlate,
     required this.idCard,
-    required this.inviteDate,
-    required this.qrGenId,
     required this.logId,
     required this.datetimeIn,
     required this.residentStamp,
     required this.datetimeOut,
-    this.adminStamp,
     required this.listStatus,
   });
 
-  factory VisitorModel.fromJson(dynamic json) {
-    return VisitorModel(
-      visitorId: json['visitor_id'],
+  factory BlacklistModel.fromJson(dynamic json) {
+    return BlacklistModel(
+      blacklistId: json['blacklist_id'],
       homeId: json['home_id'],
       homeNumber: json['home_number'],
       role: json['class'],
@@ -48,14 +42,11 @@ class VisitorModel {
       lastname: json['lastname'],
       licensePlate: json['license_plate'],
       idCard: json['id_card'],
-      inviteDate: json['invite_date'],
-      qrGenId: json['qr_gen_id'],
       logId: json['log_id'],
       datetimeIn: json['datetime_in'],
       residentStamp: json['resident_stamp'],
       datetimeOut: json['datetime_out'],
-      adminStamp: null,
-      listStatus: 'visitor',
+      listStatus: 'blacklist',
     );
   }
 }

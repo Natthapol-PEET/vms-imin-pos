@@ -43,7 +43,7 @@ Future getEntranceProjectApi(String token) async {
     }
 
     decodeFunc2(v) {
-      return utf8.decode(v);
+      return json.decode(utf8.decode(v));
     }
 
     var list1 = response.body;
@@ -61,35 +61,25 @@ Future getEntranceProjectApi(String token) async {
         dataAll.add(i);
       }
     }
-    // print(dataAll[0]);
-
-    // var responseAll = new List<String>.from(json.decode(list1))
-    //   ..addAll(
-    //     json.decode(list2),
-    //   )
-    //   ..addAll(json.decode(list3));
-    // for (var item in responseAll) {
-    //   print(item);
+    //////////
+    var dataAll2 = json.decode(utf8.decode(response.bodyBytes));
+    var listData2 = json.decode(utf8.decode(responseWhitelist.bodyBytes));
+    var listData3 = json.decode(utf8.decode(responseBlacklist.bodyBytes));
+    dataAll2.add(listData2);
+    dataAll2.add(listData3);
+    // print(dataAll2);
+    // List<dynamic> values = <dynamic>[];
+    // values = dataAll;
+    // if (values.length > 0) {
+    //   for (int i = 0; i < values.length; i++) {
+    //     if (values[i] != null) {
+    //       Map<String, dynamic> map = values[i];
+    //       // _postList .add(Post.fromJson(map));
+    //       // print('Id-------${map['home_id']}');
+    //     }
+    //   }
     // }
-    // var data = json.decode(responseAll);
-
-    // print('responseAll[1]: ${resAll[1]}');
-
-    // for (var d in data) {
-    //   print(d.runtimeType);
-    // }
-    List<dynamic> values = <dynamic>[];
-    values = dataAll;
-    if (values.length > 0) {
-      for (int i = 0; i < values.length; i++) {
-        if (values[i] != null) {
-          Map<String, dynamic> map = values[i];
-          // _postList .add(Post.fromJson(map));
-          // print('Id-------${map['home_id']}');
-        }
-      }
-    }
-    return dataAll;
+    return dataAll2;
   } catch (e) {
     print("e: $e");
     return false;

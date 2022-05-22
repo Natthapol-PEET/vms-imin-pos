@@ -1,5 +1,7 @@
-class VisitorModel {
-  int visitorId;
+class EntranceListAllModel {
+  int? visitorId;
+  int? whitelistId;
+  int? blacklistId;
   int homeId;
   String homeNumber;
   String role;
@@ -8,6 +10,7 @@ class VisitorModel {
   String lastname;
   String licensePlate;
   String idCard;
+  String email;
   String inviteDate;
   String qrGenId;
   int logId;
@@ -15,10 +18,11 @@ class VisitorModel {
   String residentStamp;
   String datetimeOut;
   String? adminStamp;
-  String listStatus;
 
-  VisitorModel({
-    required this.visitorId,
+  EntranceListAllModel({
+    this.visitorId,
+    this.whitelistId,
+    this.blacklistId,
     required this.homeId,
     required this.homeNumber,
     required this.role,
@@ -27,6 +31,7 @@ class VisitorModel {
     required this.lastname,
     required this.licensePlate,
     required this.idCard,
+    required this.email,
     required this.inviteDate,
     required this.qrGenId,
     required this.logId,
@@ -34,12 +39,13 @@ class VisitorModel {
     required this.residentStamp,
     required this.datetimeOut,
     this.adminStamp,
-    required this.listStatus,
   });
 
-  factory VisitorModel.fromJson(dynamic json) {
-    return VisitorModel(
+  factory EntranceListAllModel.fromJson(dynamic json) {
+    return EntranceListAllModel(
       visitorId: json['visitor_id'],
+      whitelistId: json['whitelist_id'],
+      blacklistId: json['blacklist_id'],
       homeId: json['home_id'],
       homeNumber: json['home_number'],
       role: json['class'],
@@ -48,6 +54,7 @@ class VisitorModel {
       lastname: json['lastname'],
       licensePlate: json['license_plate'],
       idCard: json['id_card'],
+      email: json['email'],
       inviteDate: json['invite_date'],
       qrGenId: json['qr_gen_id'],
       logId: json['log_id'],
@@ -55,7 +62,6 @@ class VisitorModel {
       residentStamp: json['resident_stamp'],
       datetimeOut: json['datetime_out'],
       adminStamp: null,
-      listStatus: 'visitor',
     );
   }
 }

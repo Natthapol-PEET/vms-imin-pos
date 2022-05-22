@@ -20,6 +20,11 @@ class EntranceProjectScreen extends StatefulWidget {
 class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
   final controller = Get.put(EntranceProjectController());
   final uploadController = Get.put(UploadPersonalController());
+
+  syncFunction() async {
+    controller.getEntranceData();
+  }
+
   List<dynamic> values = <dynamic>[];
   final List<Map<String, String>> _data = [
     {'Country': 'China', 'Population': '1400'},
@@ -67,6 +72,7 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
   @override
   void initState() {
     _columnNames = _data[0].keys.toList();
+    syncFunction();
     super.initState();
   }
 
@@ -93,59 +99,6 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
                   color: Colors.white),
             )))
         .toList();
-  }
-
-  List<DataRow> _createRows() {
-    return [
-      DataRow(
-        cells: [
-          DataCell(Text('18009880000')),
-          DataCell(Text('ยน 2310')),
-          DataCell(Container(width: 100, child: Text('จิรายุ เนียลกุล'))),
-          DataCell(Text('1/2')),
-          DataCell(Text('นัดหมายเข้าโครงการ')),
-          DataCell(Text('01/06/64')),
-          DataCell(Text('อยู่ในโครงการ')),
-          // DataCell(FloatingActionButton(onPressed: () {})),
-        ],
-      ),
-      DataRow(
-        cells: [
-          DataCell(Text('18009770000')),
-          DataCell(Text('พห 5417')),
-          DataCell(Container(width: 100, child: Text('สิธาณี ลิ้นบุญ'))),
-          DataCell(Text('2/5')),
-          DataCell(Text('นัดหมายเข้าโครงการ')),
-          DataCell(Text('01/06/64')),
-          DataCell(Text('อยู่ในโครงการ')),
-          // DataCell(FloatingActionButton(onPressed: () {})),
-        ],
-      ),
-      DataRow(
-        cells: [
-          DataCell(Text('1103300112546')),
-          DataCell(Text('กก 8517')),
-          DataCell(Container(width: 100, child: Text('อานนท์ ลิ้มเจริญ'))),
-          DataCell(Text('2/5')),
-          DataCell(Text('รับเชิญพิเศษ')),
-          DataCell(Text('-')),
-          DataCell(Text('อยู่ในโครงการ')),
-          // DataCell(FloatingActionButton(onPressed: () {})),
-        ],
-      ),
-      DataRow(
-        cells: [
-          DataCell(Text('1101100223641')),
-          DataCell(Text('กด 6541')),
-          DataCell(Container(width: 100, child: Text('วารี ลิ้นสุวรรณ'))),
-          DataCell(Text('2/5')),
-          DataCell(Text('ไม่มีสิทธิ์เข้าโครงการ')),
-          DataCell(Text('-')),
-          DataCell(Text('-')),
-          // DataCell(FloatingActionButton(onPressed: () {})),
-        ],
-      ),
-    ];
   }
 
   TextEditingController findControl = TextEditingController();
@@ -191,9 +144,10 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
                         ),
                       ),
                     ),
-                    TextButton(
-                        onPressed: () => controller.getDataEntrance(),
-                        child: Text('pulldata')),
+                    // TextButton(
+                    //     // onPressed: () => controller.getDataEntrance(),
+                    //     onPressed: () => controller.getEntranceData(),
+                    //     child: Text('pulldata')),
                     Row(
                       // mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -245,132 +199,114 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
                 child: Theme(
                   data: Theme.of(context)
                       .copyWith(dividerColor: dividerTableColor),
-                  child: DataTable(
-                    dividerThickness: 0.5,
-                    columnSpacing: 40,
-                    headingRowColor: MaterialStateColor.resolveWith(
-                        (states) => purpleBlueColor),
-                    columns: _createColumns(),
-                    ///////////////////////////
-                    rows: controller.dataEntrance
-                        .map(
-                          (entry) => DataRow(
-                            cells: [
-                              // DataCell(Text('asd')),
-                              // DataCell(Text('asd')),
-                              // DataCell(Text('asd')),
-                              // DataCell(Text('asd')),
-                              // DataCell(Text('asd')),
-                              // DataCell(Text('asd')),
-                              // DataCell(Text('asd')),
-                              DataCell(Text(entry['id_card'] != null &&
-                                      entry['id_card'] != ""
-                                  ? '${entry['id_card']}'
-                                  : '-')),
-                              DataCell(
-                                  // Text('${entry['license_plate'] ?? "-"}')),
-                                  Text(entry['license_plate'] != null
-                                      ? '${entry['license_plate']}'
-                                      : '-')),
-                              DataCell(Text(
-                                  '${entry['firstname'] ?? "-"} ${entry['lastname'] ?? ""}')),
-                              DataCell(Text('${entry['home_number'] ?? "-"}')),
-                              DataCell(Text(entry['visitor_id'] != null
-                                  ? 'นัดหมายเข้าโครงการ'
-                                  : entry['whitelist_id'] != null
-                                      ? 'รับเชิญพิเศษ'
-                                      : 'ไม่มีสิทธิ์เข้าโครงการ')),
-                              DataCell(Text((entry['visitor_id'] != null)
-                                  ? entry['invite_date']
-                                  : (entry['whitelist_id'] != null)
-                                      ? '-'
-                                      : '-')),
-                              DataCell(Text((entry['visitor_id'] != null)
-                                  ? (entry['datetime_in'] != null)
-                                      ? (entry['datetime_out'] != null)
-                                          ? 'ออกจากโครงการ'
-                                          : 'อยู่ในโครงการ'
-                                      : 'รอดำเนินการ'
-                                  : (entry['whitelist_id'] != null)
-                                      ? (entry['datetime_in'] != null)
-                                          ? (entry['datetime_out'] != null)
-                                              ? 'รอดำเนินการ'
-                                              : 'อยู่ในโครงการ'
-                                          : 'รอดำเนินการ'
-                                      : '-')),
-                              //                         'เลขประจำตัวประชาชน',
-                              // 'เลขทะเบียนรถ',
-                              // 'ชื่อ - นามสกุล',
-                              // 'บ้านเลขที่',
-                              // 'ระดับ',
-                              // 'วันที่นัดหมาย',
-                              // 'สถานะ',
-                            ],
-                          ),
-                        )
-                        .toList(),
-                    ////////////////////
-                    // rows: _createRows(),
+                  child: GetBuilder<EntranceProjectController>(
+                    id: 'update-enteance-data-row',
+                    builder: (c) => DataTable(
+                      showCheckboxColumn: false,
+                      dividerThickness: 0.5,
+                      columnSpacing: 30,
+                      headingRowColor: MaterialStateColor.resolveWith(
+                          (states) => purpleBlueColor),
+                      columns: c.createColumns(),
+                      // columns: _createColumns(),
+                      rows: c.dataRow,
+                      // rows: controller.dataEntrance
+                      //     .map(
+                      //       (entry) => DataRow(
+                      //         cells: [
+                      //           DataCell(Text(entry['id_card'] != null &&
+                      //                   entry['id_card'] != ""
+                      //               ? '${entry['id_card']}'
+                      //               : '-')),
+                      //           DataCell(
+                      //               // Text('${entry['license_plate'] ?? "-"}')),
+                      //               Text(entry['license_plate'] != null
+                      //                   ? '${entry['license_plate']}'
+                      //                   : '-')),
+                      //           DataCell(Text(
+                      //               '${entry['firstname'] ?? "-"} ${entry['lastname'] ?? ""}')),
+                      //           DataCell(
+                      //               Text('${entry['home_number'] ?? "-"}')),
+                      //           DataCell(Text(entry['visitor_id'] != null
+                      //               ? 'นัดหมายเข้าโครงการ'
+                      //               : entry['whitelist_id'] != null
+                      //                   ? 'รับเชิญพิเศษ'
+                      //                   : 'ไม่มีสิทธิ์เข้าโครงการ')),
+                      //           DataCell(Text((entry['visitor_id'] != null)
+                      //               ? entry['invite_date']
+                      //               : (entry['whitelist_id'] != null)
+                      //                   ? '-'
+                      //                   : '-')),
+                      //           DataCell(Text((entry['visitor_id'] != null)
+                      //               ? (entry['datetime_in'] != null)
+                      //                   ? (entry['datetime_out'] != null)
+                      //                       ? 'ออกจากโครงการ'
+                      //                       : 'อยู่ในโครงการ'
+                      //                   : 'รอดำเนินการ'
+                      //               : (entry['whitelist_id'] != null)
+                      //                   ? (entry['datetime_in'] != null)
+                      //                       ? (entry['datetime_out'] != null)
+                      //                           ? 'รอดำเนินการ'
+                      //                           : 'อยู่ในโครงการ'
+                      //                       : 'รอดำเนินการ'
+                      //                   : '-')),
+                      //         ],
+                      //       ),
+                      //     )
+                      //     .toList(),
+                    ),
                   ),
-                  //
-                  //     DataTable(
+                  // DataTable(
                   //   dividerThickness: 0.5,
                   //   columnSpacing: 40,
                   //   headingRowColor: MaterialStateColor.resolveWith(
                   //       (states) => purpleBlueColor),
-                  //   columns: _columnNames.map((columnName) {
-                  //     return DataColumn(
-                  //       label: Text(
-                  //         columnName,
-                  //         style: TextStyle(
-                  //             fontSize: 18,
-                  //             fontWeight: FontWeight.w600,
-                  //             color: Colors.black),
-                  //       ),
-                  //     );
-                  //   }).toList(),
-                  //   rows: _data.map((row) {
-                  //     return DataRow(
-                  //         cells: row.values.map((cellValue) {
-                  //       return DataCell(
-                  //         Text(
-                  //           cellValue,
-                  //           style: TextStyle(
-                  //             color: Colors.black,
-                  //           ),
+                  //   columns: _createColumns(),
+                  //   ///////////////////////////
+                  //   rows: controller.dataEntrance
+                  //       .map(
+                  //         (entry) => DataRow(
+                  //           cells: [
+                  //             DataCell(Text(entry['id_card'] != null &&
+                  //                     entry['id_card'] != ""
+                  //                 ? '${entry['id_card']}'
+                  //                 : '-')),
+                  //             DataCell(
+                  //                 // Text('${entry['license_plate'] ?? "-"}')),
+                  //                 Text(entry['license_plate'] != null
+                  //                     ? '${entry['license_plate']}'
+                  //                     : '-')),
+                  //             DataCell(Text(
+                  //                 '${entry['firstname'] ?? "-"} ${entry['lastname'] ?? ""}')),
+                  //             DataCell(Text('${entry['home_number'] ?? "-"}')),
+                  //             DataCell(Text(entry['visitor_id'] != null
+                  //                 ? 'นัดหมายเข้าโครงการ'
+                  //                 : entry['whitelist_id'] != null
+                  //                     ? 'รับเชิญพิเศษ'
+                  //                     : 'ไม่มีสิทธิ์เข้าโครงการ')),
+                  //             DataCell(Text((entry['visitor_id'] != null)
+                  //                 ? entry['invite_date']
+                  //                 : (entry['whitelist_id'] != null)
+                  //                     ? '-'
+                  //                     : '-')),
+                  //             DataCell(Text((entry['visitor_id'] != null)
+                  //                 ? (entry['datetime_in'] != null)
+                  //                     ? (entry['datetime_out'] != null)
+                  //                         ? 'ออกจากโครงการ'
+                  //                         : 'อยู่ในโครงการ'
+                  //                     : 'รอดำเนินการ'
+                  //                 : (entry['whitelist_id'] != null)
+                  //                     ? (entry['datetime_in'] != null)
+                  //                         ? (entry['datetime_out'] != null)
+                  //                             ? 'รอดำเนินการ'
+                  //                             : 'อยู่ในโครงการ'
+                  //                         : 'รอดำเนินการ'
+                  //                     : '-')),
+                  //           ],
                   //         ),
-                  //       );
-                  //     }).toList());
-                  //   }).toList(),
+                  //       )
+                  //       .toList(),
                   // ),
-                  //
-                  //     DataTable(
-                  //   columns: _columnNames.map((columnName) {
-                  //     return DataColumn(
-                  //       label: Text(
-                  //         columnName,
-                  //         style: TextStyle(
-                  //           fontSize: 18,
-                  //           fontWeight: FontWeight.w600,
-                  //         ),
-                  //       ),
-                  //     );
-                  //   }).toList(),
-                  //   rows: _data.map((row) {
-                  //     return DataRow(
-                  //         cells: row.values.map((cellValue) {
-                  //       return DataCell(
-                  //         Text(
-                  //           cellValue,
-                  //           style: TextStyle(
-                  //             color: Colors.white,
-                  //           ),
-                  //         ),
-                  //       );
-                  //     }).toList());
-                  //   }).toList(),
-                  // ),
-                  //
                 ),
               ),
             ],

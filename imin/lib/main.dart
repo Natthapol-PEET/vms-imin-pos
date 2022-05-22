@@ -36,8 +36,6 @@ void main() async {
     DeviceOrientation.landscapeRight,
     DeviceOrientation.landscapeLeft,
   ]);
-
-
 }
 
 class MyApp extends StatelessWidget {

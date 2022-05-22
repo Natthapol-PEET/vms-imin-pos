@@ -58,6 +58,7 @@ class UploadPersonalController extends GetxController {
     // }
 
     print("code: $code");
+    print("checkHomeNumber.value: ${checkHomeNumber.value}");
 
     // call api
     if (checkHomeNumber.value) {

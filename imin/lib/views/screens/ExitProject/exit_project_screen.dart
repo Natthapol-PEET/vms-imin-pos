@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:imin/controllers/exit_project_controller.dart';
 import 'package:imin/helpers/constance.dart';
+import 'package:imin/models/visitor_model.dart';
+import 'package:imin/models/whitelist_model.dart';
+import 'package:imin/services/exit_service.dart';
 import 'package:imin/views/widgets/popup_item.dart';
 import 'package:imin/views/widgets/title_content.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -18,156 +21,13 @@ class _ExitProjectScreenState extends State<ExitProjectScreen> {
 
   @override
   void initState() {
+    syncFunction();
+
     super.initState();
   }
 
-  List<DataColumn> _createColumns() {
-    List headerItems = [
-      'เลขประจำตัวประชาชน',
-      'เลขทะเบียนรถ',
-      'ชื่อ - นามสกุล',
-      'บ้านเลขที่',
-      'เวลาเข้า',
-      'เวลาออก',
-      'สถานะ',
-    ];
-
-    return headerItems
-        .map((item) => DataColumn(
-                label: Text(
-              item,
-              style: TextStyle(
-                  fontFamily: fontRegular,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  color: Colors.white),
-            )))
-        .toList();
-  }
-
-  List<DataRow> _createRows() {
-    return [
-      DataRow(
-        onSelectChanged: (state) => print('พห 5417'),
-        cells: [
-          DataCell(Text('18009880000')),
-          DataCell(Text('ยน 2310')),
-          DataCell(Container(width: 100, child: Text('จิรายุ เนียลกุล'))),
-          DataCell(Text('1/2')),
-          DataCell(Text('01/06/64 08:20')),
-          DataCell(Text('01/06/64 08:55')),
-          DataCell(Text('ยังไม่ได้รับการแสตมป์')),
-        ],
-      ),
-      DataRow(
-        onSelectChanged: (state) => print('พห 5417'),
-        cells: [
-          DataCell(Text('18009770000')),
-          DataCell(Text('พห 5417')),
-          DataCell(Container(width: 100, child: Text('สิธาณี ลิ้นบุญ'))),
-          DataCell(Text('2/5')),
-          DataCell(Text('01/06/64 09:50')),
-          DataCell(Text('01/06/64 10:50')),
-          DataCell(Text('ออกจากโครงการแล้ว')),
-        ],
-      ),
-      DataRow(
-        onSelectChanged: (state) => print('พห 5417'),
-        cells: [
-          DataCell(Text('18009770000')),
-          DataCell(Text('พห 5417')),
-          DataCell(Container(width: 100, child: Text('สิธาณี ลิ้นบุญ'))),
-          DataCell(Text('2/5')),
-          DataCell(Text('01/06/64 09:50')),
-          DataCell(Text('01/06/64 10:50')),
-          DataCell(Text('ออกจากโครงการแล้ว')),
-        ],
-      ),
-      DataRow(
-        onSelectChanged: (state) => print('พห 5417'),
-        cells: [
-          DataCell(Text('18009770000')),
-          DataCell(Text('พห 5417')),
-          DataCell(Container(width: 100, child: Text('สิธาณี ลิ้นบุญ'))),
-          DataCell(Text('2/5')),
-          DataCell(Text('01/06/64 09:50')),
-          DataCell(Text('01/06/64 10:50')),
-          DataCell(Text('ออกจากโครงการแล้ว')),
-        ],
-      ),
-      DataRow(
-        onSelectChanged: (state) => print('พห 5417'),
-        cells: [
-          DataCell(Text('18009770000')),
-          DataCell(Text('พห 5417')),
-          DataCell(Container(width: 100, child: Text('สิธาณี ลิ้นบุญ'))),
-          DataCell(Text('2/5')),
-          DataCell(Text('01/06/64 09:50')),
-          DataCell(Text('01/06/64 10:50')),
-          DataCell(Text('ออกจากโครงการแล้ว')),
-        ],
-      ),
-      DataRow(
-        onSelectChanged: (state) => print('พห 5417'),
-        cells: [
-          DataCell(Text('18009770000')),
-          DataCell(Text('พห 5417')),
-          DataCell(Container(width: 100, child: Text('สิธาณี ลิ้นบุญ'))),
-          DataCell(Text('2/5')),
-          DataCell(Text('01/06/64 09:50')),
-          DataCell(Text('01/06/64 10:50')),
-          DataCell(Text('ออกจากโครงการแล้ว')),
-        ],
-      ),
-      DataRow(
-        onSelectChanged: (state) => print('พห 5417'),
-        cells: [
-          DataCell(Text('18009770000')),
-          DataCell(Text('พห 5417')),
-          DataCell(Container(width: 100, child: Text('สิธาณี ลิ้นบุญ'))),
-          DataCell(Text('2/5')),
-          DataCell(Text('01/06/64 09:50')),
-          DataCell(Text('01/06/64 10:50')),
-          DataCell(Text('ออกจากโครงการแล้ว')),
-        ],
-      ),
-      DataRow(
-        onSelectChanged: (state) => print('พห 5417'),
-        cells: [
-          DataCell(Text('18009770000')),
-          DataCell(Text('พห 5417')),
-          DataCell(Container(width: 100, child: Text('สิธาณี ลิ้นบุญ'))),
-          DataCell(Text('2/5')),
-          DataCell(Text('01/06/64 09:50')),
-          DataCell(Text('01/06/64 10:50')),
-          DataCell(Text('ออกจากโครงการแล้ว')),
-        ],
-      ),
-      DataRow(
-        onSelectChanged: (state) => print('พห 5417'),
-        cells: [
-          DataCell(Text('18009770000')),
-          DataCell(Text('พห 5417')),
-          DataCell(Container(width: 100, child: Text('สิธาณี ลิ้นบุญ'))),
-          DataCell(Text('2/5')),
-          DataCell(Text('01/06/64 09:50')),
-          DataCell(Text('01/06/64 10:50')),
-          DataCell(Text('ออกจากโครงการแล้ว')),
-        ],
-      ),
-      DataRow(
-        onSelectChanged: (state) => print('พห 5417'),
-        cells: [
-          DataCell(Text('18009770000')),
-          DataCell(Text('พห 5417')),
-          DataCell(Container(width: 100, child: Text('สิธาณี ลิ้นบุญ'))),
-          DataCell(Text('2/5')),
-          DataCell(Text('01/06/64 09:50')),
-          DataCell(Text('01/06/64 10:50')),
-          DataCell(Text('ออกจากโครงการแล้ว')),
-        ],
-      ),
-    ];
+  syncFunction() async {
+    controller.getExitData();
   }
 
   TextEditingController findControl = TextEditingController();
@@ -326,6 +186,7 @@ class _ExitProjectScreenState extends State<ExitProjectScreen> {
                 ],
               ),
               Container(
+                width: size.width,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   boxShadow: [
@@ -346,14 +207,17 @@ class _ExitProjectScreenState extends State<ExitProjectScreen> {
                 child: Theme(
                   data: Theme.of(context)
                       .copyWith(dividerColor: dividerTableColor),
-                  child: DataTable(
-                    showCheckboxColumn: false,
-                    dividerThickness: 0.5,
-                    columnSpacing: 40,
-                    headingRowColor: MaterialStateColor.resolveWith(
-                        (states) => purpleBlueColor),
-                    columns: _createColumns(),
-                    rows: _createRows(),
+                  child: GetBuilder<ExitProjectController>(
+                    id: 'update-exit-data-row',
+                    builder: (c) => DataTable(
+                      showCheckboxColumn: false,
+                      dividerThickness: 0.5,
+                      columnSpacing: 30,
+                      headingRowColor: MaterialStateColor.resolveWith(
+                          (states) => purpleBlueColor),
+                      columns: c.createColumns(),
+                      rows: c.dataRow,
+                    ),
                   ),
                 ),
               ),

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -330,8 +329,9 @@ class NextInput extends StatelessWidget {
                 TextInputAddVisitor(
                   title: 'เลขทะเบียนรถ',
                   hintText: 'กรุณาพิมพ์เลขทะเบียนรถ',
-                  initValue: uploadPersonalController.licensePlate.value ,
-                  onChanged: (v) => uploadPersonalController.licensePlate.value = v,
+                  initValue: uploadPersonalController.licensePlate.value,
+                  onChanged: (v) =>
+                      uploadPersonalController.licensePlate.value = v,
                 ),
                 Obx(
                   () => uploadPersonalController.checkLicensePlate.value
@@ -369,6 +369,10 @@ class NextInput extends StatelessWidget {
                           var response = await c.checkInput(
                               code, loginController.dataProfile.guardId);
                           EasyLoading.dismiss();
+
+                          if (response.runtimeType == int) {
+                            return;
+                          }
 
                           if (response.statusCode == 201) {
                             EasyLoading.showSuccess(

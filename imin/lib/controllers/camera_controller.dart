@@ -53,7 +53,7 @@ class TakePictureController extends GetxController {
       if (json['code'] != null) {
         // imagePath.value = image.path;
         response.value = json;
-        imageUrl.value = ipServerIminService + '/' + json['code'];
+        imageUrl.value = ipServerIminService + '/profile/' + json['code'];
         EasyLoading.dismiss();
       } else {
         EasyLoading.showError(json['message']);

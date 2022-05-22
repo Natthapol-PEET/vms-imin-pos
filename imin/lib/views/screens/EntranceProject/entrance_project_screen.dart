@@ -1,7 +1,7 @@
-import 'package:camera/camera.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:imin/controllers/camera_controller.dart';
 import 'package:imin/controllers/entrance_project_controller.dart';
 import 'package:imin/controllers/exit_project_controller.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
@@ -18,17 +18,14 @@ class EntranceProjectScreen extends StatefulWidget {
 }
 
 class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
-
   final controller = Get.put(EntranceProjectController());
   final uploadController = Get.put(UploadPersonalController());
-  final cameraController = Get.put(TakePictureController());
-
-
-  final List<Map<String, String>> _data =
-  [
+  List<dynamic> values = <dynamic>[];
+  final List<Map<String, String>> _data = [
     {'Country': 'China', 'Population': '1400'},
     {'Country': 'India', 'Population': '1360'},
   ];
+  // final List _data = Get.put(EntranceProjectController()).dataEntrance;
   late List<String> _columnNames;
 
   void _addColumn(String newColumn) {
@@ -66,7 +63,6 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
       _data.add(newRow);
     });
   }
-
 
   @override
   void initState() {
@@ -212,7 +208,6 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
                             ),
                             onPressed: () {
                               uploadController.initValue();
-                              cameraController.clear();
                               c.currentContent = UploadPersonalScreen();
                               c.update(['aopbmsbbffdgkb']);
                             },
@@ -250,46 +245,104 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
                 child: Theme(
                   data: Theme.of(context)
                       .copyWith(dividerColor: dividerTableColor),
-                  child:
-                      // DataTable(
-                      //   dividerThickness: 0.5,
-                      //   columnSpacing: 40,
-                      //   headingRowColor: MaterialStateColor.resolveWith(
-                      //       (states) => purpleBlueColor),
-                      //   columns: _createColumns(),
-                      //   rows: _createRows(),
-                      // ),
-                      //
-                      DataTable(
+                  child: DataTable(
                     dividerThickness: 0.5,
                     columnSpacing: 40,
                     headingRowColor: MaterialStateColor.resolveWith(
                         (states) => purpleBlueColor),
-                    columns: _columnNames.map((columnName) {
-                      return DataColumn(
-                        label: Text(
-                          columnName,
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black),
-                        ),
-                      );
-                    }).toList(),
-                    rows: _data.map((row) {
-                      return DataRow(
-                          cells: row.values.map((cellValue) {
-                        return DataCell(
-                          Text(
-                            cellValue,
-                            style: TextStyle(
-                              color: Colors.black,
-                            ),
+                    columns: _createColumns(),
+                    ///////////////////////////
+                    rows: controller.dataEntrance
+                        .map(
+                          (entry) => DataRow(
+                            cells: [
+                              // DataCell(Text('asd')),
+                              // DataCell(Text('asd')),
+                              // DataCell(Text('asd')),
+                              // DataCell(Text('asd')),
+                              // DataCell(Text('asd')),
+                              // DataCell(Text('asd')),
+                              // DataCell(Text('asd')),
+                              DataCell(Text(entry['id_card'] != null &&
+                                      entry['id_card'] != ""
+                                  ? '${entry['id_card']}'
+                                  : '-')),
+                              DataCell(
+                                  // Text('${entry['license_plate'] ?? "-"}')),
+                                  Text(entry['license_plate'] != null
+                                      ? '${entry['license_plate']}'
+                                      : '-')),
+                              DataCell(Text(
+                                  '${entry['firstname'] ?? "-"} ${entry['lastname'] ?? ""}')),
+                              DataCell(Text('${entry['home_number'] ?? "-"}')),
+                              DataCell(Text(entry['visitor_id'] != null
+                                  ? 'นัดหมายเข้าโครงการ'
+                                  : entry['whitelist_id'] != null
+                                      ? 'รับเชิญพิเศษ'
+                                      : 'ไม่มีสิทธิ์เข้าโครงการ')),
+                              DataCell(Text((entry['visitor_id'] != null)
+                                  ? entry['invite_date']
+                                  : (entry['whitelist_id'] != null)
+                                      ? '-'
+                                      : '-')),
+                              DataCell(Text((entry['visitor_id'] != null)
+                                  ? (entry['datetime_in'] != null)
+                                      ? (entry['datetime_out'] != null)
+                                          ? 'ออกจากโครงการ'
+                                          : 'อยู่ในโครงการ'
+                                      : 'รอดำเนินการ'
+                                  : (entry['whitelist_id'] != null)
+                                      ? (entry['datetime_in'] != null)
+                                          ? (entry['datetime_out'] != null)
+                                              ? 'รอดำเนินการ'
+                                              : 'อยู่ในโครงการ'
+                                          : 'รอดำเนินการ'
+                                      : '-')),
+                              //                         'เลขประจำตัวประชาชน',
+                              // 'เลขทะเบียนรถ',
+                              // 'ชื่อ - นามสกุล',
+                              // 'บ้านเลขที่',
+                              // 'ระดับ',
+                              // 'วันที่นัดหมาย',
+                              // 'สถานะ',
+                            ],
                           ),
-                        );
-                      }).toList());
-                    }).toList(),
+                        )
+                        .toList(),
+                    ////////////////////
+                    // rows: _createRows(),
                   ),
+                  //
+                  //     DataTable(
+                  //   dividerThickness: 0.5,
+                  //   columnSpacing: 40,
+                  //   headingRowColor: MaterialStateColor.resolveWith(
+                  //       (states) => purpleBlueColor),
+                  //   columns: _columnNames.map((columnName) {
+                  //     return DataColumn(
+                  //       label: Text(
+                  //         columnName,
+                  //         style: TextStyle(
+                  //             fontSize: 18,
+                  //             fontWeight: FontWeight.w600,
+                  //             color: Colors.black),
+                  //       ),
+                  //     );
+                  //   }).toList(),
+                  //   rows: _data.map((row) {
+                  //     return DataRow(
+                  //         cells: row.values.map((cellValue) {
+                  //       return DataCell(
+                  //         Text(
+                  //           cellValue,
+                  //           style: TextStyle(
+                  //             color: Colors.black,
+                  //           ),
+                  //         ),
+                  //       );
+                  //     }).toList());
+                  //   }).toList(),
+                  // ),
                   //
                   //     DataTable(
                   //   columns: _columnNames.map((columnName) {

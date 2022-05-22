@@ -100,11 +100,15 @@ class ExitProjectController extends GetxController {
     return DataRow(
       onSelectChanged: (state) => print('พห 5417'),
       cells: [
-        DataCell(Center(child: Text(item.idCard != '' ? item.idCard : '-'))),
         DataCell(Center(
-            child: Text(item.licensePlate != '' ? item.licensePlate : '-'))),
+            child: Text(
+                item.idCard == '' || item.idCard == null ? '-' : item.idCard))),
+        DataCell(Center(
+            child: Text(item.licensePlate == '' || item.licensePlate == null
+                ? '-'
+                : item.licensePlate))),
         DataCell(Container(
-            width: 100, child: Text("${item.firstname} ${item.lastname}"))),
+            width: 100, child: Center(child: Text(item.firstname == null ? "-" : "${item.firstname} ${item.lastname}")))),
         DataCell(Center(child: Text(item.homeNumber))),
         DataCell(Center(
           child: Text(

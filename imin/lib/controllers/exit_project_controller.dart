@@ -8,6 +8,7 @@ import 'package:imin/helpers/constance.dart';
 import 'package:imin/models/visitor_model.dart';
 import 'package:imin/models/whitelist_model.dart';
 import 'package:imin/services/exit_service.dart';
+import 'package:imin/views/widgets/round_button.dart';
 import 'package:imin/views/widgets/round_button_outline.dart';
 
 class ExitProjectController extends GetxController {
@@ -88,12 +89,14 @@ class ExitProjectController extends GetxController {
   }
 
   DataRow createDataRow(dynamic item) {
-    print('item.firstname ${item.firstname}');
+    // print('item.firstname ${item.firstname}');
 
     return DataRow(
       onSelectChanged: (state) => item.firstname == null
           ? showDialogCard(item).show(context)
           : showDialogDetails(item).show(context),
+      // onSelectChanged: (state) => showDialogExitProject(item).show(context),
+      // onSelectChanged: (state) => showDialogOpenGate(item).show(context),
       cells: [
         DataCell(Center(
             child: Text(
@@ -124,6 +127,81 @@ class ExitProjectController extends GetxController {
                 ? 'ยังไม่ได้รับการแสตมป์'
                 : 'ได้รับการสแตมป์แล้ว',
           ),
+        ),
+      ],
+    );
+  }
+
+  EasyDialog showDialogOpenGate(dynamic item) {
+    return EasyDialog(
+      contentPadding: EdgeInsets.symmetric(horizontal: 20),
+      width: 420,
+      height: 250,
+      closeButton: false,
+      contentListAlignment: CrossAxisAlignment.center,
+      contentList: [
+        Center(
+          child: Image.asset('assets/images/open-gate.png'),
+        ),
+        TextButton(
+          onPressed: () => Get.back(),
+          child: Center(
+            child: Text(
+              'ประตูโครงการเปิด',
+              style: TextStyle(
+                fontFamily: fontRegular,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  EasyDialog showDialogExitProject(dynamic item) {
+    return EasyDialog(
+      contentPadding: EdgeInsets.symmetric(horizontal: 20),
+      width: 400,
+      height: 200,
+      closeButton: false,
+      contentListAlignment: CrossAxisAlignment.center,
+      contentList: [
+        Center(
+          child: Text(
+            'ยืนยันการออกจากโครงการ',
+            style: TextStyle(
+              fontFamily: fontRegular,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        SizedBox(height: 20),
+        Center(
+          child: Text(
+            'เมื่อคุณกดยืนยันประตูจะถูกเปิดอัตโนมัติ',
+            style: TextStyle(
+              fontFamily: fontRegular,
+              fontSize: 16,
+            ),
+          ),
+        ),
+        SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            RoundButtonOutline(
+              title: 'ยกเลิก',
+              press: () => Get.back(),
+            ),
+            RoundButton(
+              title: 'ตกลง',
+              press: () => Get.back(),
+            ),
+          ],
         ),
       ],
     );

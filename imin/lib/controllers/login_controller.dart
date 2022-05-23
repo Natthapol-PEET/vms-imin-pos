@@ -37,7 +37,7 @@ class LoginController extends GetxController {
 
   Future getAccount() async {
     List<AccountModel> data = await acc.accounts();
-    print('getAccount: $data');
+    // print('getAccount: $data');
 
     username.value = data[0].username;
     password.value = data[0].password;

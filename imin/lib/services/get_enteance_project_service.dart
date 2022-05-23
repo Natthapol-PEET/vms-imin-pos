@@ -46,21 +46,8 @@ Future getEntranceProjectApi(String token) async {
       return utf8.decode(v);
     }
 
-    var list1 = response.body;
-    var list2 = responseWhitelist.body;
-    var list3 = responseBlacklist.body;
     List<dynamic> dataAll = [];
     List<String> resAll = [];
-    // resAll.add(list1);
-    // resAll.add(list2);
-    // resAll.add(list3);
-    // for (var item in resAll) {
-    //   for (var i in decodeFunc(item)) {
-    //     // print(decodeFunc2(i));
-    //     // print(i.home_number);
-    //     dataAll.add(i);
-    //   }
-    // }
     //////////
     var dataAll2 = decodeFunc2(response.bodyBytes);
     var listData2 = decodeFunc2(responseWhitelist.bodyBytes);
@@ -68,8 +55,6 @@ Future getEntranceProjectApi(String token) async {
     resAll.add(dataAll2);
     resAll.add(listData2);
     resAll.add(listData3);
-    (listData3);
-    print(dataAll2);
     for (var item in resAll) {
       for (var i in decodeFunc(item)) {
         // print(decodeFunc2(i));
@@ -77,17 +62,6 @@ Future getEntranceProjectApi(String token) async {
         dataAll.add(i);
       }
     }
-    // List<dynamic> values = <dynamic>[];
-    // values = dataAll;
-    // if (values.length > 0) {
-    //   for (int i = 0; i < values.length; i++) {
-    //     if (values[i] != null) {
-    //       Map<String, dynamic> map = values[i];
-    //       // _postList .add(Post.fromJson(map));
-    //       // print('Id-------${map['home_id']}');
-    //     }
-    //   }
-    // }
     return dataAll;
   } catch (e) {
     print("e: $e");

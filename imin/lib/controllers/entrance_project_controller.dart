@@ -35,7 +35,7 @@ class EntranceProjectController extends GetxController {
 
   getDataEntrance() async {
     try {
-      dataEntrance = await getEntranceProjectApi(token);
+      dataEntrance.value = await getEntranceProjectApi(token);
       List<dynamic> values = <dynamic>[];
       values = dataEntrance;
       Map<String, dynamic> map = dataEntrance[0];

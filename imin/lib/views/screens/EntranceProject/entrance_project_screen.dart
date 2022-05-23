@@ -144,10 +144,10 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
                         ),
                       ),
                     ),
-                    // TextButton(
-                    //     // onPressed: () => controller.getDataEntrance(),
-                    //     onPressed: () => controller.getEntranceData(),
-                    //     child: Text('pulldata')),
+                    TextButton(
+                        onPressed: () => controller.getDataEntrance(),
+                        // onPressed: () => controller.getEntranceData(),
+                        child: Text('pulldata')),
                     Row(
                       // mainAxisAlignment: MainAxisAlignment.end,
                       children: [

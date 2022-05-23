@@ -1,13 +1,18 @@
+import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:imin/Functions/time_to_thai.dart';
+import 'package:imin/helpers/configs.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/models/visitor_model.dart';
 import 'package:imin/models/whitelist_model.dart';
 import 'package:imin/services/exit_service.dart';
+import 'package:imin/views/widgets/round_button_outline.dart';
 
 class ExitProjectController extends GetxController {
+  var context;
+
   var startEndRange = "".obs;
   var rememStartEndRange = "";
 
@@ -20,7 +25,7 @@ class ExitProjectController extends GetxController {
     DateTime v = DateTime.now();
     startEndRange.value = dummyDatetime(v) + " - " + dummyDatetime(v);
 
-    // getExitData();
+    getExitData();
 
     super.onInit();
   }
@@ -80,25 +85,15 @@ class ExitProjectController extends GetxController {
 
     update(['update-exit-data-row']);
     EasyLoading.dismiss();
-    // return [
-    // DataRow(
-    //   onSelectChanged: (state) => print('พห 5417'),
-    //   cells: [
-    //     DataCell(Text('18009880000')),
-    //     DataCell(Text('ยน 2310')),
-    //     DataCell(Container(width: 100, child: Text('จิรายุ เนียลกุล'))),
-    //     DataCell(Text('1/2')),
-    //     DataCell(Text('01/06/64 08:20')),
-    //     DataCell(Text('01/06/64 08:55')),
-    //     DataCell(Text('ยังไม่ได้รับการแสตมป์')),
-    //   ],
-    // ),
-    // ];
   }
 
-  DataRow createDataRow(item) {
+  DataRow createDataRow(dynamic item) {
+    print('item.firstname ${item.firstname}');
+
     return DataRow(
-      onSelectChanged: (state) => print('พห 5417'),
+      onSelectChanged: (state) => item.firstname == null
+          ? showDialogCard(item).show(context)
+          : showDialogDetails(item).show(context),
       cells: [
         DataCell(Center(
             child: Text(
@@ -108,7 +103,11 @@ class ExitProjectController extends GetxController {
                 ? '-'
                 : item.licensePlate))),
         DataCell(Container(
-            width: 100, child: Center(child: Text(item.firstname == null ? "-" : "${item.firstname} ${item.lastname}")))),
+            width: 100,
+            child: Center(
+                child: Text(item.firstname == null
+                    ? "-"
+                    : "${item.firstname} ${item.lastname}")))),
         DataCell(Center(child: Text(item.homeNumber))),
         DataCell(Center(
           child: Text(
@@ -127,6 +126,185 @@ class ExitProjectController extends GetxController {
           ),
         ),
       ],
+    );
+  }
+
+  EasyDialog showDialogCard(dynamic item) {
+    return EasyDialog(
+      contentPadding: EdgeInsets.symmetric(horizontal: 20),
+      width: 400,
+      height: item.residentStamp == null ? 500 : 550,
+      closeButton: false,
+      contentList: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'ข้อมูลเพิ่มเติม',
+              style: TextStyle(
+                fontFamily: fontRegular,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            TextButton(
+              onPressed: () => Get.back(),
+              style: TextButton.styleFrom(padding: EdgeInsets.zero),
+              child: Icon(
+                Icons.close,
+                color: Colors.black,
+              ),
+            ),
+          ],
+        ),
+        Divider(color: dividerColor),
+        Image.network(ipServerIminService + '/card/' + item.qrGenId),
+        SizedBox(height: 20),
+        Row(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                textDetial('เลขทะเบียนรถ'),
+                textDetial('บ้านเลขที่'),
+                textDetial('เวลาเข้า'),
+                textDetial('เวลาออก'),
+                textDetial('สถานะ'),
+              ],
+            ),
+            SizedBox(width: 20),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                textDetial(item.licensePlate == '' || item.licensePlate == null
+                    ? '-'
+                    : item.licensePlate),
+                textDetial(item.homeNumber == '' || item.homeNumber == null
+                    ? '-'
+                    : item.homeNumber),
+                textDetial(item.datetimeIn != null
+                    ? formatDateTime(item.datetimeIn)
+                    : '-'),
+                textDetial(item.datetimeOut != null
+                    ? formatDateTime(item.datetimeOut)
+                    : '-'),
+                textDetial(
+                  item.residentStamp == null
+                      ? 'ยังไม่ได้รับการแสตมป์'
+                      : 'ได้รับการสแตมป์แล้ว',
+                ),
+              ],
+            ),
+          ],
+        ),
+        SizedBox(height: 10),
+        if (item.residentStamp != null) ...[
+          RoundButtonOutline(
+            title: 'ออกจากโครงการ',
+            press: () {},
+          ),
+        ],
+      ],
+    );
+  }
+
+  EasyDialog showDialogDetails(dynamic item) {
+    return EasyDialog(
+      contentPadding: EdgeInsets.symmetric(horizontal: 20),
+      width: 400,
+      height: item.residentStamp == null ? 300 : 350,
+      closeButton: false,
+      contentListAlignment: CrossAxisAlignment.center,
+      contentList: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'ข้อมูลเพิ่มเติม',
+              style: TextStyle(
+                fontFamily: fontRegular,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            TextButton(
+              style: TextButton.styleFrom(padding: EdgeInsets.zero),
+              onPressed: () => Get.back(),
+              child: Icon(
+                Icons.close,
+                color: Colors.black,
+              ),
+            ),
+          ],
+        ),
+        Divider(color: dividerColor),
+        Row(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                textDetial('เลขบัตรประจำตัวประชาชน'),
+                textDetial('เลขทะเบียนรถ'),
+                textDetial('ชื่อ - นามสกุล'),
+                textDetial('บ้านเลขที่'),
+                textDetial('เวลาเข้า'),
+                textDetial('เวลาออก'),
+                textDetial('สถานะ'),
+              ],
+            ),
+            SizedBox(width: 20),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                textDetial(item.idCard == '' || item.idCard == null
+                    ? '-'
+                    : item.idCard),
+                textDetial(item.licensePlate == '' || item.licensePlate == null
+                    ? '-'
+                    : item.licensePlate),
+                textDetial(item.firstname == null
+                    ? "-"
+                    : "${item.firstname} ${item.lastname}"),
+                textDetial(item.homeNumber == '' || item.homeNumber == null
+                    ? '-'
+                    : item.homeNumber),
+                textDetial(item.datetimeIn != null
+                    ? formatDateTime(item.datetimeIn)
+                    : '-'),
+                textDetial(item.datetimeOut != null
+                    ? formatDateTime(item.datetimeOut)
+                    : '-'),
+                textDetial(
+                  item.residentStamp == null
+                      ? 'ยังไม่ได้รับการแสตมป์'
+                      : 'ได้รับการสแตมป์แล้ว',
+                ),
+              ],
+            ),
+          ],
+        ),
+        SizedBox(height: 10),
+        if (item.residentStamp != null) ...[
+          RoundButtonOutline(
+            title: 'ออกจากโครงการ',
+            press: () {},
+          ),
+        ],
+      ],
+    );
+  }
+
+  Padding textDetial(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Text(
+        text,
+        style: TextStyle(
+          fontFamily: fontRegular,
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
     );
   }
 

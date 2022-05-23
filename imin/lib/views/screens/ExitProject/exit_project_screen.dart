@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:imin/controllers/exit_project_controller.dart';
+import 'package:imin/controllers/mqtt_controller.dart';
 import 'package:imin/helpers/constance.dart';
-import 'package:imin/models/visitor_model.dart';
-import 'package:imin/models/whitelist_model.dart';
-import 'package:imin/services/exit_service.dart';
 import 'package:imin/views/widgets/popup_item.dart';
 import 'package:imin/views/widgets/title_content.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -21,13 +19,7 @@ class _ExitProjectScreenState extends State<ExitProjectScreen> {
 
   @override
   void initState() {
-    syncFunction();
-
     super.initState();
-  }
-
-  syncFunction() async {
-    controller.getExitData();
   }
 
   TextEditingController findControl = TextEditingController();
@@ -35,6 +27,8 @@ class _ExitProjectScreenState extends State<ExitProjectScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
+    controller.context = context;
 
     return CustomScrollView(
       slivers: [
@@ -223,30 +217,30 @@ class _ExitProjectScreenState extends State<ExitProjectScreen> {
               ),
 
               // Button Group
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: size.width * 0.03),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    RoundButtonIcon(icon: Icons.arrow_back_ios_new),
-                    for (int i = 1; i < 5; i++) ...[
-                      RoundButtonNumber(
-                        index: i.toString(),
-                        selectd: true,
-                      ),
-                    ],
-                    Point(),
-                    for (int i = 8; i < 10; i++) ...[
-                      RoundButtonNumber(
-                        index: i.toString(),
-                        selectd: false,
-                      ),
-                    ],
-                    RoundButtonIcon(icon: Icons.arrow_forward_ios),
-                  ],
-                ),
-              ),
+              // Container(
+              //   margin: EdgeInsets.symmetric(horizontal: size.width * 0.03),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.end,
+              //     crossAxisAlignment: CrossAxisAlignment.center,
+              //     children: [
+              //       RoundButtonIcon(icon: Icons.arrow_back_ios_new),
+              //       for (int i = 1; i < 5; i++) ...[
+              //         RoundButtonNumber(
+              //           index: i.toString(),
+              //           selectd: true,
+              //         ),
+              //       ],
+              //       Point(),
+              //       for (int i = 8; i < 10; i++) ...[
+              //         RoundButtonNumber(
+              //           index: i.toString(),
+              //           selectd: false,
+              //         ),
+              //       ],
+              //       RoundButtonIcon(icon: Icons.arrow_forward_ios),
+              //     ],
+              //   ),
+              // ),
             ],
           ),
         ),

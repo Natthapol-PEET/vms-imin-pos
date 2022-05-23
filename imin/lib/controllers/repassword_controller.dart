@@ -137,7 +137,7 @@ class RePasswordController extends GetxController {
     // print('oldPass:' + oldPasswordValue.value);
     // print('newPass:' + newPasswordValue.value);
     if (checkValidatePassword.value == true) {
-      print('username: $username');
+      // print('username: $username');
       var response = await changePasswordApi(
           username, oldPasswordValue.value, newPasswordValue.value);
       // print('success: ${checkChangePassword}');

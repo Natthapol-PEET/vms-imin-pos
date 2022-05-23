@@ -89,7 +89,7 @@ class ExpansionPanelController extends GetxController {
     // update content
     update(['aopbmsbbffdgkb']); // and then here
 
-    print('selected: $selected');
+    // print('selected: $selected');
   }
 
   setDefaultValues() {

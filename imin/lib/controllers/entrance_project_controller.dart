@@ -39,7 +39,7 @@ class EntranceProjectController extends GetxController {
       List<dynamic> values = <dynamic>[];
       values = dataEntrance;
       Map<String, dynamic> map = dataEntrance[0];
-      print('/${dataEntrance[0]['license_plate']}/');
+      // print('/${dataEntrance[0]['license_plate']}/');
     } catch (e) {
       print('error:${e}');
     }

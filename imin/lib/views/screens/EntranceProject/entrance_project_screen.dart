@@ -37,6 +37,7 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    controller.context = context;
 
     return CustomScrollView(
       slivers: [

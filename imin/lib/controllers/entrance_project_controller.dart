@@ -392,15 +392,16 @@ class EntranceProjectController extends GetxController {
             item.datetimeIn == null &&
             item.datetimeOut == null) ...[
           RoundButtonOutline(
-            title: 'เข้าโครงการ ${item.datetimeOut}',
+            title: 'เข้าโครงการ',
             press: () {
               checkDataList(item);
             },
           ),
         ] else if (item.listStatus == 'whitelist' &&
-            item.datetimeIn == null) ...[
+            (item.datetimeIn == null ||
+                (item.datetimeIn != null && item.datetimeOut != null))) ...[
           RoundButtonOutline(
-            title: 'เข้าโครงการ ',
+            title: 'เข้าโครงการ',
             press: () {
               checkDataList(item);
             },
@@ -410,7 +411,7 @@ class EntranceProjectController extends GetxController {
     );
   }
 
-  checkDataList(item) {
+  checkDataList(item) async {
     // print('data: ${item.listStatus}');
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(now);
@@ -419,15 +420,26 @@ class EntranceProjectController extends GetxController {
       // print('data visitorId: ${item.visitorId}');
       // print('data homeId: ${item.homeId}');
       // print('data formattedDate: ${formattedDate}');
-      checkInApi(item.listStatus, '${item.visitorId}', '${item.homeId}',
-          formattedDate, token);
+      var checkResponse = await checkInApi(item.listStatus, '${item.visitorId}',
+          '${item.homeId}', formattedDate, token);
+      if (checkResponse == true) {
+        EasyLoading.showSuccess('สำเร็จ');
+        Get.back();
+        return;
+      }
+      ;
     } else if (item.listStatus == 'whitelist') {
       // print('data: ${item.listStatus}');
       // print('data whitelistId: ${item.whitelistId}');
       // print('data homeId: ${item.homeId}');
       // print('data formattedDate: ${formattedDate}');
-      checkInApi(item.listStatus, '${item.whitelistId}', '${item.homeId}',
-          formattedDate, token);
+      var checkResponse = await checkInApi(item.listStatus,
+          '${item.whitelistId}', '${item.homeId}', formattedDate, token);
+      if (checkResponse == true) {
+        EasyLoading.showSuccess('สำเร็จ');
+        Get.back();
+        return;
+      }
     }
   }
 

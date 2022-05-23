@@ -10,26 +10,28 @@ Future checkInApi(String listStatus, String listId, String homeId,
     print('listId ${listId}');
     print('homeId ${homeId}');
     print('dateIn ${dateIn}');
-    return true;
-    // final response = await http.post(
-    //   Uri.parse(ipServer + '/guardhouse_checkin/'),
-    //   headers: <String, String>{
-    //     "Content-Type": "application/json",
-    //     "Authorization": "Bearer $token",
-    //   },
-    //   body: jsonEncode(<String, String>{
-    //     "classname": listStatus, "class_id": listId, "datetime_in": dateIn
-    //   }),
-    // );
+    // return true;
+    final response = await http.post(
+      Uri.parse(ipServer + '/guardhouse_checkin'),
+      headers: <String, String>{
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+      body: jsonEncode(<String, String>{
+        "classname": listStatus,
+        "class_id": listId,
+        "datetime_in": dateIn
+      }),
+    );
 
-    // print('response.statusCode: ${response.statusCode}');
+    print('response.statusCode: ${response.statusCode}');
 
-    // if (response.statusCode == 200) {
-    //   return LoginModel.fromJson(json.decode(utf8.decode(response.bodyBytes)));
-    // } else {
-    //   // throw Exception('Failed to load Profile');
-    //   return false;
-    // }
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      // throw Exception('Failed to load Profile');
+      return false;
+    }
   } catch (e) {
     print("e: $e");
     return false;

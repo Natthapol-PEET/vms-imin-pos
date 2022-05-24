@@ -62,6 +62,7 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: TextFormField(
+                        onChanged: (v) => controller.filterSearchResults(v),
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.search, color: Colors.black),
                           border: OutlineInputBorder(),
@@ -74,7 +75,6 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
                             borderSide: BorderSide(color: purpleBlueColor),
                           ),
                         ),
-                        onChanged: (e) => controller.filterSearchResults(e),
                       ),
                     ),
                     // TextButton(

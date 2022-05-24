@@ -27,6 +27,7 @@ class EntranceProjectController extends GetxController {
   var whitelistList = <WhitelistModel>[].obs;
   var blacklistList = <BlacklistModel>[].obs;
   var dataRow = <DataRow>[];
+  var searchValue = '';
 
   var logg = Get.put(LoginController());
 
@@ -37,6 +38,75 @@ class EntranceProjectController extends GetxController {
     token = logg.dataProfile.token;
 
     super.onInit();
+  }
+
+//
+  void filterSearchResults(String query) {
+    searchValue = query;
+    List<String> dummySearchList = [];
+    // dummySearchList.addAll(whitelistList);
+
+    var listToShow = [];
+    if (query.isNotEmpty) {
+      // print('filterSearchResults : ${whitelistList}');
+      query = query.toLowerCase();
+      print('query: ${query}');
+      List result = [];
+      visitorList.forEach((p) {
+        print('p.licensePlateV: ${p.licensePlate}');
+        var licensePlate = p.licensePlate.toString().toLowerCase();
+        var homeNumber = p.homeNumber.toString().toLowerCase();
+        var fullName = p.firstname.toString().toLowerCase() +
+            ' ' +
+            p.lastname.toString().toLowerCase();
+        if (homeNumber.contains(query) ||
+            licensePlate.contains(query) ||
+            fullName.contains(query)) {
+          result.add(p);
+        }
+      });
+      whitelistList.forEach((p) {
+        print('p.licensePlateW: ${p.licensePlate}');
+        var licensePlate = p.licensePlate.toString().toLowerCase();
+        var homeNumber = p.homeNumber.toString().toLowerCase();
+        var fullName = p.firstname.toString().toLowerCase() +
+            ' ' +
+            p.lastname.toString().toLowerCase();
+        if (homeNumber.contains(query) ||
+            licensePlate.contains(query) ||
+            fullName.contains(query)) {
+          result.add(p);
+        }
+      });
+      blacklistList.forEach((p) {
+        print('p.licensePlateB: ${p.licensePlate}');
+        var licensePlate = p.licensePlate.toString().toLowerCase();
+        var homeNumber = p.homeNumber.toString().toLowerCase();
+        var fullName = p.firstname.toString().toLowerCase() +
+            ' ' +
+            p.lastname.toString().toLowerCase();
+        if (homeNumber.contains(query) ||
+            licensePlate.contains(query) ||
+            fullName.contains(query)) {
+          result.add(p);
+        }
+      });
+      createRowSearch(result);
+      return;
+    } else {
+      print('query else: ${query}');
+      dataRow.clear();
+      visitorList.forEach((item) => dataRow.add(createDataRow(item)));
+      whitelistList.forEach((item) => dataRow.add(createDataRow(item)));
+      blacklistList.forEach((item) => dataRow.add(createDataRow(item)));
+      update(['update-enteance-data-row']);
+    }
+  }
+
+  void createRowSearch(List AllListData) {
+    dataRow.clear();
+    AllListData.forEach((item) => dataRow.add(createDataRow(item)));
+    update(['update-enteance-data-row']);
   }
 
 //allList
@@ -72,20 +142,22 @@ class EntranceProjectController extends GetxController {
     jSonBlacklist
         .forEach((item) => blacklistList.add(BlacklistModel.fromJson(item)));
 
-    createRows(visitorList, whitelistList, blacklistList);
-  }
-
-  void createRows(
-      List visitorListData, List whitelistListData, List blackListData) {
-    dataRow.clear();
-
-    whitelistListData.forEach((item) => dataRow.add(createDataRow(item)));
-    visitorListData.forEach((item) => dataRow.add(createDataRow(item)));
-    blackListData.forEach((item) => dataRow.add(createDataRow(item)));
-
-    update(['update-enteance-data-row']);
+    // createRows(visitorList, whitelistList, blacklistList);
+    filterSearchResults(searchValue);
     EasyLoading.dismiss();
   }
+
+  // void createRows(
+  //     List visitorListData, List whitelistListData, List blackListData) {
+  //   dataRow.clear();
+
+  //   whitelistListData.forEach((item) => dataRow.add(createDataRow(item)));
+  //   visitorListData.forEach((item) => dataRow.add(createDataRow(item)));
+  //   blackListData.forEach((item) => dataRow.add(createDataRow(item)));
+
+  //   update(['update-enteance-data-row']);
+  //   EasyLoading.dismiss();
+  // }
 
   DataRow createDataRow(item) {
     return DataRow(

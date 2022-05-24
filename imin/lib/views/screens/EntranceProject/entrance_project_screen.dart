@@ -74,6 +74,7 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
                             borderSide: BorderSide(color: purpleBlueColor),
                           ),
                         ),
+                        onChanged: (e) => controller.filterSearchResults(e),
                       ),
                     ),
                     // TextButton(

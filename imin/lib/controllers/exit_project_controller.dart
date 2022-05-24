@@ -5,11 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:imin/Functions/time_to_thai.dart';
+import 'package:imin/controllers/mqtt_controller.dart';
+import 'package:imin/functions/dialog_gate.dart';
 import 'package:imin/helpers/configs.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/models/visitor_model.dart';
 import 'package:imin/models/whitelist_model.dart';
 import 'package:imin/services/exit_service.dart';
+import 'package:imin/services/gate_service.dart';
+import 'package:imin/services/notification_service.dart';
 import 'package:imin/views/widgets/round_button.dart';
 import 'package:imin/views/widgets/round_button_outline.dart';
 
@@ -91,7 +95,7 @@ class ExitProjectController extends GetxController {
   }
 
   DataRow createDataRow(dynamic item) {
-    // print('item.firstname ${item.firstname}');
+    print('item.firstname ${item.firstname}');
 
     return DataRow(
       onSelectChanged: (state) => item.firstname == null
@@ -111,7 +115,7 @@ class ExitProjectController extends GetxController {
                 child: Text(item.firstname == null
                     ? "-"
                     : "${item.firstname} ${item.lastname}")))),
-        DataCell(Center(child: Text(item.homeNumber))),
+        DataCell(Center(child: Text(item.homeNumber ?? '-'))),
         DataCell(Center(
           child: Text(
               item.datetimeIn != null ? formatDateTime(item.datetimeIn) : '-'),
@@ -128,33 +132,6 @@ class ExitProjectController extends GetxController {
                 : item.datetimeOut == null
                     ? 'ได้รับการสแตมป์แล้ว'
                     : 'ออกจาากโครงการแล้ว',
-          ),
-        ),
-      ],
-    );
-  }
-
-  EasyDialog showDialogOpenGate(dynamic item) {
-    return EasyDialog(
-      contentPadding: EdgeInsets.symmetric(horizontal: 20),
-      width: 420,
-      height: 250,
-      closeButton: false,
-      contentListAlignment: CrossAxisAlignment.center,
-      contentList: [
-        Center(
-          child: Image.asset('assets/images/open-gate.png'),
-        ),
-        SizedBox(height: 10),
-        Center(
-          child: Text(
-            'ประตูโครงการเปิด',
-            style: TextStyle(
-              fontFamily: fontRegular,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
           ),
         ),
       ],
@@ -201,11 +178,26 @@ class ExitProjectController extends GetxController {
               title: 'ตกลง',
               press: () async {
                 // call exit project api
-                exitProjectApi(item.logId);
+                await exitProjectApi(item.logId);
+
+                // notification
+                sendNotification(item.licensePlate, "${item.firstname} ${item.lastname}", false);
+
+                // ------------ mqtt ---------------
+                final mqController = Get.put(MqttController());
+                mqController.publishMessage('web-to-app/1', 'CHECKOUT');
+                mqController.publishMessage('app-to-web', 'CHECKOUT');
+                // ------------ mqtt ---------------
 
                 Get.back();
                 showDialogOpenGate(item).show(context);
                 Timer(Duration(seconds: 3), () => Get.back());
+
+                // ----------- gate ------------------
+                gateController(gateBarrierOpenUrl);
+                Future.delayed(Duration(seconds: 8),
+                    () => gateController(gateBarrierCloseUrl));
+                // ----------- gate ------------------
               },
             ),
           ],
@@ -218,7 +210,7 @@ class ExitProjectController extends GetxController {
     return EasyDialog(
       contentPadding: EdgeInsets.symmetric(horizontal: 20),
       width: 400,
-      height: item.residentStamp == null ? 500 : 550,
+      height: item.residentStamp != null && item.datetimeOut == null ? 550 : 500,
       closeButton: false,
       contentList: [
         Row(
@@ -302,7 +294,7 @@ class ExitProjectController extends GetxController {
           ],
         ),
         SizedBox(height: 10),
-        if (item.residentStamp != null) ...[
+        if (item.residentStamp != null && item.datetimeOut == null) ...[
           RoundButtonOutline(
             title: 'ออกจากโครงการ',
             press: () {
@@ -319,7 +311,11 @@ class ExitProjectController extends GetxController {
     return EasyDialog(
       contentPadding: EdgeInsets.symmetric(horizontal: 20),
       width: 400,
-      height: item.residentStamp == null ? 300 : 350,
+      height: item.residentStamp == null
+          ? 300
+          : item.datetimeOut != null
+              ? 300
+              : 350,
       closeButton: false,
       contentListAlignment: CrossAxisAlignment.center,
       contentList: [
@@ -391,7 +387,7 @@ class ExitProjectController extends GetxController {
           ],
         ),
         SizedBox(height: 10),
-        if (item.residentStamp != null) ...[
+        if (item.residentStamp != null && item.datetimeOut == null) ...[
           RoundButtonOutline(
             title: 'ออกจากโครงการ',
             press: () {

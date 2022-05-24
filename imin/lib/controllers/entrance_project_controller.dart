@@ -33,6 +33,7 @@ class EntranceProjectController extends GetxController {
   var blacklistList = <BlacklistModel>[].obs;
   var dataRow = <DataRow>[];
   var searchValue = '';
+  var hasDataValue = false.obs;
 
   var logg = Get.put(LoginController());
 
@@ -55,10 +56,10 @@ class EntranceProjectController extends GetxController {
     if (query.isNotEmpty) {
       // print('filterSearchResults : ${whitelistList}');
       query = query.toLowerCase();
-      print('query: ${query}');
+      // print('query: ${query}');
       List result = [];
       visitorList.forEach((p) {
-        print('p.licensePlateV: ${p.licensePlate}');
+        // print('p.licensePlateV: ${p.licensePlate}');
         var licensePlate = p.licensePlate.toString().toLowerCase();
         var homeNumber = p.homeNumber.toString().toLowerCase();
         var fullName = p.firstname.toString().toLowerCase() +
@@ -71,7 +72,7 @@ class EntranceProjectController extends GetxController {
         }
       });
       whitelistList.forEach((p) {
-        print('p.licensePlateW: ${p.licensePlate}');
+        // print('p.licensePlateW: ${p.licensePlate}');
         var licensePlate = p.licensePlate.toString().toLowerCase();
         var homeNumber = p.homeNumber.toString().toLowerCase();
         var fullName = p.firstname.toString().toLowerCase() +
@@ -84,7 +85,7 @@ class EntranceProjectController extends GetxController {
         }
       });
       blacklistList.forEach((p) {
-        print('p.licensePlateB: ${p.licensePlate}');
+        // print('p.licensePlateB: ${p.licensePlate}');
         var licensePlate = p.licensePlate.toString().toLowerCase();
         var homeNumber = p.homeNumber.toString().toLowerCase();
         var fullName = p.firstname.toString().toLowerCase() +
@@ -99,7 +100,14 @@ class EntranceProjectController extends GetxController {
       createRowSearch(result);
       return;
     } else {
-      print('query else: ${query}');
+      if (visitorList.length > 0 ||
+          whitelistList.length > 0 ||
+          blacklistList.length > 0) {
+        hasDataValue.value = true;
+      } else {
+        hasDataValue.value = false;
+      }
+      // print('query else: ${query}');
       dataRow.clear();
       visitorList.forEach((item) => dataRow.add(createDataRow(item)));
       whitelistList.forEach((item) => dataRow.add(createDataRow(item)));
@@ -109,6 +117,12 @@ class EntranceProjectController extends GetxController {
   }
 
   void createRowSearch(List AllListData) {
+    if (AllListData.length > 0) {
+      hasDataValue.value = true;
+    } else {
+      hasDataValue.value = false;
+    }
+    // print('hasDataValue.value: ${hasDataValue.value}');
     dataRow.clear();
     AllListData.forEach((item) => dataRow.add(createDataRow(item)));
     update(['update-enteance-data-row']);
@@ -173,7 +187,7 @@ class EntranceProjectController extends GetxController {
                 : "${item.firstname} ${item.lastname}"))),
         DataCell(Center(child: Text(item.homeNumber))),
         DataCell(Container(
-            width: 150,
+            width: 138,
             child: Text(item.listStatus == 'visitor'
                 ? 'นัดหมายเข้าโครงการ'
                 : item.listStatus == 'whitelist'

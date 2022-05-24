@@ -134,15 +134,24 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
                       .copyWith(dividerColor: dividerTableColor),
                   child: GetBuilder<EntranceProjectController>(
                     id: 'update-enteance-data-row',
-                    builder: (c) => DataTable(
-                      showCheckboxColumn: false,
-                      dividerThickness: 0.5,
-                      columnSpacing: 30,
-                      headingRowColor: MaterialStateColor.resolveWith(
-                          (states) => purpleBlueColor),
-                      columns: c.createColumns(),
-                      // columns: _createColumns(),
-                      rows: c.dataRow,
+                    builder: (c) => Obx(
+                      () => Row(
+                        children: [
+                          DataTable(
+                            showCheckboxColumn: false,
+                            dividerThickness: 0.5,
+                            columnSpacing:
+                                (controller.hasDataValue.value == true)
+                                    ? 30
+                                    : 65.5,
+                            headingRowColor: MaterialStateColor.resolveWith(
+                                (states) => purpleBlueColor),
+                            columns: c.createColumns(),
+                            // columns: _createColumns(),
+                            rows: c.dataRow,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

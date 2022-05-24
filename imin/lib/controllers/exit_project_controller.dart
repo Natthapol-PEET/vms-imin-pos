@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -95,8 +97,6 @@ class ExitProjectController extends GetxController {
       onSelectChanged: (state) => item.firstname == null
           ? showDialogCard(item).show(context)
           : showDialogDetails(item).show(context),
-      // onSelectChanged: (state) => showDialogExitProject(item).show(context),
-      // onSelectChanged: (state) => showDialogOpenGate(item).show(context),
       cells: [
         DataCell(Center(
             child: Text(
@@ -125,7 +125,9 @@ class ExitProjectController extends GetxController {
           Text(
             item.residentStamp == null
                 ? 'ยังไม่ได้รับการแสตมป์'
-                : 'ได้รับการสแตมป์แล้ว',
+                : item.datetimeOut == null
+                    ? 'ได้รับการสแตมป์แล้ว'
+                    : 'ออกจาากโครงการแล้ว',
           ),
         ),
       ],
@@ -143,17 +145,15 @@ class ExitProjectController extends GetxController {
         Center(
           child: Image.asset('assets/images/open-gate.png'),
         ),
-        TextButton(
-          onPressed: () => Get.back(),
-          child: Center(
-            child: Text(
-              'ประตูโครงการเปิด',
-              style: TextStyle(
-                fontFamily: fontRegular,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
+        SizedBox(height: 10),
+        Center(
+          child: Text(
+            'ประตูโครงการเปิด',
+            style: TextStyle(
+              fontFamily: fontRegular,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
             ),
           ),
         ),
@@ -199,7 +199,14 @@ class ExitProjectController extends GetxController {
             ),
             RoundButton(
               title: 'ตกลง',
-              press: () => Get.back(),
+              press: () async {
+                // call exit project api
+                exitProjectApi(item.logId);
+
+                Get.back();
+                showDialogOpenGate(item).show(context);
+                Timer(Duration(seconds: 3), () => Get.back());
+              },
             ),
           ],
         ),
@@ -236,7 +243,24 @@ class ExitProjectController extends GetxController {
           ],
         ),
         Divider(color: dividerColor),
-        Image.network(ipServerIminService + '/card/' + item.qrGenId),
+        // Image.network(ipServerIminService + '/card/' + item.qrGenId),
+        Image.network(
+          ipServerIminService + '/card/' + item.qrGenId,
+          fit: BoxFit.fill,
+          loadingBuilder: (BuildContext context, Widget child,
+              ImageChunkEvent? loadingProgress) {
+            if (loadingProgress == null) return child;
+            return Center(
+              child: CircularProgressIndicator(
+                value: loadingProgress.expectedTotalBytes != null
+                    ? loadingProgress.cumulativeBytesLoaded /
+                        loadingProgress.expectedTotalBytes!
+                    : null,
+              ),
+            );
+          },
+        ),
+
         SizedBox(height: 20),
         Row(
           children: [
@@ -269,7 +293,9 @@ class ExitProjectController extends GetxController {
                 textDetial(
                   item.residentStamp == null
                       ? 'ยังไม่ได้รับการแสตมป์'
-                      : 'ได้รับการสแตมป์แล้ว',
+                      : item.datetimeOut == null
+                          ? 'ได้รับการสแตมป์แล้ว'
+                          : 'ออกจาากโครงการแล้ว',
                 ),
               ],
             ),
@@ -279,7 +305,10 @@ class ExitProjectController extends GetxController {
         if (item.residentStamp != null) ...[
           RoundButtonOutline(
             title: 'ออกจากโครงการ',
-            press: () {},
+            press: () {
+              Get.back();
+              showDialogExitProject(item).show(context);
+            },
           ),
         ],
       ],
@@ -365,7 +394,10 @@ class ExitProjectController extends GetxController {
         if (item.residentStamp != null) ...[
           RoundButtonOutline(
             title: 'ออกจากโครงการ',
-            press: () {},
+            press: () {
+              Get.back();
+              showDialogExitProject(item).show(context);
+            },
           ),
         ],
       ],

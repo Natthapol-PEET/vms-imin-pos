@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:imin/controllers/exit_project_controller.dart';
-import 'package:imin/controllers/mqtt_controller.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/views/widgets/popup_item.dart';
 import 'package:imin/views/widgets/title_content.dart';
@@ -19,6 +18,8 @@ class _ExitProjectScreenState extends State<ExitProjectScreen> {
 
   @override
   void initState() {
+    controller.getExitData();
+
     super.initState();
   }
 

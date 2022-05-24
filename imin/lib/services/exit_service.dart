@@ -20,3 +20,26 @@ Future getExitDataApi() async {
     return false;
   }
 }
+
+Future exitProjectApi(int logId) async {
+  String uri = ipServerIminService + '/exit_project';
+
+  try {
+    final response = await http.post(
+      Uri.parse(uri),
+      headers: <String, String>{
+        "Content-Type": "application/json",
+        // "Authorization": "Bearer $token",
+      },
+      body: jsonEncode(<String, int>{
+        'logId': logId,
+      }),
+    );
+
+    return response.statusCode;
+    // return json.decode(utf8.decode(response.bodyBytes));
+  } catch (e) {
+    print("e: $e");
+    return false;
+  }
+}

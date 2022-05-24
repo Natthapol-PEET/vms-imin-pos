@@ -225,7 +225,8 @@ class EntranceProjectController extends GetxController {
           ],
         ),
         Divider(color: dividerColor),
-        Image.network(ipServerIminService + '/card/' + 'V06268717687038480523'),
+        // Image.network(ipServerIminService + '/card/' + 'V06268717687038480523'),
+        Image.network(ipServerIminService + '/card/' + item.qrGenId),
         SizedBox(height: 20),
         Row(
           children: [

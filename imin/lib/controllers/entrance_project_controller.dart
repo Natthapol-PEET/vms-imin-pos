@@ -40,7 +40,7 @@ class EntranceProjectController extends GetxController {
     super.onInit();
   }
 
-//
+// search
   void filterSearchResults(String query) {
     searchValue = query;
     List<String> dummySearchList = [];
@@ -109,21 +109,6 @@ class EntranceProjectController extends GetxController {
     update(['update-enteance-data-row']);
   }
 
-//allList
-  getDataEntrance() async {
-    try {
-      EasyLoading.show(status: 'โหลดข้อมูล ...');
-
-      dataEntrance = await getEntranceProjectApi(token);
-      List<dynamic> values = <dynamic>[];
-      values = dataEntrance;
-      Map<String, dynamic> map = dataEntrance[0];
-      // print('/${dataEntrance[0]['license_plate']}/');
-    } catch (e) {
-      print('error:${e}');
-    }
-  }
-
 //3 List
   getEntranceData() async {
     EasyLoading.show(status: 'โหลดข้อมูล ...');
@@ -147,18 +132,20 @@ class EntranceProjectController extends GetxController {
     EasyLoading.dismiss();
   }
 
-  // void createRows(
-  //     List visitorListData, List whitelistListData, List blackListData) {
-  //   dataRow.clear();
+  /// create row not use
+  void createRows(
+      List visitorListData, List whitelistListData, List blackListData) {
+    dataRow.clear();
 
-  //   whitelistListData.forEach((item) => dataRow.add(createDataRow(item)));
-  //   visitorListData.forEach((item) => dataRow.add(createDataRow(item)));
-  //   blackListData.forEach((item) => dataRow.add(createDataRow(item)));
+    whitelistListData.forEach((item) => dataRow.add(createDataRow(item)));
+    visitorListData.forEach((item) => dataRow.add(createDataRow(item)));
+    blackListData.forEach((item) => dataRow.add(createDataRow(item)));
 
-  //   update(['update-enteance-data-row']);
-  //   EasyLoading.dismiss();
-  // }
+    update(['update-enteance-data-row']);
+    EasyLoading.dismiss();
+  }
 
+//////////// get to table
   DataRow createDataRow(item) {
     return DataRow(
       onSelectChanged: (state) => item.firstname == null
@@ -213,49 +200,7 @@ class EntranceProjectController extends GetxController {
     );
   }
 
-// all List
-  DataRow createDataRowAllList(item) {
-    return DataRow(
-      onSelectChanged: (state) => print('พห 5418'),
-      cells: [
-        DataCell(Text(item['id_card'] != null && item['id_card'] != ""
-            ? '${item['id_card']}'
-            : '-')),
-        DataCell(
-            // Text('${item['license_plate'] ?? "-"}')),
-            Text(item['license_plate'] != null
-                ? '${item['license_plate']}'
-                : '-')),
-        DataCell(Text('${item['firstname'] ?? "-"} ${item['lastname'] ?? ""}')),
-        DataCell(Text('${item['home_number'] ?? "-"}')),
-        DataCell(Text(item['visitor_id'] != null
-            ? 'นัดหมายเข้าโครงการ'
-            : item['whitelist_id'] != null
-                ? 'รับเชิญพิเศษ'
-                : 'ไม่มีสิทธิ์เข้าโครงการ')),
-        DataCell(Text((item['visitor_id'] != null)
-            ? item['invite_date']
-            : (item['whitelist_id'] != null)
-                ? '-'
-                : '-')),
-        DataCell(Text((item['visitor_id'] != null)
-            ? (item['datetime_in'] != null)
-                ? (item['datetime_out'] != null)
-                    ? 'ออกจากโครงการ'
-                    : 'อยู่ในโครงการ'
-                : 'รอดำเนินการ'
-            : (item['whitelist_id'] != null)
-                ? (item['datetime_in'] != null)
-                    ? (item['datetime_out'] != null)
-                        ? 'รอดำเนินการ'
-                        : 'อยู่ในโครงการ'
-                    : 'รอดำเนินการ'
-                : '-')),
-      ],
-    );
-  }
-
-//
+////////// dialog detail when clck
   EasyDialog showDialogCard(dynamic item) {
     return EasyDialog(
       contentPadding: EdgeInsets.symmetric(horizontal: 20),
@@ -491,15 +436,13 @@ class EntranceProjectController extends GetxController {
     );
   }
 
+//////////////
+  /// user entrance to project
   checkDataList(item) async {
     // print('data: ${item.listStatus}');
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(now);
     if (item.listStatus == 'visitor') {
-      // print('data: ${item.listStatus}');
-      // print('data visitorId: ${item.visitorId}');
-      // print('data homeId: ${item.homeId}');
-      // print('data formattedDate: ${formattedDate}');
       var checkResponse = await checkInApi(item.listStatus, '${item.visitorId}',
           '${item.homeId}', formattedDate, token);
       if (checkResponse == true) {
@@ -509,10 +452,6 @@ class EntranceProjectController extends GetxController {
       }
       ;
     } else if (item.listStatus == 'whitelist') {
-      // print('data: ${item.listStatus}');
-      // print('data whitelistId: ${item.whitelistId}');
-      // print('data homeId: ${item.homeId}');
-      // print('data formattedDate: ${formattedDate}');
       var checkResponse = await checkInApi(item.listStatus,
           '${item.whitelistId}', '${item.homeId}', formattedDate, token);
       if (checkResponse == true) {
@@ -523,6 +462,7 @@ class EntranceProjectController extends GetxController {
     }
   }
 
+  ///
   Padding textDetial(String text) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
@@ -537,6 +477,7 @@ class EntranceProjectController extends GetxController {
     );
   }
 
+  /// create column table
   List<DataColumn> createColumns() {
     List headerItems = [
       'เลขประจำตัวประชาชน',
@@ -561,4 +502,64 @@ class EntranceProjectController extends GetxController {
             )))
         .toList();
   }
+
+  ////////////////////////////
+  /////allList (not use)
+  getDataEntrance() async {
+    try {
+      EasyLoading.show(status: 'โหลดข้อมูล ...');
+
+      dataEntrance = await getEntranceProjectApi(token);
+      List<dynamic> values = <dynamic>[];
+      values = dataEntrance;
+      Map<String, dynamic> map = dataEntrance[0];
+      // print('/${dataEntrance[0]['license_plate']}/');
+    } catch (e) {
+      print('error:${e}');
+    }
+  }
+
+  // all List (not use)
+  DataRow createDataRowAllList(item) {
+    return DataRow(
+      onSelectChanged: (state) => print('พห 5418'),
+      cells: [
+        DataCell(Text(item['id_card'] != null && item['id_card'] != ""
+            ? '${item['id_card']}'
+            : '-')),
+        DataCell(
+            // Text('${item['license_plate'] ?? "-"}')),
+            Text(item['license_plate'] != null
+                ? '${item['license_plate']}'
+                : '-')),
+        DataCell(Text('${item['firstname'] ?? "-"} ${item['lastname'] ?? ""}')),
+        DataCell(Text('${item['home_number'] ?? "-"}')),
+        DataCell(Text(item['visitor_id'] != null
+            ? 'นัดหมายเข้าโครงการ'
+            : item['whitelist_id'] != null
+                ? 'รับเชิญพิเศษ'
+                : 'ไม่มีสิทธิ์เข้าโครงการ')),
+        DataCell(Text((item['visitor_id'] != null)
+            ? item['invite_date']
+            : (item['whitelist_id'] != null)
+                ? '-'
+                : '-')),
+        DataCell(Text((item['visitor_id'] != null)
+            ? (item['datetime_in'] != null)
+                ? (item['datetime_out'] != null)
+                    ? 'ออกจากโครงการ'
+                    : 'อยู่ในโครงการ'
+                : 'รอดำเนินการ'
+            : (item['whitelist_id'] != null)
+                ? (item['datetime_in'] != null)
+                    ? (item['datetime_out'] != null)
+                        ? 'รอดำเนินการ'
+                        : 'อยู่ในโครงการ'
+                    : 'รอดำเนินการ'
+                : '-')),
+      ],
+    );
+  }
+
+//
 }

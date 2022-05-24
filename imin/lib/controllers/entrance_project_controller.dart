@@ -280,6 +280,16 @@ class EntranceProjectController extends GetxController {
           ],
         ),
         SizedBox(height: 10),
+        if (item.listStatus == 'visitor' &&
+            item.datetimeIn == null &&
+            item.datetimeOut == null) ...[
+          RoundButtonOutline(
+            title: 'เข้าโครงการ',
+            press: () {
+              checkDataList(item);
+            },
+          ),
+        ]
       ],
     );
   }

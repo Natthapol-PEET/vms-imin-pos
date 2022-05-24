@@ -22,83 +22,14 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
   final uploadController = Get.put(UploadPersonalController());
 
   syncFunction() async {
-    controller.getEntranceData();
-  }
-
-  List<dynamic> values = <dynamic>[];
-  final List<Map<String, String>> _data = [
-    {'Country': 'China', 'Population': '1400'},
-    {'Country': 'India', 'Population': '1360'},
-  ];
-  // final List _data = Get.put(EntranceProjectController()).dataEntrance;
-  late List<String> _columnNames;
-
-  void _addColumn(String newColumn) {
-    if (_columnNames.contains(newColumn)) {
-      return;
-    }
-    setState(() {
-      for (var i = 0; i <= _data.length - 1; i++) {
-        _data[i][newColumn] = '';
-      }
-      _columnNames.add(newColumn);
-    });
-  }
-
-  void _removeColumn(String oldColumn) {
-    if (_columnNames.length == 1 || !_columnNames.contains(oldColumn)) {
-      return;
-    }
-    setState(() {
-      for (var i = 0; i <= _data.length - 1; i++) {
-        _data[i].remove(oldColumn);
-      }
-      _columnNames.remove(oldColumn);
-    });
-  }
-
-  void _addRow(Map<String, String> newRow) {
-    _columnNames.forEach((colName) {
-      if (!newRow.containsKey(colName)) {
-        newRow[colName] = '';
-      }
-    });
-
-    setState(() {
-      _data.add(newRow);
-    });
+    // controller.getDataEntrance(); //Allist
+    controller.getEntranceData(); // 3 list
   }
 
   @override
   void initState() {
-    _columnNames = _data[0].keys.toList();
     syncFunction();
     super.initState();
-  }
-
-  List<DataColumn> _createColumns() {
-    List headerItems = [
-      'เลขประจำตัวประชาชน',
-      'เลขทะเบียนรถ',
-      'ชื่อ - นามสกุล',
-      'บ้านเลขที่',
-      'ระดับ',
-      'วันที่นัดหมาย',
-      'สถานะ',
-      // 'สถานะ2',
-    ];
-
-    return headerItems
-        .map((item) => DataColumn(
-                label: Text(
-              item,
-              style: TextStyle(
-                  fontFamily: fontRegular,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  color: Colors.white),
-            )))
-        .toList();
   }
 
   TextEditingController findControl = TextEditingController();
@@ -106,6 +37,7 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    controller.context = context;
 
     return CustomScrollView(
       slivers: [
@@ -145,8 +77,8 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
                       ),
                     ),
                     // TextButton(
-                    //     // onPressed: () => controller.getDataEntrance(),
-                    //     onPressed: () => controller.getEntranceData(),
+                    //     onPressed: () => controller.getDataEntrance(),
+                    //     // onPressed: () => controller.getEntranceData(),
                     //     child: Text('pulldata')),
                     Row(
                       // mainAxisAlignment: MainAxisAlignment.end,
@@ -210,103 +142,8 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
                       columns: c.createColumns(),
                       // columns: _createColumns(),
                       rows: c.dataRow,
-                      // rows: controller.dataEntrance
-                      //     .map(
-                      //       (entry) => DataRow(
-                      //         cells: [
-                      //           DataCell(Text(entry['id_card'] != null &&
-                      //                   entry['id_card'] != ""
-                      //               ? '${entry['id_card']}'
-                      //               : '-')),
-                      //           DataCell(
-                      //               // Text('${entry['license_plate'] ?? "-"}')),
-                      //               Text(entry['license_plate'] != null
-                      //                   ? '${entry['license_plate']}'
-                      //                   : '-')),
-                      //           DataCell(Text(
-                      //               '${entry['firstname'] ?? "-"} ${entry['lastname'] ?? ""}')),
-                      //           DataCell(
-                      //               Text('${entry['home_number'] ?? "-"}')),
-                      //           DataCell(Text(entry['visitor_id'] != null
-                      //               ? 'นัดหมายเข้าโครงการ'
-                      //               : entry['whitelist_id'] != null
-                      //                   ? 'รับเชิญพิเศษ'
-                      //                   : 'ไม่มีสิทธิ์เข้าโครงการ')),
-                      //           DataCell(Text((entry['visitor_id'] != null)
-                      //               ? entry['invite_date']
-                      //               : (entry['whitelist_id'] != null)
-                      //                   ? '-'
-                      //                   : '-')),
-                      //           DataCell(Text((entry['visitor_id'] != null)
-                      //               ? (entry['datetime_in'] != null)
-                      //                   ? (entry['datetime_out'] != null)
-                      //                       ? 'ออกจากโครงการ'
-                      //                       : 'อยู่ในโครงการ'
-                      //                   : 'รอดำเนินการ'
-                      //               : (entry['whitelist_id'] != null)
-                      //                   ? (entry['datetime_in'] != null)
-                      //                       ? (entry['datetime_out'] != null)
-                      //                           ? 'รอดำเนินการ'
-                      //                           : 'อยู่ในโครงการ'
-                      //                       : 'รอดำเนินการ'
-                      //                   : '-')),
-                      //         ],
-                      //       ),
-                      //     )
-                      //     .toList(),
                     ),
                   ),
-                  // DataTable(
-                  //   dividerThickness: 0.5,
-                  //   columnSpacing: 40,
-                  //   headingRowColor: MaterialStateColor.resolveWith(
-                  //       (states) => purpleBlueColor),
-                  //   columns: _createColumns(),
-                  //   ///////////////////////////
-                  //   rows: controller.dataEntrance
-                  //       .map(
-                  //         (entry) => DataRow(
-                  //           cells: [
-                  //             DataCell(Text(entry['id_card'] != null &&
-                  //                     entry['id_card'] != ""
-                  //                 ? '${entry['id_card']}'
-                  //                 : '-')),
-                  //             DataCell(
-                  //                 // Text('${entry['license_plate'] ?? "-"}')),
-                  //                 Text(entry['license_plate'] != null
-                  //                     ? '${entry['license_plate']}'
-                  //                     : '-')),
-                  //             DataCell(Text(
-                  //                 '${entry['firstname'] ?? "-"} ${entry['lastname'] ?? ""}')),
-                  //             DataCell(Text('${entry['home_number'] ?? "-"}')),
-                  //             DataCell(Text(entry['visitor_id'] != null
-                  //                 ? 'นัดหมายเข้าโครงการ'
-                  //                 : entry['whitelist_id'] != null
-                  //                     ? 'รับเชิญพิเศษ'
-                  //                     : 'ไม่มีสิทธิ์เข้าโครงการ')),
-                  //             DataCell(Text((entry['visitor_id'] != null)
-                  //                 ? entry['invite_date']
-                  //                 : (entry['whitelist_id'] != null)
-                  //                     ? '-'
-                  //                     : '-')),
-                  //             DataCell(Text((entry['visitor_id'] != null)
-                  //                 ? (entry['datetime_in'] != null)
-                  //                     ? (entry['datetime_out'] != null)
-                  //                         ? 'ออกจากโครงการ'
-                  //                         : 'อยู่ในโครงการ'
-                  //                     : 'รอดำเนินการ'
-                  //                 : (entry['whitelist_id'] != null)
-                  //                     ? (entry['datetime_in'] != null)
-                  //                         ? (entry['datetime_out'] != null)
-                  //                             ? 'รอดำเนินการ'
-                  //                             : 'อยู่ในโครงการ'
-                  //                         : 'รอดำเนินการ'
-                  //                     : '-')),
-                  //           ],
-                  //         ),
-                  //       )
-                  //       .toList(),
-                  // ),
                 ),
               ),
             ],

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:imin/controllers/entrance_project_controller.dart';
 import 'package:imin/controllers/exit_project_controller.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
@@ -39,7 +40,7 @@ class MqttController extends GetxController {
   void onConnected() {
     print('Connected');
 
-    client.subscribe('web-to-app', MqttQos.atMostOnce);
+    client.subscribe('app-to-web', MqttQos.atMostOnce);
 
     client.updates.listen((List<MqttReceivedMessage<MqttMessage>> c) {
       MqttPublishMessage message = c[0].payload as MqttPublishMessage;
@@ -49,11 +50,27 @@ class MqttController extends GetxController {
 
       print('Received message:$payload from topic: ${c[0].topic}>');
 
-      if (payload == 'RESIDENT_STAMP' || payload == 'CHECKOUT') {
-        final exitController = Get.put(ExitProjectController());
-        exitController.getExitData();
-      }
+      // if (payload == 'RESIDENT_STAMP' || payload == 'CHECKOUT') {
+      //   final exitController = Get.put(ExitProjectController());
+      //   exitController.getExitData();
+      // }
+      final entranceController = Get.put(EntranceProjectController());
+      entranceController.getEntranceData();
+
+      final exitController = Get.put(ExitProjectController());
+      exitController.getExitData();
     });
+  }
+
+  publishMessage(String topic, String message) {
+    try {
+      final builder1 = MqttClientPayloadBuilder();
+      builder1.addString(message);
+      print('EXAMPLE:: <<<< PUBLISH 1 >>>>');
+      client.publishMessage(topic, MqttQos.atLeastOnce, builder1.payload!);
+    } catch (e) {
+      print("publishMessage: $e");
+    }
   }
 
 // unconnected

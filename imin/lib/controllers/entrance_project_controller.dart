@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:easy_dialog/easy_dialog.dart';
@@ -5,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:imin/controllers/login_controller.dart';
+import 'package:imin/controllers/mqtt_controller.dart';
+import 'package:imin/functions/dialog_gate.dart';
 import 'package:imin/helpers/configs.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/models/blacklist_model.dart';
@@ -13,10 +16,12 @@ import 'package:imin/models/login_model.dart';
 import 'package:imin/models/visitor_model.dart';
 import 'package:imin/models/whitelist_model.dart';
 import 'package:imin/services/checkin_service.dart';
+import 'package:imin/services/gate_service.dart';
 import 'package:imin/services/get_enteance_project_blacklist_service.dart';
 import 'package:imin/services/get_enteance_project_service.dart';
 import 'package:imin/services/get_enteance_project_visitor_service.dart';
 import 'package:imin/services/get_enteance_project_whitelist_service.dart';
+import 'package:imin/services/notification_service.dart';
 import 'package:imin/views/widgets/round_button_outline.dart';
 import 'package:intl/intl.dart';
 
@@ -447,16 +452,57 @@ class EntranceProjectController extends GetxController {
           '${item.homeId}', formattedDate, token);
       if (checkResponse == true) {
         EasyLoading.showSuccess('สำเร็จ');
+
+        // notification
+        sendNotification(
+            item.licensePlate, "${item.firstname} ${item.lastname}", true);
+
+        // ------------ mqtt ---------------
+        final mqController = Get.put(MqttController());
+        mqController.publishMessage('web-to-app/1', 'INVITE_VISITOR');
+        mqController.publishMessage('web-to-app/1', 'COMING_WALK_IN');
+        mqController.publishMessage('web-to-web', 'UPDATE');
+        // ------------ mqtt ---------------
+
         Get.back();
+        showDialogOpenGate(item).show(context);
+        Timer(Duration(seconds: 3), () => Get.back());
+
+        // ----------- gate ------------------
+        gateController(gateBarrierOpenUrl);
+        Future.delayed(
+            Duration(seconds: 8), () => gateController(gateBarrierCloseUrl));
+        // ----------- gate ------------------
+
         return;
       }
-      ;
     } else if (item.listStatus == 'whitelist') {
       var checkResponse = await checkInApi(item.listStatus,
           '${item.whitelistId}', '${item.homeId}', formattedDate, token);
       if (checkResponse == true) {
         EasyLoading.showSuccess('สำเร็จ');
+
+        // notification
+        sendNotification(
+            item.licensePlate, "${item.firstname} ${item.lastname}", true);
+
+        // ------------ mqtt ---------------
+        final mqController = Get.put(MqttController());
+        mqController.publishMessage('web-to-app/1', 'INVITE_VISITOR');
+        mqController.publishMessage('web-to-app/1', 'COMING_WALK_IN');
+        mqController.publishMessage('web-to-web', 'UPDATE');
+        // ------------ mqtt ---------------
+
         Get.back();
+        showDialogOpenGate(item).show(context);
+        Timer(Duration(seconds: 3), () => Get.back());
+
+        // ----------- gate ------------------
+        gateController(gateBarrierOpenUrl);
+        Future.delayed(
+            Duration(seconds: 8), () => gateController(gateBarrierCloseUrl));
+        // ----------- gate ------------------
+
         return;
       }
     }

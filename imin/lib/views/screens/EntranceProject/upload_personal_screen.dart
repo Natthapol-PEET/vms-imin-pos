@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +8,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:imin/controllers/camera_controller.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/controllers/login_controller.dart';
+import 'package:imin/controllers/mqtt_controller.dart';
 import 'package:imin/controllers/upload_personal_controller.dart';
+import 'package:imin/functions/dialog_gate.dart';
+import 'package:imin/helpers/configs.dart';
 import 'package:imin/helpers/constance.dart';
+import 'package:imin/services/gate_service.dart';
 import 'package:imin/views/widgets/round_button.dart';
 import 'package:imin/views/widgets/round_button_outline.dart';
 import 'entrance_project_screen.dart';
@@ -378,7 +383,13 @@ class NextInput extends StatelessWidget {
                             EasyLoading.showSuccess(
                                 'บันทึกข้อมูลเรียบร้อยแล้ว');
 
-                            dialogPrinter(size).show(context);
+                            // ------------ mqtt ---------------
+                            final mqController = Get.put(MqttController());
+                            mqController.publishMessage(
+                                'web-to-app/1', 'INVITE_VISITOR');
+                            // ------------ mqtt ---------------
+
+                            dialogPrinter(size, context).show(context);
                           } else {
                             String text = jsonDecode(response.body)['detail'];
 
@@ -398,7 +409,7 @@ class NextInput extends StatelessWidget {
     );
   }
 
-  EasyDialog dialogPrinter(Size size) {
+  EasyDialog dialogPrinter(Size size, BuildContext context) {
     return EasyDialog(
       width: 400,
       height: size.height * 0.6,
@@ -458,11 +469,21 @@ class NextInput extends StatelessWidget {
         Center(
           child: GetBuilder<ExpansionPanelController>(
             builder: (c) => RoundButtonOutline(
-              title: 'กลับสู่หน้าหลัก',
+              title: 'เปิดไม้กั้น',
               press: () {
                 Get.back();
-                c.currentContent = EntranceProjectScreen();
-                c.update(['aopbmsbbffdgkb']);
+                showDialogOpenGate([]).show(context);
+                Timer(Duration(seconds: 3), () {
+                  Get.back();
+                  c.currentContent = EntranceProjectScreen();
+                  c.update(['aopbmsbbffdgkb']);
+                });
+
+                // ----------- gate ------------------
+                gateController(gateBarrierOpenUrl);
+                Future.delayed(Duration(seconds: 8),
+                    () => gateController(gateBarrierCloseUrl));
+                // ----------- gate ------------------
               },
             ),
           ),

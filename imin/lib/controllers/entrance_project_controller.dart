@@ -193,27 +193,33 @@ class EntranceProjectController extends GetxController {
                 : item.listStatus == 'whitelist'
                     ? 'รับเชิญพิเศษ'
                     : 'ไม่มีสิทธิ์เข้าโครงการ'))),
-        DataCell(Center(
-          child: Text((item.listStatus == 'visitor')
-              ? item.inviteDate
-              : (item.listStatus == 'whitelist')
-                  ? '-'
-                  : '-'),
+        DataCell(Container(
+          width: 77,
+          child: Center(
+            child: Text((item.listStatus == 'visitor')
+                ? item.inviteDate
+                : (item.listStatus == 'whitelist')
+                    ? '-'
+                    : '-'),
+          ),
         )),
         DataCell(
-          Text((item.listStatus == 'visitor')
-              ? (item.datetimeIn != null)
-                  ? (item.datetimeOut != null)
-                      ? 'ออกจากโครงการ'
-                      : 'อยู่ในโครงการ'
-                  : 'รอดำเนินการ'
-              : (item.listStatus == 'whitelist')
-                  ? (item.datetimeIn != null)
-                      ? (item.datetimeOut != null)
-                          ? 'รอดำเนินการ'
-                          : 'อยู่ในโครงการ'
-                      : 'รอดำเนินการ'
-                  : '-'),
+          Container(
+            width: 108,
+            child: Text((item.listStatus == 'visitor')
+                ? (item.datetimeIn != null)
+                    ? (item.datetimeOut != null)
+                        ? 'ออกจากโครงการ'
+                        : 'อยู่ในโครงการ'
+                    : 'รอดำเนินการ'
+                : (item.listStatus == 'whitelist')
+                    ? (item.datetimeIn != null)
+                        ? (item.datetimeOut != null)
+                            ? 'รอดำเนินการ'
+                            : 'อยู่ในโครงการ'
+                        : 'รอดำเนินการ'
+                    : '-'),
+          ),
         ),
       ],
     );

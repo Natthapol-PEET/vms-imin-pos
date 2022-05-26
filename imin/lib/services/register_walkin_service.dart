@@ -2,14 +2,15 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:imin/helpers/configs.dart';
 
-Future registerWalkinApi(String code, String homeNumber, String licensePlate,
-    int guardId) async {
+Future registerWalkinApi(String code, String idCard, String homeNumber,
+    String licensePlate, int guardId) async {
   try {
     final response = await http.post(
       Uri.parse(ipServerIminService + '/register_walkin'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(<String, String>{
         "code": code,
+        "idCard": idCard,
         "homeNumber": homeNumber,
         "licensePlate": licensePlate,
         "guardId": guardId.toString(),

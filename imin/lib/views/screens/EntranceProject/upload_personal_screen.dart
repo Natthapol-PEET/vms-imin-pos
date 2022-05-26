@@ -217,6 +217,8 @@ class UploadCard extends StatelessWidget {
                   width: 100,
                   title: 'ยกเลิก',
                   press: () {
+                    cameraController.imageUrl.value = "";
+                    uploadPersonalController.initValue();
                     c.currentContent = EntranceProjectScreen();
                     c.update(['aopbmsbbffdgkb']);
                   },
@@ -290,8 +292,20 @@ class NextInput extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextInputAddVisitor(
+                  title: 'เลขประจำตัวประชาชน',
+                  hintText: 'กรุณากรอกเลขประจำตัวประชาชน',
+                  initValue: uploadPersonalController.idCard.value,
+                  onChanged: (v) => uploadPersonalController.idCard.value = v,
+                ),
+                Obx(
+                  () => uploadPersonalController.checkIdCard.value
+                      ? Container()
+                      : ShowEarningText(
+                          text: '*กรุณากรอกและตรวจสอบเลขประจำตัวประชาชน'),
+                ),
+                TextInputAddVisitor(
                   title: 'บ้านเลขที่',
-                  hintText: 'กรุณาพิมพ์บ้านเลขที่',
+                  hintText: 'กรุณากรอกบ้านเลขที่',
                   initValue: uploadPersonalController.homeNumber.value,
                   onChanged: (v) =>
                       uploadPersonalController.homeNumber.value = v,
@@ -316,33 +330,19 @@ class NextInput extends StatelessWidget {
                 //         )
                 //       : Container(),
                 // ),
-                // Obx(
-                //   () => TextInputAddVisitor(
-                //     title: 'เลขประจำตัวประชาชน',
-                //     hintText: '',
-                //     initValue: cameraController.response['idCard'],
-                //   ),
-                // ),
-                // Obx(
-                //   () => cameraController.imageUrl.value != ""
-                //       ? ShowEarningText(
-                //           text: 'กรุณาตรวจสอบเลขประจำตัวประชาชน',
-                //           color: Colors.orange,
-                //         )
-                //       : Container(),
-                // ),
+
                 TextInputAddVisitor(
                   title: 'เลขทะเบียนรถ',
-                  hintText: 'กรุณาพิมพ์เลขทะเบียนรถ',
+                  hintText: 'กรุณากรอกเลขทะเบียนรถ',
                   initValue: uploadPersonalController.licensePlate.value,
                   onChanged: (v) =>
                       uploadPersonalController.licensePlate.value = v,
                 ),
-                Obx(
-                  () => uploadPersonalController.checkLicensePlate.value
-                      ? Container()
-                      : ShowEarningText(text: '*กรุณากรอกเลขทะเบียนรถ'),
-                ),
+                // Obx(
+                //   () => uploadPersonalController.checkLicensePlate.value
+                //       ? Container()
+                //       : ShowEarningText(text: '*กรุณากรอกเลขทะเบียนรถ'),
+                // ),
               ],
             ),
           ],
@@ -391,7 +391,8 @@ class NextInput extends StatelessWidget {
 
                             dialogPrinter(size, context).show(context);
                           } else {
-                            String text = jsonDecode(response.body)['detail'];
+                            String text = jsonDecode(
+                                utf8.decode(response.bodyBytes))['detail'];
 
                             EasyLoading.showInfo(text == 'Invalid Home'
                                 ? 'ไม่มีข้อมูลบ้านเลขที่นี้'
@@ -541,7 +542,7 @@ class TextInputAddVisitor extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 12),
+          padding: const EdgeInsets.only(top: 15),
           child: Text(
             title,
             style: TextStyle(

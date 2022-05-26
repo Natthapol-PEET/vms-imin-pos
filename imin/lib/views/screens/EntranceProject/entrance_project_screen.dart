@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:imin/controllers/camera_controller.dart';
 import 'package:imin/controllers/entrance_project_controller.dart';
-import 'package:imin/controllers/exit_project_controller.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/controllers/upload_personal_controller.dart';
 import 'package:imin/helpers/constance.dart';
@@ -19,7 +19,6 @@ class EntranceProjectScreen extends StatefulWidget {
 
 class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
   final controller = Get.put(EntranceProjectController());
-  final uploadController = Get.put(UploadPersonalController());
 
   syncFunction() async {
     // controller.getDataEntrance(); //Allist
@@ -94,7 +93,6 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
                               ),
                             ),
                             onPressed: () {
-                              uploadController.initValue();
                               c.currentContent = UploadPersonalScreen();
                               c.update(['aopbmsbbffdgkb']);
                             },
@@ -162,24 +160,4 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
       ],
     );
   }
-}
-
-class Item {
-  Item({
-    required this.id_card,
-    required this.license,
-    required this.fullname,
-    required this.home_number,
-    required this.level_status,
-    required this.date_in,
-    required this.status,
-  });
-
-  String id_card;
-  String license;
-  String fullname;
-  String home_number;
-  String level_status;
-  String date_in;
-  String status;
 }

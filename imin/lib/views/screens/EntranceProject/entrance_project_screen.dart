@@ -8,6 +8,7 @@ import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/controllers/upload_personal_controller.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/views/screens/EntranceProject/upload_personal_screen.dart';
+import 'package:imin/views/screens/ExitProject/exit_project_screen.dart';
 import 'package:imin/views/widgets/title_content.dart';
 
 class EntranceProjectScreen extends StatefulWidget {
@@ -154,6 +155,43 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
                   ),
                 ),
               ),
+// Button Group
+              Obx(() => Container(
+                    margin: EdgeInsets.symmetric(horizontal: size.width * 0.03),
+                    padding: EdgeInsets.only(bottom: size.height * 0.03),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        RoundButtonIcon(
+                          icon: Icons.arrow_back_ios_new,
+                          onClick: () => controller.onClickBackPaging(),
+                          // onClick: () {},
+                        ),
+                        for (int i = controller.startPaging.value-1;
+                            i <
+                                (controller.totalPagingNumber.value < (controller.startPaging.value + controller.pagingRange.value)
+                                    ? controller.totalPagingNumber.value == 1
+                                        ? 1
+                                        : controller.totalPagingNumber.value 
+                                    : (controller.startPaging.value + controller.pagingRange.value));
+                            i++) ...[
+                          RoundButtonNumber(
+                            index: (i+1).toString(),
+                            selectd: controller.selectPaging.value == i+1
+                                ? true
+                                : false,
+                            onClick: () => controller.onClickPaging(i+1),
+                          ),
+                        ],
+                        RoundButtonIcon(
+                          icon: Icons.arrow_forward_ios,
+                          onClick: () => controller.onClickNextPaging(),
+                          // onClick: () {},
+                        ),
+                      ],
+                    ),
+                  )),
             ],
           ),
         ),

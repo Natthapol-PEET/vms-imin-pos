@@ -107,7 +107,6 @@ class EntranceProjectController extends GetxController {
       } else {
         hasDataValue.value = false;
       }
-      // print('query else: ${query}');
       dataRow.clear();
       visitorList.forEach((item) => dataRow.add(createDataRow(item)));
       whitelistList.forEach((item) => dataRow.add(createDataRow(item)));

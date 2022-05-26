@@ -165,6 +165,8 @@ class _ExitProjectScreenState extends State<ExitProjectScreen> {
                     width: size.width * 0.3,
                     height: size.height * 0.05,
                     child: TextFormField(
+                      initialValue: controller.searchValue.value,
+                      onChanged: controller.searchOnchange,
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.search, color: Colors.black),
                         border: OutlineInputBorder(),
@@ -218,30 +220,43 @@ class _ExitProjectScreenState extends State<ExitProjectScreen> {
               ),
 
               // Button Group
-              // Container(
-              //   margin: EdgeInsets.symmetric(horizontal: size.width * 0.03),
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.end,
-              //     crossAxisAlignment: CrossAxisAlignment.center,
-              //     children: [
-              //       RoundButtonIcon(icon: Icons.arrow_back_ios_new),
-              //       for (int i = 1; i < 5; i++) ...[
-              //         RoundButtonNumber(
-              //           index: i.toString(),
-              //           selectd: true,
-              //         ),
-              //       ],
-              //       Point(),
-              //       for (int i = 8; i < 10; i++) ...[
-              //         RoundButtonNumber(
-              //           index: i.toString(),
-              //           selectd: false,
-              //         ),
-              //       ],
-              //       RoundButtonIcon(icon: Icons.arrow_forward_ios),
-              //     ],
-              //   ),
-              // ),
+              Obx(() => Container(
+                    margin: EdgeInsets.symmetric(horizontal: size.width * 0.03),
+                    padding: EdgeInsets.only(bottom: size.height * 0.03),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        RoundButtonIcon(
+                          icon: Icons.arrow_back_ios_new,
+                          onClick: () => controller.onClickBackPaging(),
+                        ),
+                        for (int i = controller.startPaging.value;
+                            i <
+                                (controller.totalPagingNumber.value <
+                                        (controller.startPaging.value +
+                                            controller.pagingRange.value)
+                                    ? controller.totalPagingNumber.value == 0
+                                        ? 1
+                                        : controller.totalPagingNumber.value
+                                    : (controller.startPaging.value +
+                                        controller.pagingRange.value));
+                            i++) ...[
+                          RoundButtonNumber(
+                            index: i.toString(),
+                            selectd: controller.selectPaging.value == i
+                                ? true
+                                : false,
+                            onClick: () => controller.onClickPaging(i),
+                          ),
+                        ],
+                        RoundButtonIcon(
+                          icon: Icons.arrow_forward_ios,
+                          onClick: () => controller.onClickNextPaging(),
+                        ),
+                      ],
+                    ),
+                  )),
             ],
           ),
         ),
@@ -274,17 +289,17 @@ class RoundButtonNumber extends StatelessWidget {
     Key? key,
     required this.index,
     required this.selectd,
+    required this.onClick,
   }) : super(key: key);
 
   final String index;
   final bool selectd;
+  final Function()? onClick;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        print("index: $index");
-      },
+      onTap: onClick,
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 3),
         width: 30,
@@ -316,16 +331,16 @@ class RoundButtonIcon extends StatelessWidget {
   const RoundButtonIcon({
     Key? key,
     required this.icon,
+    required this.onClick,
   }) : super(key: key);
 
   final IconData icon;
+  final Function()? onClick;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        print(icon);
-      },
+      onTap: onClick,
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 3),
         width: 30,

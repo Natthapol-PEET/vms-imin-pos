@@ -32,7 +32,7 @@ class ExitProjectController extends GetxController {
   var startPaging = 1.obs;
   var selectPaging = 1.obs;
   var pagingRange = 4.obs;
-  var displayRowNumber = 3.obs;
+  var displayRowNumber = 9.obs;
   var totalPagingNumber = 1.obs;
 
   @override
@@ -110,7 +110,7 @@ class ExitProjectController extends GetxController {
   mapToPaging() {
     List<DataRow> newDataRow = [];
     totalPagingNumber.value =
-        (dataRow.length / displayRowNumber.value + 0.1).ceil();
+        (dataRow.length / displayRowNumber.value).ceil();
 
     int calEnd = selectPaging.value * displayRowNumber.value;
     int startRow = calEnd - displayRowNumber.value;

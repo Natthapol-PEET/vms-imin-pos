@@ -231,23 +231,23 @@ class _ExitProjectScreenState extends State<ExitProjectScreen> {
                           icon: Icons.arrow_back_ios_new,
                           onClick: () => controller.onClickBackPaging(),
                         ),
-                        for (int i = controller.startPaging.value;
+                        for (int i = controller.startPaging.value - 1;
                             i <
                                 (controller.totalPagingNumber.value <
                                         (controller.startPaging.value +
                                             controller.pagingRange.value)
-                                    ? controller.totalPagingNumber.value == 0
+                                    ? controller.totalPagingNumber.value == 1
                                         ? 1
                                         : controller.totalPagingNumber.value
                                     : (controller.startPaging.value +
                                         controller.pagingRange.value));
                             i++) ...[
                           RoundButtonNumber(
-                            index: i.toString(),
-                            selectd: controller.selectPaging.value == i
+                            index: (i + 1).toString(),
+                            selectd: controller.selectPaging.value == (i + 1)
                                 ? true
                                 : false,
-                            onClick: () => controller.onClickPaging(i),
+                            onClick: () => controller.onClickPaging((i + 1)),
                           ),
                         ],
                         RoundButtonIcon(

@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -20,21 +19,55 @@ import 'package:imin/views/widgets/round_button_outline.dart';
 class ExitProjectController extends GetxController {
   var context;
 
-  var startEndRange = "".obs;
-  var rememStartEndRange = "";
-
+  // String searchValue = "";
+  var searchValue = "".obs;
   var visitorList = <VisitorModel>[].obs;
   var whitelistList = <WhitelistModel>[].obs;
   var dataRow = <DataRow>[];
+
+  var startEndRange = "".obs;
+  DateTime? startDatetime;
+  DateTime? endDatetime;
+
+  var startPaging = 1.obs;
+  var selectPaging = 1.obs;
+  var pagingRange = 4.obs;
+  var displayRowNumber = 3.obs;
+  var totalPagingNumber = 1.obs;
 
   @override
   void onInit() {
     DateTime v = DateTime.now();
     startEndRange.value = dummyDatetime(v) + " - " + dummyDatetime(v);
 
+    searchValue.value = "";
+    visitorList.value = [];
+    whitelistList.value = [];
+    dataRow = [];
+
+    DateTime now = DateTime.now();
+    startDatetime = DateTime(now.year, now.month, now.day - 1);
+    endDatetime = DateTime(now.year, now.month, now.day + 1);
+
     getExitData();
 
     super.onInit();
+  }
+
+  onClickPaging(int index) {
+    selectPaging.value = index;
+    createRows(visitorList, whitelistList);
+  }
+
+  onClickBackPaging() {
+    if (startPaging.value == 1) return;
+    startPaging.value -= 1;
+  }
+
+  onClickNextPaging() {
+    if (totalPagingNumber.value < startPaging.value + pagingRange.value) return;
+
+    startPaging.value += 1;
   }
 
   getExitData() async {
@@ -49,31 +82,109 @@ class ExitProjectController extends GetxController {
     jSon['resultWhitelist']
         .forEach((item) => whitelistList.add(WhitelistModel.fromJson(item)));
 
-    // print(visitorList);
-    // print(whitelistList);
+    createRows(visitorList, whitelistList);
+  }
 
+  void createRows(List visitorList, List whitelistList) {
+    dataRow.clear();
+
+    // search data rows
+    whitelistList = searchDataRows(whitelistList);
+    visitorList = searchDataRows(visitorList);
+
+    // search by submitSelectRangeTime
+    whitelistList = searchByDateTime(whitelistList);
+    visitorList = searchByDateTime(visitorList);
+
+    // map to data_row
+    whitelistList.forEach((item) => dataRow.add(createDataRow(item)));
+    visitorList.forEach((item) => dataRow.add(createDataRow(item)));
+
+    // map to paging
+    dataRow = mapToPaging();
+
+    update(['update-exit-data-row']);
+    EasyLoading.dismiss();
+  }
+
+  mapToPaging() {
+    List<DataRow> newDataRow = [];
+    totalPagingNumber.value =
+        (dataRow.length / displayRowNumber.value + 0.1).ceil();
+
+    int calEnd = selectPaging.value * displayRowNumber.value;
+    int startRow = calEnd - displayRowNumber.value;
+    int endRow = calEnd > dataRow.length ? dataRow.length : calEnd;
+
+    // print("dataRow: ${dataRow.length}");
+    // print("totalPagingNumber: $totalPagingNumber");
+    // print("selectPaging: $pagingRange");
+    // print("startRow: $startRow");
+    // print("endRow: $endRow");
+
+    for (int i = startRow; i < endRow; i++) {
+      newDataRow.add(dataRow[i]);
+    }
+
+    return newDataRow;
+  }
+
+  searchByDateTime(list) {
+    if (endDatetime == null) {
+      endDatetime = startDatetime;
+      startEndRange.value =
+          dummyDatetime(startDatetime!) + " - " + dummyDatetime(startDatetime!);
+    } else {
+      if (startDatetime!.day > endDatetime!.day) {
+        startEndRange.value =
+            dummyDatetime(endDatetime) + " - " + dummyDatetime(startDatetime);
+      } else {
+        startEndRange.value =
+            dummyDatetime(startDatetime) + " - " + dummyDatetime(endDatetime);
+      }
+    }
+
+    return list.where((item) {
+      DateTime strToDatetime =
+          DateTime.parse(item.datetimeIn.replaceAll("T", " "));
+      if (startDatetime!.isBefore(strToDatetime) &&
+          endDatetime!.isAfter(strToDatetime)) {
+        return true;
+      } else {
+        return false;
+      }
+    }).toList();
+  }
+
+  searchDataRows(list) {
+    return list
+        .where((item) =>
+            item.idCard.toString().contains(searchValue.value) ||
+            item.licensePlate.toString().contains(searchValue.value) ||
+            item.firstname.toString().contains(searchValue.value) ||
+            item.homeNumber.toString().contains(searchValue.value))
+        .toList();
+  }
+
+  searchOnchange(value) {
+    searchValue.value = value;
     createRows(visitorList, whitelistList);
   }
 
   void cleanAndCreateDummy(DateTime start, DateTime? end) {
-    if (end == null) {
-      rememStartEndRange = dummyDatetime(start) + " - " + dummyDatetime(start);
-    } else {
-      if (start.day > end.day) {
-        rememStartEndRange = dummyDatetime(end) + " - " + dummyDatetime(start);
-      } else {
-        rememStartEndRange = dummyDatetime(start) + " - " + dummyDatetime(end);
-      }
-    }
+    startDatetime = start;
+    endDatetime = end;
   }
 
   void submitSelectRangeTime() {
-    startEndRange.value = rememStartEndRange;
+    createRows(visitorList, whitelistList);
+
     Get.back();
   }
 
-  String dummyDatetime(DateTime v) {
+  String dummyDatetime(DateTime? v) {
     // 18 พฤษภาคม 2565
+    v = v as DateTime;
     return "${v.day} ${month_eng_to_thai(v.month)} ${christian_buddhist_year(v.year)}";
   }
 
@@ -84,19 +195,7 @@ class ExitProjectController extends GetxController {
     return "${dt.day}/${dt.month}/${dt.year + 543} ${dt.hour}:${dt.minute}";
   }
 
-  void createRows(List visitorList, List whitelistList) {
-    dataRow.clear();
-
-    whitelistList.forEach((item) => dataRow.add(createDataRow(item)));
-    visitorList.forEach((item) => dataRow.add(createDataRow(item)));
-
-    update(['update-exit-data-row']);
-    EasyLoading.dismiss();
-  }
-
   DataRow createDataRow(dynamic item) {
-    print('item.firstname ${item.firstname}');
-
     return DataRow(
       onSelectChanged: (state) => item.firstname == null
           ? showDialogCard(item).show(context)
@@ -181,7 +280,8 @@ class ExitProjectController extends GetxController {
                 await exitProjectApi(item.logId);
 
                 // notification
-                sendNotification(item.licensePlate, "${item.firstname} ${item.lastname}", false);
+                sendNotification(item.licensePlate,
+                    "${item.firstname} ${item.lastname}", false);
 
                 // ------------ mqtt ---------------
                 final mqController = Get.put(MqttController());
@@ -210,7 +310,8 @@ class ExitProjectController extends GetxController {
     return EasyDialog(
       contentPadding: EdgeInsets.symmetric(horizontal: 20),
       width: 400,
-      height: item.residentStamp != null && item.datetimeOut == null ? 550 : 500,
+      height:
+          item.residentStamp != null && item.datetimeOut == null ? 550 : 500,
       closeButton: false,
       contentList: [
         Row(
@@ -238,7 +339,8 @@ class ExitProjectController extends GetxController {
         // Image.network(ipServerIminService + '/card/' + item.qrGenId),
         Image.network(
           ipServerIminService + '/card/' + item.qrGenId,
-          fit: BoxFit.fill,
+          fit: BoxFit.fitHeight,
+          height: 250,
           loadingBuilder: (BuildContext context, Widget child,
               ImageChunkEvent? loadingProgress) {
             if (loadingProgress == null) return child;

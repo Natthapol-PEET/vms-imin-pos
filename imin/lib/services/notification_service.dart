@@ -7,9 +7,9 @@ Future sendNotification(
   String uri = domainName + '/notification/';
 
   /* 
-          "title": "แจ้งเตือนจากป้อม รปภ.",
-          "body": "ทะเบียนหมายเลข กดกดกด เข้าโครงการ",
-          "data": {"Class": "guard", "home_id": "1"}
+    "title": "แจ้งเตือนจากป้อม รปภ.",
+    "body": "ทะเบียนหมายเลข กดกดกด เข้าโครงการ",
+    "data": {"Class": "guard", "home_id": "1"}
   */
   String token =
       "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2ODQ4OTc2NjcsImlhdCI6MTY1MzM2MTY2Nywic3ViIjoibmF0dGhhcG9sNTkzQGdtYWlsLmNvbSJ9.9xcZRbxwUfMrO36WDyXk3IXrixiYfN5U6b4xSr5ejZY";

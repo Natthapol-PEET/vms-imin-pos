@@ -39,6 +39,12 @@ class EntranceProjectController extends GetxController {
 
   String token = "";
 
+  var startPaging = 1.obs;
+  var selectPaging = 1.obs;
+  var pagingRange = 4.obs;
+  var displayRowNumber = 4.obs;
+  var totalPagingNumber = 1.obs;
+
   @override
   void onInit() {
     token = logg.dataProfile.token;
@@ -111,6 +117,7 @@ class EntranceProjectController extends GetxController {
       visitorList.forEach((item) => dataRow.add(createDataRow(item)));
       whitelistList.forEach((item) => dataRow.add(createDataRow(item)));
       blacklistList.forEach((item) => dataRow.add(createDataRow(item)));
+      dataRow = mapToPaging();
       update(['update-enteance-data-row']);
     }
   }
@@ -124,6 +131,7 @@ class EntranceProjectController extends GetxController {
     // print('hasDataValue.value: ${hasDataValue.value}');
     dataRow.clear();
     AllListData.forEach((item) => dataRow.add(createDataRow(item)));
+    dataRow = mapToPaging();
     update(['update-enteance-data-row']);
   }
 
@@ -627,4 +635,49 @@ class EntranceProjectController extends GetxController {
   }
 
 //
+/////////////////////////// onclick
+  mapToPaging() {
+    List<DataRow> newDataRow = [];
+    totalPagingNumber.value =
+        ((dataRow.length / displayRowNumber.value)).ceil();
+
+    int calEnd = selectPaging.value * displayRowNumber.value;
+    int startRow = calEnd - displayRowNumber.value;
+    int endRow = calEnd > dataRow.length ? dataRow.length : calEnd;
+
+    // print("dataRow: ${dataRow.length}");
+    // print("displayRowNumber: ${displayRowNumber.value}");
+    // print("totalPagingNumber: $totalPagingNumber");
+    // print(
+    //     "totalPagingNumberReal: ${(dataRow.length / displayRowNumber.value)}");
+    // print("selectPaging: $pagingRange");
+    // print("startRow: $startRow");
+    // print("endRow: $endRow");
+    // print("calEnd: $calEnd");
+
+    for (int i = startRow; i < endRow; i++) {
+      newDataRow.add(dataRow[i]);
+      print("dataRow${i}: ${dataRow[i]}");
+    }
+
+    return newDataRow;
+  }
+
+  onClickPaging(int index) {
+    selectPaging.value = index;
+    filterSearchResults(searchValue);
+  }
+
+  onClickBackPaging() {
+    if (startPaging.value == 1) return;
+    startPaging.value -= 1;
+  }
+
+  onClickNextPaging() {
+    if (totalPagingNumber.value < startPaging.value + pagingRange.value) return;
+
+    startPaging.value += 1;
+  }
+
+  ///
 }

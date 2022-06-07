@@ -133,13 +133,8 @@ class UploadCard extends StatelessWidget {
                                 'assets/images/license-card.png',
                                 scale: 2.5,
                               )
-                        // : Image.file(
-                        //     File(cameraController.imagePath.value)),
-                        : Image.network(
-                            cameraController.imageUrl.value,
-                            fit: BoxFit.fitHeight,
-                            height: 200,
-                          ),
+        
+                        : Container(),
                   ),
                 ),
                 Padding(

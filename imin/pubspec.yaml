@@ -45,7 +45,7 @@ dependencies:
   wakelock: ^0.6.1+2
 
   # internet
-  http: ^0.13.0
+  http: ^0.13.3
 
   # fluttertoast: ^8.0.9
 

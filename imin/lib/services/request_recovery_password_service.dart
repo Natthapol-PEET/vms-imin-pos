@@ -10,7 +10,7 @@ Future requestRecoveryPasswordApi(String email) async {
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(<String, String>{
         "email": email,
-        "url": "http://192.168.1.70:3000/guardhouse/recoverypassword/"
+        "url": "http://192.168.1.50:3000/guardhouse/recoverypassword/"
       }),
     );
 

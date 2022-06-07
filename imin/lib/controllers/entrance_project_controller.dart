@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-
 import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -11,8 +9,6 @@ import 'package:imin/functions/dialog_gate.dart';
 import 'package:imin/helpers/configs.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/models/blacklist_model.dart';
-import 'package:imin/models/entrance_list_all_model.dart';
-import 'package:imin/models/login_model.dart';
 import 'package:imin/models/visitor_model.dart';
 import 'package:imin/models/whitelist_model.dart';
 import 'package:imin/services/checkin_service.dart';
@@ -274,8 +270,15 @@ class EntranceProjectController extends GetxController {
           ],
         ),
         Divider(color: dividerColor),
-        // Image.network(ipServerIminService + '/card/' + 'V06268717687038480523'),
-        Image.network(ipServerIminService + '/card/' + item.qrGenId),
+        FadeInImage(
+          placeholder: AssetImage('assets/images/id-card-image.png'),
+          image: NetworkImage(
+            ipServerIminService + '/card/' + item.qrGenId,
+            headers: <String, String>{
+              'Authorization': 'Bearer ${logg.dataProfile.token}'
+            },
+          ),
+        ),
         SizedBox(height: 20),
         Row(
           children: [

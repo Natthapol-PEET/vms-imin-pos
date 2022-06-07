@@ -1,8 +1,6 @@
 import 'dart:convert';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:imin/helpers/configs.dart';
-import 'package:imin/models/login_model.dart';
 
 Future getEntranceProjectVisitorApi(String token) async {
   String uri = ipServer + '/visitorlist_log/';

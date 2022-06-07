@@ -21,7 +21,6 @@ import 'package:imin/views/screens/Login/login_screen.dart';
 import 'package:imin/views/screens/Demo/demo.dart';
 import 'package:imin/views/screens/Profile/profile_screen.dart';
 import 'package:wakelock/wakelock.dart';
-
 import 'controllers/mqtt_controller.dart';
 
 void main() async {

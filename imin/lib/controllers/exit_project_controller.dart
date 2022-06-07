@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:imin/Functions/time_to_thai.dart';
+import 'package:imin/controllers/login_controller.dart';
 import 'package:imin/controllers/mqtt_controller.dart';
 import 'package:imin/functions/dialog_gate.dart';
 import 'package:imin/helpers/configs.dart';
@@ -17,6 +18,8 @@ import 'package:imin/views/widgets/round_button.dart';
 import 'package:imin/views/widgets/round_button_outline.dart';
 
 class ExitProjectController extends GetxController {
+  final loginController = Get.put(LoginController());
+
   var context;
 
   // String searchValue = "";
@@ -109,8 +112,7 @@ class ExitProjectController extends GetxController {
 
   mapToPaging() {
     List<DataRow> newDataRow = [];
-    totalPagingNumber.value =
-        (dataRow.length / displayRowNumber.value).ceil();
+    totalPagingNumber.value = (dataRow.length / displayRowNumber.value).ceil();
 
     int calEnd = selectPaging.value * displayRowNumber.value;
     int startRow = calEnd - displayRowNumber.value;
@@ -336,9 +338,11 @@ class ExitProjectController extends GetxController {
           ],
         ),
         Divider(color: dividerColor),
-        // Image.network(ipServerIminService + '/card/' + item.qrGenId),
         Image.network(
           ipServerIminService + '/card/' + item.qrGenId,
+          headers: <String, String>{
+            'Authorization': 'Bearer ${loginController.dataProfile.token}'
+          },
           fit: BoxFit.fitHeight,
           height: 250,
           loadingBuilder: (BuildContext context, Widget child,
@@ -354,7 +358,6 @@ class ExitProjectController extends GetxController {
             );
           },
         ),
-
         SizedBox(height: 20),
         Row(
           children: [

@@ -8,3 +8,4 @@ String gateBarrierOpenUrl =
     "http://192.168.1.9/user=admin&password=secret&command=OpenGate";
 String gateBarrierCloseUrl =
     "http://192.168.1.9/user=admin&password=secret&command=CloseGate";
+    

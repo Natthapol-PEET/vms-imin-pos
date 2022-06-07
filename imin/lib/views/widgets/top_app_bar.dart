@@ -120,14 +120,19 @@ class _TopAppBarState extends State<TopAppBar>
               ),
 
               // profile
-              // Image.asset('assets/images/profile-mini.png'),
               GetBuilder<LoginController>(
                 init: LoginController(),
                 builder: (controller) => CircleAvatar(
                   radius: 20,
-                  backgroundImage: NetworkImage(ipServer +
-                      '/guard/profile_image/' +
-                      controller.dataProfile.profilePath),
+                  backgroundImage: NetworkImage(
+                    ipServer +
+                        '/guard/profile_image/' +
+                        controller.dataProfile.profilePath,
+                    headers: <String, String>{
+                      'Authorization':
+                          'Bearer ${loginController.dataProfile.token}'
+                    },
+                  ),
                   backgroundColor: Colors.transparent,
                 ),
               ),

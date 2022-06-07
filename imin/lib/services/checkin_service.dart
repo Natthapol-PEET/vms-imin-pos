@@ -12,7 +12,7 @@ Future checkInApi(String listStatus, String listId, String homeId,
     print('dateIn ${dateIn}');
     // return true;
     final response = await http.post(
-      Uri.parse(ipServer + '/guardhouse_checkin'),
+      Uri.parse(ipServer + '/guardhouse_checkin/'),
       headers: <String, String>{
         "Content-Type": "application/json",
         "Authorization": "Bearer $token",

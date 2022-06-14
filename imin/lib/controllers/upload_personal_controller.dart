@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:imin/controllers/login_controller.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/services/register_walkin_service.dart';
 
 class UploadPersonalController extends GetxController {
+  final loginController = Get.put(LoginController());
+
   var checkHomeNumber = true.obs;
   var checkIdCard = true.obs;
 
@@ -37,6 +40,7 @@ class UploadPersonalController extends GetxController {
     checkIdCard.value = true;
 
     homeNumber.value = "";
+    idCard.value = "";
     licensePlate.value = "";
 
     screenOne.value = true;
@@ -84,13 +88,8 @@ class UploadPersonalController extends GetxController {
       print("idCard: $idCard");
       print("licensePlate: $licensePlate");
 
-      return await registerWalkinApi(
-        code,
-        idCard.value,
-        homeNumber.value,
-        licensePlate.value,
-        guardId,
-      );
+      return await registerWalkinApi(code, idCard.value, homeNumber.value,
+          licensePlate.value, guardId, loginController.dataProfile.token);
     }
 
     return 401;

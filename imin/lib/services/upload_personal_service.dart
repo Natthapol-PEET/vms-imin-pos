@@ -3,8 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:imin/helpers/configs.dart';
 
 Future uploadPersonal(String filename, String classCard) async {
-  var uri = ipServerIminService + '/decode_image';
-  // String uri = "http://192.168.1.5:8000/image_ocr_api/upload";
+  var uri = ipServerIminService + '/decode_image/';
   var request = new http.MultipartRequest("POST", Uri.parse(uri));
 
   request.files.add(

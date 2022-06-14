@@ -8,7 +8,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:imin/controllers/camera_controller.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/controllers/login_controller.dart';
-import 'package:imin/controllers/mqtt_controller.dart';
 import 'package:imin/controllers/upload_personal_controller.dart';
 import 'package:imin/functions/dialog_gate.dart';
 import 'package:imin/helpers/configs.dart';
@@ -57,6 +56,7 @@ class UploadCard extends StatelessWidget {
 
   final uploadPersonalController = Get.put(UploadPersonalController());
   final cameraController = Get.put(TakePictureController());
+  final loginController = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
@@ -133,8 +133,14 @@ class UploadCard extends StatelessWidget {
                                 'assets/images/license-card.png',
                                 scale: 2.5,
                               )
-        
-                        : Container(),
+                        : Image.network(
+                            cameraController.imageUrl.value,
+                            scale: 1.2,
+                            headers: <String, String>{
+                              'Authorization':
+                                  'Bearer ${loginController.dataProfile.token}'
+                            },
+                          ),
                   ),
                 ),
                 Padding(
@@ -378,12 +384,6 @@ class NextInput extends StatelessWidget {
                             EasyLoading.showSuccess(
                                 'บันทึกข้อมูลเรียบร้อยแล้ว');
 
-                            // ------------ mqtt ---------------
-                            final mqController = Get.put(MqttController());
-                            mqController.publishMessage(
-                                'web-to-app/1', 'INVITE_VISITOR');
-                            // ------------ mqtt ---------------
-
                             dialogPrinter(size, context).show(context);
                           } else {
                             String text = jsonDecode(
@@ -411,34 +411,17 @@ class NextInput extends StatelessWidget {
       height: size.height * 0.6,
       contentListAlignment: CrossAxisAlignment.start,
       closeButton: false,
-      // title: Text("เพิ่มผู้เข้าโครงการ"),
-      // description: Text("This is a basic dialog"),
       contentList: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'เพิ่มผู้เข้าโครงการ',
-              style: TextStyle(
-                fontFamily: fontRegular,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            TextButton(
-              onPressed: () => Get.back(),
-              child: Icon(
-                Icons.close,
-                color: textColor,
-              ),
-            ),
-          ],
+        Text(
+          'เพิ่มผู้เข้าโครงการ',
+          style: TextStyle(
+            fontFamily: fontRegular,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        // SizedBox(height: size.height * 0.01),
-        Divider(
-          color: dividerTableColor,
-          thickness: 2,
-        ),
+        SizedBox(height: size.height * 0.01),
+        Divider(color: dividerTableColor, thickness: 2),
         SizedBox(height: size.height * 0.01),
         Text(
           'พิมพ์ใบเสร็จให้กับผู้ที่ต้องการเข้ามาในโครงการ',

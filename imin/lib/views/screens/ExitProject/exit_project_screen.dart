@@ -14,12 +14,10 @@ class ExitProjectScreen extends StatefulWidget {
 }
 
 class _ExitProjectScreenState extends State<ExitProjectScreen> {
-  final controller = Get.put(ExitProjectController());
+  final exitController = Get.put(ExitProjectController());
 
   @override
   void initState() {
-    controller.getExitData();
-
     super.initState();
   }
 
@@ -29,7 +27,7 @@ class _ExitProjectScreenState extends State<ExitProjectScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    controller.context = context;
+    exitController.context = context;
 
     return CustomScrollView(
       slivers: [
@@ -62,7 +60,7 @@ class _ExitProjectScreenState extends State<ExitProjectScreen> {
                               Obx(
                                 () => Text(
                                   // 'ช่วงวัน : 1 มิถุนายน 2564 - 1 กรกฎาคม 2564',
-                                  'ช่วงวัน : ' + controller.startEndRange.value,
+                                  'ช่วงวัน : ' + exitController.startEndRange.value,
                                   style: TextStyle(
                                     fontFamily: fontRegular,
                                     fontWeight: FontWeight.bold,
@@ -144,11 +142,11 @@ class _ExitProjectScreenState extends State<ExitProjectScreen> {
 
                                       confirmText: 'ตกลง',
                                       onSubmit: (v) =>
-                                          controller.submitSelectRangeTime(),
+                                          exitController.submitSelectRangeTime(),
                                       cancelText: 'ยกเลิก',
                                       onCancel: () => Get.back(),
                                       onSelectionChanged: (v) =>
-                                          controller.cleanAndCreateDummy(
+                                          exitController.cleanAndCreateDummy(
                                               v.value.startDate,
                                               v.value.endDate),
                                     ),
@@ -165,8 +163,8 @@ class _ExitProjectScreenState extends State<ExitProjectScreen> {
                     width: size.width * 0.3,
                     height: size.height * 0.05,
                     child: TextFormField(
-                      initialValue: controller.searchValue.value,
-                      onChanged: controller.searchOnchange,
+                      initialValue: exitController.searchValue.value,
+                      onChanged: exitController.searchOnchange,
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.search, color: Colors.black),
                         border: OutlineInputBorder(),
@@ -229,30 +227,30 @@ class _ExitProjectScreenState extends State<ExitProjectScreen> {
                       children: [
                         RoundButtonIcon(
                           icon: Icons.arrow_back_ios_new,
-                          onClick: () => controller.onClickBackPaging(),
+                          onClick: () => exitController.onClickBackPaging(),
                         ),
-                        for (int i = controller.startPaging.value - 1;
+                        for (int i = exitController.startPaging.value - 1;
                             i <
-                                (controller.totalPagingNumber.value <
-                                        (controller.startPaging.value +
-                                            controller.pagingRange.value)
-                                    ? controller.totalPagingNumber.value == 1
+                                (exitController.totalPagingNumber.value <
+                                        (exitController.startPaging.value +
+                                            exitController.pagingRange.value)
+                                    ? exitController.totalPagingNumber.value == 1
                                         ? 1
-                                        : controller.totalPagingNumber.value
-                                    : (controller.startPaging.value +
-                                        controller.pagingRange.value));
+                                        : exitController.totalPagingNumber.value
+                                    : (exitController.startPaging.value +
+                                        exitController.pagingRange.value));
                             i++) ...[
                           RoundButtonNumber(
                             index: (i + 1).toString(),
-                            selectd: controller.selectPaging.value == (i + 1)
+                            selectd: exitController.selectPaging.value == (i + 1)
                                 ? true
                                 : false,
-                            onClick: () => controller.onClickPaging((i + 1)),
+                            onClick: () => exitController.onClickPaging((i + 1)),
                           ),
                         ],
                         RoundButtonIcon(
                           icon: Icons.arrow_forward_ios,
-                          onClick: () => controller.onClickNextPaging(),
+                          onClick: () => exitController.onClickNextPaging(),
                         ),
                       ],
                     ),

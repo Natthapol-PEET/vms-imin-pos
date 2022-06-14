@@ -4,6 +4,7 @@ import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/controllers/login_controller.dart';
 import 'package:imin/controllers/on_will_pop_controller.dart';
 import 'package:imin/helpers/constance.dart';
+import 'package:imin/services/socket_service.dart';
 import 'package:imin/views/widgets/bg_image.dart';
 import 'package:imin/views/widgets/round_button.dart';
 import 'package:imin/views/widgets/round_text_form_field.dart';
@@ -15,9 +16,6 @@ class LoginScreen extends StatelessWidget {
   final controller = Get.put(LoginController());
   final expandController = Get.put(ExpansionPanelController());
   final onWillPopController = Get.put(OnWillPopController());
-
-  // สร้างฟอร์ม key หรือ id ของฟอร์มสำหรับอ้างอิง
-  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -177,8 +175,12 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(height: size.height * 0.008),
                     RoundButton(
                       title: 'เข้าสู่ระบบ',
-                      press: () async =>
-                          await controller.login(context, expandController),
+                      press: () async {
+                        await controller.login(context, expandController);
+                        // init socket
+                        SocketService socketService = SocketService();
+                        socketService.startSocketClient();
+                      },
                     ),
                   ],
                 ),

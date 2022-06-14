@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:imin/controllers/login_controller.dart';
-import 'package:imin/controllers/mqtt_controller.dart';
 import 'package:imin/functions/dialog_gate.dart';
 import 'package:imin/helpers/configs.dart';
 import 'package:imin/helpers/constance.dart';
@@ -17,11 +16,12 @@ import 'package:imin/services/get_enteance_project_blacklist_service.dart';
 import 'package:imin/services/get_enteance_project_service.dart';
 import 'package:imin/services/get_enteance_project_visitor_service.dart';
 import 'package:imin/services/get_enteance_project_whitelist_service.dart';
-import 'package:imin/services/notification_service.dart';
 import 'package:imin/views/widgets/round_button_outline.dart';
 import 'package:intl/intl.dart';
 
 class EntranceProjectController extends GetxController {
+  var loginController = Get.put(LoginController());
+
   var context;
   var dataEntrance = [].obs;
   var visitorList = <VisitorModel>[].obs;
@@ -30,8 +30,6 @@ class EntranceProjectController extends GetxController {
   var dataRow = <DataRow>[];
   var searchValue = '';
   var hasDataValue = false.obs;
-
-  var logg = Get.put(LoginController());
 
   String token = "";
 
@@ -43,7 +41,9 @@ class EntranceProjectController extends GetxController {
 
   @override
   void onInit() {
-    token = logg.dataProfile.token;
+    token = loginController.dataProfile.token;
+
+    getEntranceData();
 
     super.onInit();
   }
@@ -273,9 +273,9 @@ class EntranceProjectController extends GetxController {
         FadeInImage(
           placeholder: AssetImage('assets/images/id-card-image.png'),
           image: NetworkImage(
-            ipServerIminService + '/card/' + item.qrGenId,
+            ipServerIminService + '/card/' + item.qrGenId + '/',
             headers: <String, String>{
-              'Authorization': 'Bearer ${logg.dataProfile.token}'
+              'Authorization': 'Bearer ${loginController.dataProfile.token}'
             },
           ),
         ),
@@ -483,17 +483,6 @@ class EntranceProjectController extends GetxController {
       if (checkResponse == true) {
         EasyLoading.showSuccess('สำเร็จ');
 
-        // notification
-        sendNotification(
-            item.licensePlate, "${item.firstname} ${item.lastname}", true);
-
-        // ------------ mqtt ---------------
-        final mqController = Get.put(MqttController());
-        mqController.publishMessage('web-to-app/1', 'INVITE_VISITOR');
-        mqController.publishMessage('web-to-app/1', 'COMING_WALK_IN');
-        mqController.publishMessage('web-to-web', 'UPDATE');
-        // ------------ mqtt ---------------
-
         Get.back();
         showDialogOpenGate(item).show(context);
         Timer(Duration(seconds: 3), () => Get.back());
@@ -511,17 +500,6 @@ class EntranceProjectController extends GetxController {
           '${item.whitelistId}', '${item.homeId}', formattedDate, token);
       if (checkResponse == true) {
         EasyLoading.showSuccess('สำเร็จ');
-
-        // notification
-        sendNotification(
-            item.licensePlate, "${item.firstname} ${item.lastname}", true);
-
-        // ------------ mqtt ---------------
-        final mqController = Get.put(MqttController());
-        mqController.publishMessage('web-to-app/1', 'INVITE_VISITOR');
-        mqController.publishMessage('web-to-app/1', 'COMING_WALK_IN');
-        mqController.publishMessage('web-to-web', 'UPDATE');
-        // ------------ mqtt ---------------
 
         Get.back();
         showDialogOpenGate(item).show(context);
@@ -660,7 +638,7 @@ class EntranceProjectController extends GetxController {
 
     for (int i = startRow; i < endRow; i++) {
       newDataRow.add(dataRow[i]);
-      print("dataRow${i}: ${dataRow[i]}");
+      // print("dataRow${i}: ${dataRow[i]}");
     }
 
     return newDataRow;

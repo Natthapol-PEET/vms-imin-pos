@@ -24,9 +24,5 @@ class _ImageProfileState extends State<ImageProfile> {
         },
       ),
     );
-
-    // return Image.network(
-    //   ipServer + '/guard/profile_image/guard_profile.jpg',
-    // );
   }
 }

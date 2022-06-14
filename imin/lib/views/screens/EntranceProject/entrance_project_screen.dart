@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:imin/controllers/camera_controller.dart';
@@ -19,16 +17,18 @@ class EntranceProjectScreen extends StatefulWidget {
 }
 
 class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
-  final controller = Get.put(EntranceProjectController());
+  final entranceController = Get.put(EntranceProjectController());
+  final uploadPersonalController = Get.put(UploadPersonalController());
+  final cameraController = Get.put(TakePictureController());
 
   syncFunction() async {
     // controller.getDataEntrance(); //Allist
-    controller.getEntranceData(); // 3 list
+    entranceController.getEntranceData(); // 3 list
   }
 
   @override
   void initState() {
-    syncFunction();
+    // syncFunction();
     super.initState();
   }
 
@@ -37,7 +37,7 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    controller.context = context;
+    entranceController.context = context;
 
     return CustomScrollView(
       slivers: [
@@ -62,7 +62,8 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: TextFormField(
-                        onChanged: (v) => controller.filterSearchResults(v),
+                        onChanged: (v) =>
+                            entranceController.filterSearchResults(v),
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.search, color: Colors.black),
                           border: OutlineInputBorder(),
@@ -94,6 +95,8 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
                               ),
                             ),
                             onPressed: () {
+                              cameraController.imageUrl.value = "";
+                              uploadPersonalController.initValue();
                               c.currentContent = UploadPersonalScreen();
                               c.update(['aopbmsbbffdgkb']);
                             },
@@ -140,7 +143,7 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
                             showCheckboxColumn: false,
                             dividerThickness: 0.5,
                             columnSpacing:
-                                (controller.hasDataValue.value == true)
+                                (entranceController.hasDataValue.value == true)
                                     ? 30
                                     : 65.5,
                             headingRowColor: MaterialStateColor.resolveWith(
@@ -155,7 +158,7 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
                   ),
                 ),
               ),
-// Button Group
+              // Button Group
               Obx(() => Container(
                     margin: EdgeInsets.symmetric(horizontal: size.width * 0.03),
                     padding: EdgeInsets.only(bottom: size.height * 0.03),
@@ -165,28 +168,37 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
                       children: [
                         RoundButtonIcon(
                           icon: Icons.arrow_back_ios_new,
-                          onClick: () => controller.onClickBackPaging(),
+                          onClick: () => entranceController.onClickBackPaging(),
                           // onClick: () {},
                         ),
-                        for (int i = controller.startPaging.value-1;
+                        for (int i = entranceController.startPaging.value - 1;
                             i <
-                                (controller.totalPagingNumber.value < (controller.startPaging.value + controller.pagingRange.value)
-                                    ? controller.totalPagingNumber.value == 1
+                                (entranceController.totalPagingNumber.value <
+                                        (entranceController.startPaging.value +
+                                            entranceController
+                                                .pagingRange.value)
+                                    ? entranceController
+                                                .totalPagingNumber.value ==
+                                            1
                                         ? 1
-                                        : controller.totalPagingNumber.value 
-                                    : (controller.startPaging.value + controller.pagingRange.value));
+                                        : entranceController
+                                            .totalPagingNumber.value
+                                    : (entranceController.startPaging.value +
+                                        entranceController.pagingRange.value));
                             i++) ...[
                           RoundButtonNumber(
-                            index: (i+1).toString(),
-                            selectd: controller.selectPaging.value == i+1
-                                ? true
-                                : false,
-                            onClick: () => controller.onClickPaging(i+1),
+                            index: (i + 1).toString(),
+                            selectd:
+                                entranceController.selectPaging.value == i + 1
+                                    ? true
+                                    : false,
+                            onClick: () =>
+                                entranceController.onClickPaging(i + 1),
                           ),
                         ],
                         RoundButtonIcon(
                           icon: Icons.arrow_forward_ios,
-                          onClick: () => controller.onClickNextPaging(),
+                          onClick: () => entranceController.onClickNextPaging(),
                           // onClick: () {},
                         ),
                       ],

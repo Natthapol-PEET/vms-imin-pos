@@ -1,15 +1,11 @@
-import 'dart:async';
 import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/controllers/login_controller.dart';
 import 'package:imin/controllers/on_will_pop_controller.dart';
-import 'package:imin/controllers/upload_personal_controller.dart';
-import 'package:imin/data/account.dart';
 import 'package:imin/helpers/constance.dart';
-import 'package:imin/models/account_model.dart';
+import 'package:imin/services/socket_service.dart';
 import 'package:imin/views/widgets/round_button.dart';
 import 'package:imin/views/widgets/round_button_outline.dart';
 import 'package:imin/views/widgets/top_app_bar.dart';
@@ -121,7 +117,14 @@ class ExpansionPanelScreen extends StatelessWidget {
               children: [
                 RoundButton(
                   title: "ยืนยัน",
-                  press: () async => await loginController.logout(),
+                  press: () async {
+                    await loginController.logout();
+
+                    // init socket
+                    SocketService socketService = SocketService();
+                    socketService
+                        .stopSocketClient();
+                  },
                 ),
                 SizedBox(width: 20),
                 RoundButtonOutline(

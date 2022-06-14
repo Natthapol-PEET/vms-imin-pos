@@ -5,7 +5,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:imin/Functions/time_to_thai.dart';
 import 'package:imin/controllers/login_controller.dart';
-import 'package:imin/controllers/mqtt_controller.dart';
 import 'package:imin/functions/dialog_gate.dart';
 import 'package:imin/helpers/configs.dart';
 import 'package:imin/helpers/constance.dart';
@@ -13,7 +12,6 @@ import 'package:imin/models/visitor_model.dart';
 import 'package:imin/models/whitelist_model.dart';
 import 'package:imin/services/exit_service.dart';
 import 'package:imin/services/gate_service.dart';
-import 'package:imin/services/notification_service.dart';
 import 'package:imin/views/widgets/round_button.dart';
 import 'package:imin/views/widgets/round_button_outline.dart';
 
@@ -76,7 +74,7 @@ class ExitProjectController extends GetxController {
   getExitData() async {
     EasyLoading.show(status: 'โหลดข้อมูล ...');
 
-    var jSon = await getExitDataApi();
+    var jSon = await getExitDataApi(loginController.dataProfile.token);
     visitorList.clear();
     whitelistList.clear();
 
@@ -232,7 +230,7 @@ class ExitProjectController extends GetxController {
                 ? 'ยังไม่ได้รับการแสตมป์'
                 : item.datetimeOut == null
                     ? 'ได้รับการสแตมป์แล้ว'
-                    : 'ออกจาากโครงการแล้ว',
+                    : 'ออกจากโครงการแล้ว',
           ),
         ),
       ],
@@ -279,17 +277,8 @@ class ExitProjectController extends GetxController {
               title: 'ตกลง',
               press: () async {
                 // call exit project api
-                await exitProjectApi(item.logId);
-
-                // notification
-                sendNotification(item.licensePlate,
-                    "${item.firstname} ${item.lastname}", false);
-
-                // ------------ mqtt ---------------
-                final mqController = Get.put(MqttController());
-                mqController.publishMessage('web-to-app/1', 'CHECKOUT');
-                mqController.publishMessage('app-to-web', 'CHECKOUT');
-                // ------------ mqtt ---------------
+                await exitProjectApi(
+                    item.logId, loginController.dataProfile.token);
 
                 Get.back();
                 showDialogOpenGate(item).show(context);
@@ -338,25 +327,14 @@ class ExitProjectController extends GetxController {
           ],
         ),
         Divider(color: dividerColor),
-        Image.network(
-          ipServerIminService + '/card/' + item.qrGenId,
-          headers: <String, String>{
-            'Authorization': 'Bearer ${loginController.dataProfile.token}'
-          },
-          fit: BoxFit.fitHeight,
-          height: 250,
-          loadingBuilder: (BuildContext context, Widget child,
-              ImageChunkEvent? loadingProgress) {
-            if (loadingProgress == null) return child;
-            return Center(
-              child: CircularProgressIndicator(
-                value: loadingProgress.expectedTotalBytes != null
-                    ? loadingProgress.cumulativeBytesLoaded /
-                        loadingProgress.expectedTotalBytes!
-                    : null,
-              ),
-            );
-          },
+        FadeInImage(
+          placeholder: AssetImage('assets/images/id-card-image.png'),
+          image: NetworkImage(
+            ipServerIminService + '/card/' + item.qrGenId + '/',
+            headers: <String, String>{
+              'Authorization': 'Bearer ${loginController.dataProfile.token}'
+            },
+          ),
         ),
         SizedBox(height: 20),
         Row(
@@ -392,7 +370,7 @@ class ExitProjectController extends GetxController {
                       ? 'ยังไม่ได้รับการแสตมป์'
                       : item.datetimeOut == null
                           ? 'ได้รับการสแตมป์แล้ว'
-                          : 'ออกจาากโครงการแล้ว',
+                          : 'ออกจากโครงการแล้ว',
                 ),
               ],
             ),
@@ -485,7 +463,9 @@ class ExitProjectController extends GetxController {
                 textDetial(
                   item.residentStamp == null
                       ? 'ยังไม่ได้รับการแสตมป์'
-                      : 'ได้รับการสแตมป์แล้ว',
+                      : item.datetimeOut == null
+                          ? 'ได้รับการสแตมป์แล้ว'
+                          : 'ออกจากโครงการแล้ว',
                 ),
               ],
             ),

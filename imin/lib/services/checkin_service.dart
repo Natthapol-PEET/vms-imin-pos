@@ -1,15 +1,14 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:imin/helpers/configs.dart';
-import 'package:imin/models/login_model.dart';
 
 Future checkInApi(String listStatus, String listId, String homeId,
     String dateIn, String token) async {
   try {
-    print('listStatus ${listStatus}');
-    print('listId ${listId}');
-    print('homeId ${homeId}');
-    print('dateIn ${dateIn}');
+    print('listStatus $listStatus');
+    print('listId $listId');
+    print('homeId $homeId');
+    print('dateIn $dateIn');
     // return true;
     final response = await http.post(
       Uri.parse(ipServer + '/guardhouse_checkin/'),
@@ -20,6 +19,7 @@ Future checkInApi(String listStatus, String listId, String homeId,
       body: jsonEncode(<String, String>{
         "classname": listStatus,
         "class_id": listId,
+        "home_id": homeId,
         "datetime_in": dateIn
       }),
     );

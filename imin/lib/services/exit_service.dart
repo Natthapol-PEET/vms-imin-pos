@@ -2,15 +2,15 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:imin/helpers/configs.dart';
 
-Future getExitDataApi() async {
-  String uri = ipServerIminService + '/exit_project';
+Future getExitDataApi(String token) async {
+  String uri = ipServerIminService + '/exit_project/';
 
   try {
     final response = await http.get(
       Uri.parse(uri),
       headers: <String, String>{
         "Content-Type": "application/json",
-        // "Authorization": "Bearer $token",
+        "Authorization": "Bearer $token",
       },
     );
 
@@ -21,15 +21,15 @@ Future getExitDataApi() async {
   }
 }
 
-Future exitProjectApi(int logId) async {
-  String uri = ipServerIminService + '/exit_project';
+Future exitProjectApi(int logId, String token) async {
+  String uri = ipServerIminService + '/exit_project/';
 
   try {
     final response = await http.post(
       Uri.parse(uri),
       headers: <String, String>{
         "Content-Type": "application/json",
-        // "Authorization": "Bearer $token",
+        "Authorization": "Bearer $token",
       },
       body: jsonEncode(<String, int>{
         'logId': logId,

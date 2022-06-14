@@ -1,7 +1,6 @@
 import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/controllers/login_controller.dart';
 import 'package:imin/controllers/on_will_pop_controller.dart';
 import 'package:imin/controllers/repassword_controller.dart';
@@ -19,7 +18,6 @@ class ChangePasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    final _formKey = GlobalKey<FormState>();
     // Dialog Exit App
     onWillPopController.context = context;
     return SingleChildScrollView(
@@ -227,9 +225,9 @@ class ChangePasswordScreen extends StatelessWidget {
                       title: "ยืนยัน",
                       press: () {
                         final loginController = Get.put(LoginController());
-                        
-                        controller.resetPassword(loginController.username.value);
 
+                        controller
+                            .resetPassword(loginController.username.value);
                       },
                     ),
                     SizedBox(width: 20),
@@ -247,8 +245,5 @@ class ChangePasswordScreen extends StatelessWidget {
         ),
       ],
     );
-    
   }
-
-  
 }

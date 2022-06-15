@@ -1,18 +1,25 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ffi';
+// import 'package:dropdown_search/dropdown_search.dart';
+import 'package:dropdown_search/dropdown_search.dart';
+import 'package:dropdownfield/dropdownfield.dart';
 import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:imin/controllers/camera_controller.dart';
+import 'package:imin/controllers/entrance_project_controller.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/controllers/login_controller.dart';
 import 'package:imin/controllers/upload_personal_controller.dart';
+import 'package:imin/controllers/walkin_controller.dart';
 import 'package:imin/functions/dialog_gate.dart';
 import 'package:imin/helpers/configs.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/services/gate_service.dart';
+import 'package:imin/views/screens/Demo/select.dart';
 import 'package:imin/views/widgets/round_button.dart';
 import 'package:imin/views/widgets/round_button_outline.dart';
 import 'entrance_project_screen.dart';
@@ -258,6 +265,7 @@ class NextInput extends StatelessWidget {
   final uploadPersonalController = Get.put(UploadPersonalController());
   final cameraController = Get.put(TakePictureController());
   final loginController = Get.put(LoginController());
+  final walkinController = Get.put(WalkinController());
 
   @override
   Widget build(BuildContext context) {
@@ -289,6 +297,47 @@ class NextInput extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              margin: EdgeInsets.symmetric(
+                  horizontal: size.width * 0.02, vertical: size.height * 0.01),
+              child: Theme(
+                data:
+                    Theme.of(context).copyWith(dividerColor: dividerTableColor),
+                child: GetBuilder<WalkinController>(
+                  id: 'update-walkin-data-row',
+                  builder: (c) => Obx(
+                    () => Row(
+                      children: [
+                        DataTable(
+                          showCheckboxColumn: false,
+                          dividerThickness: 0.5,
+                          columnSpacing:
+                              (walkinController.hasDataValue.value == true)
+                                  ? 30
+                                  : 30,
+                          headingRowColor: MaterialStateColor.resolveWith(
+                              (states) => grey3Color),
+                          columns: c.createColumns(),
+                          // columns: _createColumns(),
+                          rows: c.dataRow,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -304,34 +353,25 @@ class NextInput extends StatelessWidget {
                       : ShowEarningText(
                           text: '*กรุณากรอกและตรวจสอบเลขประจำตัวประชาชน'),
                 ),
-                TextInputAddVisitor(
-                  title: 'บ้านเลขที่',
-                  hintText: 'กรุณากรอกบ้านเลขที่',
-                  initValue: uploadPersonalController.homeNumber.value,
-                  onChanged: (v) =>
-                      uploadPersonalController.homeNumber.value = v,
+                GetBuilder<WalkinController>(
+                  id: 'update-walkin-home-data',
+                  init: WalkinController(),
+                  builder: (controller) => TextInputSelect(
+                    title: 'บ้านเลขที่',
+                    hintText: 'กรุณากรอกบ้านเลขที่',
+                    initValue: controller.homeListData,
+                    // controller: controller,
+                    onChanged: (v) {
+                      uploadPersonalController.homeNumber.value = v as String;
+                      controller.filterSearchResults(v);
+                    },
+                  ),
                 ),
                 Obx(
                   () => uploadPersonalController.checkHomeNumber.value
                       ? Container()
                       : ShowEarningText(text: '*กรุณากรอกบ้านเลขที่'),
                 ),
-                // Obx(
-                //   () => TextInputAddVisitor(
-                //     title: 'ชื่อ - นามสกุล',
-                //     hintText: '',
-                //     initValue: cameraController.response['fullname'],
-                //   ),
-                // ),
-                // Obx(
-                //   () => cameraController.imageUrl.value != ""
-                //       ? ShowEarningText(
-                //           text: 'กรุณาตรวจสอบชื่อ - นามสกุล',
-                //           color: Colors.orange,
-                //         )
-                //       : Container(),
-                // ),
-
                 TextInputAddVisitor(
                   title: 'เลขทะเบียนรถ',
                   hintText: 'กรุณากรอกเลขทะเบียนรถ',
@@ -339,11 +379,6 @@ class NextInput extends StatelessWidget {
                   onChanged: (v) =>
                       uploadPersonalController.licensePlate.value = v,
                 ),
-                // Obx(
-                //   () => uploadPersonalController.checkLicensePlate.value
-                //       ? Container()
-                //       : ShowEarningText(text: '*กรุณากรอกเลขทะเบียนรถ'),
-                // ),
               ],
             ),
           ],
@@ -560,6 +595,58 @@ class TextInputAddVisitor extends StatelessWidget {
               ),
               hintText: hintText,
             ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class TextInputSelect extends StatelessWidget {
+  const TextInputSelect({
+    Key? key,
+    required this.title,
+    required this.hintText,
+    this.initValue,
+    this.controller,
+    this.onChanged,
+  }) : super(key: key);
+
+  final String title;
+  final String hintText;
+  final List<String>? initValue;
+  final TextEditingController? controller;
+  final Function(Object?)? onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 15),
+          child: Text(
+            title,
+            style: TextStyle(
+              fontFamily: fontRegular,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Container(
+          width: size.width * 0.25,
+          height: 45,
+          margin: EdgeInsets.only(top: 5, bottom: 5),
+          child: DropdownSearch(
+            showSearchBox: true,
+            items: initValue,
+            // dropdownSearchDecoration:
+            //     InputDecoration(hintText: 'เลือกบ้านเลขที่'),
+            onChanged: onChanged,
+            selectedItem: 'เลือกบ้านเลขที่',
           ),
         ),
       ],

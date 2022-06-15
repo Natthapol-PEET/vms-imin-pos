@@ -73,10 +73,10 @@ class LoginController extends GetxController {
       passwordControl.value.text,
     );
 
-    if (dataProfile is bool) {
+    if (dataProfile == 'not call api') {
       EasyLoading.dismiss();
       alertSystemOnConnectInternet().show(context);
-      return;
+      return false;
     }
 
     if (dataProfile is LoginModel) {
@@ -96,9 +96,12 @@ class LoginController extends GetxController {
 
       EasyLoading.dismiss();
       Timer(Duration(microseconds: 200), () => Get.toNamed('/expansion_panel'));
+
+      return true;
     } else {
       EasyLoading.dismiss();
       EasyLoading.showError('ข้อมูลผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
+      return false;
     }
   }
 

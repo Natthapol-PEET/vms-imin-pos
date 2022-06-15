@@ -67,22 +67,22 @@ class UploadPersonalController extends GetxController {
 
   Future checkInput(String code, int guardId) async {
     // check home number is null
-    if (homeNumber.value == "") {
+    if (homeNumber.value == "")
       checkHomeNumber(false);
-    } else {
+    else
       checkHomeNumber(true);
-    }
-    if (idCard.value == "" || idCard.value.length != 13) {
-      checkIdCard(false);
-    } else {
-      checkIdCard(true);
-    }
+
+    // if (idCard.value == "" || idCard.value.length != 13)
+    //   checkIdCard(false);
+    // else
+    //   checkIdCard(true);
 
     print("checkHomeNumber.value: ${checkHomeNumber.value}");
     print("checkIdCard.value: ${checkIdCard.value}");
 
     // call api
-    if (checkHomeNumber.value && checkIdCard.value) {
+    // if (checkHomeNumber.value && checkIdCard.value) {
+    if (checkHomeNumber.value) {
       print("code: $code");
       print("homeNumber: $homeNumber");
       print("idCard: $idCard");

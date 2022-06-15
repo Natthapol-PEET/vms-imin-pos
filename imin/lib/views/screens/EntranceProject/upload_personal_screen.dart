@@ -292,18 +292,18 @@ class NextInput extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextInputAddVisitor(
-                  title: 'เลขประจำตัวประชาชน',
-                  hintText: 'กรุณากรอกเลขประจำตัวประชาชน',
-                  initValue: uploadPersonalController.idCard.value,
-                  onChanged: (v) => uploadPersonalController.idCard.value = v,
-                ),
-                Obx(
-                  () => uploadPersonalController.checkIdCard.value
-                      ? Container()
-                      : ShowEarningText(
-                          text: '*กรุณากรอกและตรวจสอบเลขประจำตัวประชาชน'),
-                ),
+                // TextInputAddVisitor(
+                //   title: 'เลขประจำตัวประชาชน',
+                //   hintText: 'กรุณากรอกเลขประจำตัวประชาชน',
+                //   initValue: uploadPersonalController.idCard.value,
+                //   onChanged: (v) => uploadPersonalController.idCard.value = v,
+                // ),
+                // Obx(
+                //   () => uploadPersonalController.checkIdCard.value
+                //       ? Container()
+                //       : ShowEarningText(
+                //           text: '*กรุณากรอกและตรวจสอบเลขประจำตัวประชาชน'),
+                // ),
                 TextInputAddVisitor(
                   title: 'บ้านเลขที่',
                   hintText: 'กรุณากรอกบ้านเลขที่',

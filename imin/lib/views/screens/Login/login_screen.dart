@@ -176,10 +176,13 @@ class LoginScreen extends StatelessWidget {
                     RoundButton(
                       title: 'เข้าสู่ระบบ',
                       press: () async {
-                        await controller.login(context, expandController);
-                        // init socket
-                        SocketService socketService = SocketService();
-                        socketService.startSocketClient();
+                        bool isLogin =
+                            await controller.login(context, expandController);
+                        if (isLogin) {
+                          // init socket
+                          SocketService socketService = SocketService();
+                          socketService.startSocketClient();
+                        }
                       },
                     ),
                   ],

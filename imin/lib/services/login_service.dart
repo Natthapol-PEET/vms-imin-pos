@@ -19,11 +19,10 @@ Future loginApi(String user, String password) async {
     if (response.statusCode == 200) {
       return LoginModel.fromJson(json.decode(utf8.decode(response.bodyBytes)));
     } else {
-      // throw Exception('Failed to load Profile');
-      return false;
+      return response;
     }
   } catch (e) {
     print("e: $e");
-    return false;
+    return "not call api";
   }
 }

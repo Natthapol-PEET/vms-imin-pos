@@ -318,14 +318,15 @@ class NextInput extends StatelessWidget {
                   id: 'update-walkin-data-row',
                   builder: (c) => Obx(
                     () => Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         DataTable(
                           showCheckboxColumn: false,
                           dividerThickness: 0.5,
                           columnSpacing:
                               (walkinController.hasDataValue.value == true)
-                                  ? 30
-                                  : 30,
+                                  ? 1500
+                                  : 1500,
                           headingRowColor: MaterialStateColor.resolveWith(
                               (states) => grey3Color),
                           columns: c.createColumns(),

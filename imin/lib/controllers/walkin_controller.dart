@@ -113,13 +113,14 @@ class WalkinController extends GetxController {
       createRowSearch(result);
       return;
     } else {
-      if (blacklistList.length > 0) {
-        hasDataValue.value = true;
-      } else {
-        hasDataValue.value = false;
-      }
+      // if (blacklistList.length > 0) {
+      //   hasDataValue.value = true;
+      // } else {
+      //   hasDataValue.value = false;
+      // }
+      hasDataValue.value = false;
       dataRow.clear();
-      blacklistList.forEach((item) => dataRow.add(createDataRow(item)));
+      // blacklistList.forEach((item) => dataRow.add(createDataRow(item)));
       dataRow = mapToPaging();
       update(['update-walkin-data-row']);
     }
@@ -163,18 +164,18 @@ class WalkinController extends GetxController {
         //         ? '-'
         //         : item.licensePlate))),
         DataCell(Container(
-            width: 350,
+            // width: 350,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(item.licensePlate == '' || item.licensePlate == null
-                    ? "ทะเบียนรถ : -"
-                    : "ทะเบียนรถ : ${item.licensePlate}"),
-                Text(item.firstname == null
-                    ? "ชื่อ-นามสกุล : -"
-                    : "ชื่อ-นามสกุล : ${item.firstname} ${item.lastname}"),
-              ],
-            ))),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(item.licensePlate == '' || item.licensePlate == null
+                ? "ทะเบียนรถ : -"
+                : "ทะเบียนรถ : ${item.licensePlate}"),
+            Text(item.firstname == null
+                ? "ชื่อ-นามสกุล : -"
+                : "ชื่อ-นามสกุล : ${item.firstname} ${item.lastname}"),
+          ],
+        ))),
       ],
     );
   }

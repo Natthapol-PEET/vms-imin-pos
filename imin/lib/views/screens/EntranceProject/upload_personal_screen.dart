@@ -294,147 +294,177 @@ class NextInput extends StatelessWidget {
             ),
           ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
-              margin: EdgeInsets.symmetric(
-                  horizontal: size.width * 0.02, vertical: size.height * 0.01),
-              child: Theme(
-                data:
-                    Theme.of(context).copyWith(dividerColor: dividerTableColor),
-                child: GetBuilder<WalkinController>(
-                  id: 'update-walkin-data-row',
-                  builder: (c) => Obx(
-                    () => Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+        Container(
+          width: size.width * 0.74,
+          height: size.height * 0.60,
+          // color: Colors.red,
+          padding: EdgeInsets.only(
+              left: size.width * 0.03, right: size.width * 0.03),
+          // padding: paddingOnly({left = 10}),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: size.width * 0.32,
+                decoration: BoxDecoration(
+                  // color: Colors.green,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.1),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                margin: EdgeInsets.symmetric(
+                    horizontal: size.width * 0.00,
+                    vertical: size.height * 0.01),
+                child: Theme(
+                  data: Theme.of(context)
+                      .copyWith(dividerColor: dividerTableColor),
+                  child: GetBuilder<WalkinController>(
+                    id: 'update-walkin-data-row',
+                    builder: (c) =>
+                        // Obx(() =>
+                        Column(
+                      // mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         DataTable(
                           showCheckboxColumn: false,
                           dividerThickness: 0.5,
-                          columnSpacing:
-                              (walkinController.hasDataValue.value == true)
-                                  ? 1500
-                                  : 1500,
+                          columnSpacing: double.infinity,
+                          // (walkinController.hasDataValue.value != true)
+                          //     ? 150
+                          //     : 150,
                           headingRowColor: MaterialStateColor.resolveWith(
                               (states) => grey3Color),
-                          columns: c.createColumns(),
+                          columns: c.createColumns(size),
                           // columns: _createColumns(),
                           rows: c.dataRow,
                         ),
+                        Obx(
+                          () => (walkinController.hasDataValue.value != true)
+                              ? Container(
+                                  color: themeBgColor,
+                                  height: size.height * 0.5,
+                                  width: size.width * 0.5,
+                                  child: Image.asset(
+                                    'assets/images/NodataTable.png',
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
+                              : Container(),
+                        ),
                       ],
                     ),
+                    // ),
                   ),
                 ),
               ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextInputAddVisitor(
-                  title: 'เลขประจำตัวประชาชน',
-                  hintText: 'กรุณากรอกเลขประจำตัวประชาชน',
-                  initValue: uploadPersonalController.idCard.value,
-                  onChanged: (v) => uploadPersonalController.idCard.value = v,
-                ),
-                Obx(
-                  () => uploadPersonalController.checkIdCard.value
-                      ? Container()
-                      : ShowEarningText(
-                          text: '*กรุณากรอกและตรวจสอบเลขประจำตัวประชาชน'),
-                ),
-                GetBuilder<WalkinController>(
-                  id: 'update-walkin-home-data',
-                  init: WalkinController(),
-                  builder: (controller) => TextInputSelect(
-                    title: 'บ้านเลขที่',
-                    hintText: 'กรุณากรอกบ้านเลขที่',
-                    initValue: controller.homeListData,
-                    // controller: controller,
-                    onChanged: (v) {
-                      uploadPersonalController.homeNumber.value = v as String;
-                      controller.filterSearchResults(v);
-                    },
-                  ),
-                ),
-                Obx(
-                  () => uploadPersonalController.checkHomeNumber.value
-                      ? Container()
-                      : ShowEarningText(text: '*กรุณากรอกบ้านเลขที่'),
-                ),
-                TextInputAddVisitor(
-                  title: 'เลขทะเบียนรถ',
-                  hintText: 'กรุณากรอกเลขทะเบียนรถ',
-                  initValue: uploadPersonalController.licensePlate.value,
-                  onChanged: (v) =>
-                      uploadPersonalController.licensePlate.value = v,
-                ),
-              ],
-            ),
-          ],
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: size.height * 0.03),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GetBuilder<ExpansionPanelController>(
-                builder: (c) => RoundButtonOutline(
-                  width: 100,
-                  title: 'ย้อนกลับ',
-                  press: () {
-                    uploadPersonalController.screenOne.value = true;
-                  },
-                ),
-              ),
-              Row(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  GetBuilder<UploadPersonalController>(
-                    builder: (c) => RoundButton(
-                        horizontal: size.width * 0.03,
-                        vertical: size.height * 0.015,
-                        title: 'บันทึก',
-                        press: () async {
-                          EasyLoading.show(status: 'กรุณารอสักครู่ ...');
-
-                          var response = await c.checkInput(
-                              code, loginController.dataProfile.guardId);
-                          EasyLoading.dismiss();
-
-                          if (response.runtimeType == int) {
-                            return;
-                          }
-
-                          if (response.statusCode == 201) {
-                            EasyLoading.showSuccess(
-                                'บันทึกข้อมูลเรียบร้อยแล้ว');
-
-                            dialogPrinter(size, context).show(context);
-                          } else {
-                            String text = jsonDecode(
-                                utf8.decode(response.bodyBytes))['detail'];
-
-                            EasyLoading.showInfo(text == 'Invalid Home'
-                                ? 'ไม่มีข้อมูลบ้านเลขที่นี้'
-                                : text);
-                          }
-                        }),
+                  TextInputAddVisitor(
+                    title: 'เลขประจำตัวประชาชน',
+                    hintText: 'กรุณากรอกเลขประจำตัวประชาชน',
+                    initValue: uploadPersonalController.idCard.value,
+                    onChanged: (v) => uploadPersonalController.idCard.value = v,
                   ),
-                  SizedBox(width: size.width * 0.055),
+                  Obx(
+                    () => uploadPersonalController.checkIdCard.value
+                        ? Container()
+                        : ShowEarningText(
+                            text: '*กรุณากรอกและตรวจสอบเลขประจำตัวประชาชน'),
+                  ),
+                  GetBuilder<WalkinController>(
+                    id: 'update-walkin-home-data',
+                    init: WalkinController(),
+                    builder: (controller) => TextInputSelect(
+                      title: 'บ้านเลขที่',
+                      hintText: 'กรุณากรอกบ้านเลขที่',
+                      initValue: controller.homeListData,
+                      // controller: controller,
+                      onChanged: (v) {
+                        uploadPersonalController.homeNumber.value = v as String;
+                        controller.filterSearchResults(v);
+                      },
+                    ),
+                  ),
+                  Obx(
+                    () => uploadPersonalController.checkHomeNumber.value
+                        ? Container()
+                        : ShowEarningText(text: '*กรุณากรอกบ้านเลขที่'),
+                  ),
+                  TextInputAddVisitor(
+                    title: 'เลขทะเบียนรถ',
+                    hintText: 'กรุณากรอกเลขทะเบียนรถ',
+                    initValue: uploadPersonalController.licensePlate.value,
+                    onChanged: (v) =>
+                        uploadPersonalController.licensePlate.value = v,
+                  ),
                 ],
               ),
             ],
+          ),
+        ),
+        Container(
+          child: Padding(
+            padding: EdgeInsets.only(
+                top: size.height * 0.03,
+                left: size.height * 0.055,
+                right: size.height * 0.055),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GetBuilder<ExpansionPanelController>(
+                  builder: (c) => RoundButtonOutline(
+                    width: 100,
+                    title: 'ย้อนกลับ',
+                    press: () {
+                      uploadPersonalController.screenOne.value = true;
+                    },
+                  ),
+                ),
+                Row(
+                  children: [
+                    GetBuilder<UploadPersonalController>(
+                      builder: (c) => RoundButton(
+                          horizontal: size.width * 0.03,
+                          vertical: size.height * 0.015,
+                          title: 'บันทึก',
+                          press: () async {
+                            EasyLoading.show(status: 'กรุณารอสักครู่ ...');
+
+                            var response = await c.checkInput(
+                                code, loginController.dataProfile.guardId);
+                            EasyLoading.dismiss();
+
+                            if (response.runtimeType == int) {
+                              return;
+                            }
+
+                            if (response.statusCode == 201) {
+                              EasyLoading.showSuccess(
+                                  'บันทึกข้อมูลเรียบร้อยแล้ว');
+
+                              dialogPrinter(size, context).show(context);
+                            } else {
+                              String text = jsonDecode(
+                                  utf8.decode(response.bodyBytes))['detail'];
+
+                              EasyLoading.showInfo(text == 'Invalid Home'
+                                  ? 'ไม่มีข้อมูลบ้านเลขที่นี้'
+                                  : text);
+                            }
+                          }),
+                    ),
+                    // SizedBox(width: size.width * 0.055),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ],
@@ -567,7 +597,7 @@ class TextInputAddVisitor extends StatelessWidget {
           ),
         ),
         Container(
-          width: size.width * 0.25,
+          width: size.width * 0.28,
           height: 45,
           // margin: EdgeInsets.only(top: 10, bottom: 20),
           margin: EdgeInsets.only(top: 5, bottom: 5),
@@ -638,7 +668,7 @@ class TextInputSelect extends StatelessWidget {
           ),
         ),
         Container(
-          width: size.width * 0.25,
+          width: size.width * 0.28,
           height: 45,
           margin: EdgeInsets.only(top: 5, bottom: 5),
           child: DropdownSearch(

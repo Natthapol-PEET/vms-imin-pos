@@ -198,21 +198,24 @@ class WalkinController extends GetxController {
   }
 
   /// create column table
-  List<DataColumn> createColumns() {
+  List<DataColumn> createColumns(Size size) {
     List headerItems = [
       'รายชื่อผู้ไม่มีสิทธิ์เข้าโครงการ',
     ];
 
     return headerItems
         .map((item) => DataColumn(
-                label: Text(
-              item,
-              style: TextStyle(
-                  fontFamily: fontRegular,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  color: Colors.white),
-              textAlign: TextAlign.center,
+                label: Container(
+              width: size.width * 0.282,
+              child: Text(
+                item,
+                style: TextStyle(
+                    fontFamily: fontRegular,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                    color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
             )))
         .toList();
   }

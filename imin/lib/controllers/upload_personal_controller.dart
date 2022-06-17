@@ -72,11 +72,11 @@ class UploadPersonalController extends GetxController {
     } else {
       checkHomeNumber(true);
     }
-    if (idCard.value == "" || idCard.value.length != 13) {
-      checkIdCard(false);
-    } else {
-      checkIdCard(true);
-    }
+    // if (idCard.value == "" || idCard.value.length != 13) {
+    //   checkIdCard(false);
+    // } else {
+    //   checkIdCard(true);
+    // }
 
     print("checkHomeNumber.value: ${checkHomeNumber.value}");
     print("checkIdCard.value: ${checkIdCard.value}");

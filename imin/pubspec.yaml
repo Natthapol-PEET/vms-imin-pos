@@ -108,6 +108,7 @@ flutter:
     - assets/images/license-card.png
     - assets/images/printer.png
     - assets/images/open-gate.png
+    - assets/images/NodataTable.png
 
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

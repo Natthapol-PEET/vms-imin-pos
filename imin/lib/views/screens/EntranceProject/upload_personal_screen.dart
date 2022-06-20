@@ -166,7 +166,10 @@ class UploadCard extends StatelessWidget {
                     title: cameraController.imageUrl.value == ""
                         ? 'ถ่ายภาพ'
                         : 'ถ่ายภาพใหม่',
-                    press: () => Get.toNamed('/camera'),
+                    press: () {
+                      cameraController.initCamera();
+                      Timer(Duration(seconds: 1), () => Get.toNamed('/camera'));
+                    },
                   ),
                 ),
                 SizedBox(height: 5),

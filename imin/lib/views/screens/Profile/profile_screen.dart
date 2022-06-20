@@ -10,7 +10,7 @@ import 'package:imin/views/widgets/round_input_form_field.dart';
 // ignore: must_be_immutable
 class ProfileScreen extends StatelessWidget {
   ProfileScreen({Key? key}) : super(key: key);
-  final loginController = Get.put(LoginController()); 
+  final loginController = Get.put(LoginController());
 
   final _formKey = GlobalKey<FormState>();
   final emailControl = TextEditingController(text: 'Suchin12@gmail.com');
@@ -41,7 +41,10 @@ class ProfileScreen extends StatelessWidget {
                     ipServer +
                         '/guard/profile_image/' +
                         controller.dataProfile.profilePath,
-                    headers: <String, String>{'Authorization': 'Bearer ${loginController.dataProfile.token}'},
+                    headers: <String, String>{
+                      'Authorization':
+                          'Bearer ${loginController.dataProfile.token}'
+                    },
                   ),
                   backgroundColor: Colors.transparent,
                 ),
@@ -77,7 +80,7 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         GetBuilder<LoginController>(
                           builder: (v) =>
-                              subDetailText(v.dataProfile.phoneNumber),
+                              subDetailText(v.dataProfile.phoneNumber ?? '-'),
                         ),
                         GetBuilder<LoginController>(
                           builder: (v) => subDetailText(

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:camera/camera.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:imin/helpers/configs.dart';
 import 'package:imin/services/upload_personal_service.dart';
+import 'package:imin/views/widgets/not_connect_internet.dart';
 
 class TakePictureController extends GetxController {
   late CameraDescription camera;
@@ -47,8 +49,18 @@ class TakePictureController extends GetxController {
   uploadPersonalApi(XFile image, String classCard) async {
     EasyLoading.show(status: 'กรุณารอสักครู่...');
     var responseApi = await uploadPersonal(image.path, classCard);
+
     responseApi.stream.transform(utf8.decoder).listen((value) {
-      Map<String, dynamic> json = jsonDecode(value);
+      Map<String, dynamic> json;
+
+      try {
+        json = jsonDecode(value);
+      } catch (e) {
+        print("Error: $e");
+        EasyLoading.dismiss();
+        alertSystemOnConnectInternet();
+        return;
+      }
 
       if (json['code'] != null) {
         // imagePath.value = image.path;
@@ -72,6 +84,10 @@ class TakePictureController extends GetxController {
     } catch (e) {
       print(e);
     }
+  }
+
+  stopCamera() {
+    Timer(Duration(seconds: 1), () => controller.dispose());
   }
 
   @override

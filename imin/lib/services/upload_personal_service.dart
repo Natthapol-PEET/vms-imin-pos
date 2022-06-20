@@ -5,7 +5,6 @@ import 'package:imin/helpers/configs.dart';
 Future uploadPersonal(String filename, String classCard) async {
   var uri = ipServerIminService + '/decode_image/';
   var request = new http.MultipartRequest("POST", Uri.parse(uri));
-
   request.files.add(
     http.MultipartFile(
       'image',

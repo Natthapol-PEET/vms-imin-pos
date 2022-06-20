@@ -22,21 +22,14 @@ import 'package:imin/views/screens/Demo/demo.dart';
 import 'package:imin/views/screens/Profile/profile_screen.dart';
 import 'package:wakelock/wakelock.dart';
 
+import 'controllers/screen_controller.dart';
+
 void main() async {
   runApp(MyApp());
 
   // The following line will enable the Android and iOS wakelock.
   WidgetsFlutterBinding.ensureInitialized();
   Wakelock.enable();
-
-  // Hide status bar and bottom navigation bar
-  SystemChrome.setEnabledSystemUIOverlays([]);
-  // Lock Screen Orientation
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.landscapeRight,
-    DeviceOrientation.landscapeLeft,
-  ]);
-
 }
 
 class MyApp extends StatelessWidget {
@@ -95,6 +88,8 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
 
 // class MyHomePage extends StatefulWidget {
 //   MyHomePage({Key? key}) : super(key: key);

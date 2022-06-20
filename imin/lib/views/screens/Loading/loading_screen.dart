@@ -4,6 +4,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:imin/controllers/camera_controller.dart';
 import 'package:imin/controllers/login_controller.dart';
+import 'package:imin/controllers/screen_controller.dart';
 import 'package:imin/data/account.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/models/login_model.dart';
@@ -20,6 +21,7 @@ class LoadingScreen extends StatefulWidget {
 
 class _LoadingScreenState extends State<LoadingScreen> {
   final loginController = Get.put(LoginController());
+  final screenController = Get.put(ScreenController());
 
   Account acc = Account();
 
@@ -69,6 +71,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    screenController.showSize(size);
 
     return Stack(
       children: [

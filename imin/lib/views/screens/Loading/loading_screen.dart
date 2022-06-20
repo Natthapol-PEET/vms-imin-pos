@@ -20,14 +20,11 @@ class LoadingScreen extends StatefulWidget {
 
 class _LoadingScreenState extends State<LoadingScreen> {
   final loginController = Get.put(LoginController());
-  final cameraController = Get.put(TakePictureController());
 
   Account acc = Account();
 
   @override
   void initState() {
-    cameraController.initCamera();
-
     initAsync();
 
     super.initState();

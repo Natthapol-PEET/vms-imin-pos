@@ -106,7 +106,7 @@ class WalkinController extends GetxController {
       List result = [];
       blacklistList.forEach((p) {
         var homeNumber = p.homeNumber.toString().toLowerCase();
-        if (homeNumber.contains(query)) {
+        if (homeNumber == (query)) {
           result.add(p);
         }
       });

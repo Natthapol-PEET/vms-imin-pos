@@ -13,6 +13,7 @@ import 'package:imin/controllers/camera_controller.dart';
 import 'package:imin/controllers/entrance_project_controller.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/controllers/login_controller.dart';
+import 'package:imin/controllers/screen_controller.dart';
 import 'package:imin/controllers/upload_personal_controller.dart';
 import 'package:imin/controllers/walkin_controller.dart';
 import 'package:imin/functions/dialog_gate.dart';
@@ -64,6 +65,7 @@ class UploadCard extends StatelessWidget {
   final uploadPersonalController = Get.put(UploadPersonalController());
   final cameraController = Get.put(TakePictureController());
   final loginController = Get.put(LoginController());
+  final screenController = Get.put(ScreenController());
 
   @override
   Widget build(BuildContext context) {
@@ -83,15 +85,20 @@ class UploadCard extends StatelessWidget {
         ),
         Padding(
           padding: EdgeInsets.only(
-              top: size.height * 0.02, bottom: size.height * 0.08),
+              top: size.height * 0.02,
+              bottom: (screenController.DeviceCurrent == Device.iminM2Pro)
+                  ? size.height * 0.03
+                  : size.height * 0.08),
           child: Obx(() => Text(
                 'กรุณาอัพโหลดรูป' +
                     uploadPersonalController.selectedValue.value +
                     'จริงเพื่อเข้าโครงการ',
                 style: TextStyle(
-                  fontFamily: fontRegular,
-                  fontSize: 22,
-                ),
+                    fontFamily: fontRegular,
+                    fontSize:
+                        (screenController.DeviceCurrent == Device.iminM2Pro)
+                            ? 20
+                            : 22),
               )),
         ),
         Row(

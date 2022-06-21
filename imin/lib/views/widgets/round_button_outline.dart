@@ -8,12 +8,14 @@ class RoundButtonOutline extends StatelessWidget {
     required this.press,
     this.width = 150,
     this.height = 40,
+    this.fontSize = 18,
   }) : super(key: key);
 
   final String title;
   final VoidCallback? press;
   final double width;
   final double height;
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class RoundButtonOutline extends StatelessWidget {
           title,
           style: TextStyle(
             color: purpleBlueColor,
-            fontSize: 18,
+            fontSize: fontSize,
             fontFamily: fontRegular,
           ),
         ),

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/controllers/login_controller.dart';
 import 'package:imin/controllers/on_will_pop_controller.dart';
+import 'package:imin/controllers/screen_controller.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/services/socket_service.dart';
 import 'package:imin/views/widgets/round_button.dart';
@@ -18,6 +19,7 @@ class ExpansionPanelScreen extends StatelessWidget {
 
   final onWillPopController = Get.put(OnWillPopController());
   final loginController = Get.put(LoginController());
+  final screenController = Get.put(ScreenController());
 
   @override
   Widget build(BuildContext context) {
@@ -32,35 +34,37 @@ class ExpansionPanelScreen extends StatelessWidget {
         backgroundColor: contentColor,
         body: Row(
           children: [
-            Expanded(
-              flex: 1,
-              child: Container(
-                color: themeBgColor,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: size.height * 0.03),
-                      child: Image.asset(
-                        "assets/images/logo_horizontal.png",
-                        scale: 0.2,
+            (screenController.DeviceCurrent == Device.iminM2Pro)
+                ? Container()
+                : Expanded(
+                    flex: 1,
+                    child: Container(
+                      color: themeBgColor,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: size.height * 0.03),
+                            child: Image.asset(
+                              "assets/images/logo_horizontal.png",
+                              scale: 0.2,
+                            ),
+                          ),
+                          GetBuilder<ExpansionPanelController>(
+                            id: 'aVeryUniqueID', // here
+                            init: ExpansionPanelController(),
+                            builder: (controller) => Expanded(
+                              child: Column(
+                                children: [
+                                  buildMenu(controller, size),
+                                  logout(size, context),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    GetBuilder<ExpansionPanelController>(
-                      id: 'aVeryUniqueID', // here
-                      init: ExpansionPanelController(),
-                      builder: (controller) => Expanded(
-                        child: Column(
-                          children: [
-                            buildMenu(controller, size),
-                            logout(size, context),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+                  ),
             Expanded(
               flex: 4,
               child: GetBuilder<ExpansionPanelController>(
@@ -122,8 +126,7 @@ class ExpansionPanelScreen extends StatelessWidget {
 
                     // init socket
                     SocketService socketService = SocketService();
-                    socketService
-                        .stopSocketClient();
+                    socketService.stopSocketClient();
                   },
                 ),
                 SizedBox(width: 20),

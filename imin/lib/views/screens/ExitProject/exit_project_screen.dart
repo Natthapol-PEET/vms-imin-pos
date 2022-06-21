@@ -288,11 +288,17 @@ class RoundButtonNumber extends StatelessWidget {
     required this.index,
     required this.selectd,
     required this.onClick,
+    this.width = 30,
+    this.height = 30,
+    this.fontSize = 16,
   }) : super(key: key);
 
   final String index;
   final bool selectd;
   final Function()? onClick;
+  final double width;
+  final double height;
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -300,8 +306,8 @@ class RoundButtonNumber extends StatelessWidget {
       onTap: onClick,
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 3),
-        width: 30,
-        height: 30,
+        width: width,
+        height: height,
         decoration: BoxDecoration(
           border: Border.all(
             color: selectd ? hilightTextColor : textColor,
@@ -314,7 +320,7 @@ class RoundButtonNumber extends StatelessWidget {
             index,
             style: TextStyle(
               fontFamily: fontRobotoRegular,
-              fontSize: 16,
+              fontSize: fontSize,
               fontWeight: FontWeight.bold,
               color: selectd ? hilightTextColor : textColor,
             ),
@@ -330,10 +336,16 @@ class RoundButtonIcon extends StatelessWidget {
     Key? key,
     required this.icon,
     required this.onClick,
+    this.width = 30,
+    this.height = 30,
+    this.size = 18,
   }) : super(key: key);
 
   final IconData icon;
   final Function()? onClick;
+  final double width;
+  final double height;
+  final double size;
 
   @override
   Widget build(BuildContext context) {
@@ -341,8 +353,8 @@ class RoundButtonIcon extends StatelessWidget {
       onTap: onClick,
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 3),
-        width: 30,
-        height: 30,
+        width: width,
+        height: height,
         decoration: BoxDecoration(
           border: Border.all(
             color: textColor,
@@ -352,7 +364,7 @@ class RoundButtonIcon extends StatelessWidget {
         ),
         child: Icon(
           icon,
-          size: 18,
+          size: size,
           color: Colors.grey.shade700,
         ),
       ),

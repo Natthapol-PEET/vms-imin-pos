@@ -19,7 +19,7 @@ import 'package:imin/services/get_enteance_project_whitelist_service.dart';
 import 'package:imin/views/widgets/round_button_outline.dart';
 import 'package:intl/intl.dart';
 
-class EntranceProjectController extends GetxController {
+class EntranceProjectControllerM2 extends GetxController {
   var loginController = Get.put(LoginController());
 
   var context;
@@ -50,7 +50,7 @@ class EntranceProjectController extends GetxController {
 
 // search
   void filterSearchResults(String query) {
-    print('d1Pro');
+    print('M2Pro');
     searchValue = query;
     List<String> dummySearchList = [];
     // dummySearchList.addAll(whitelistList);
@@ -144,13 +144,9 @@ class EntranceProjectController extends GetxController {
     whitelistList.clear();
     blacklistList.clear();
     // print('json: ${jSon}');
-
     jSonVisitor.forEach((item) => visitorList.add(VisitorModel.fromJson(item)));
-    if (jSonWhitelist != false) {
-      jSonWhitelist
-          .forEach((item) => whitelistList.add(WhitelistModel.fromJson(item)));
-    }
-
+    jSonWhitelist
+        .forEach((item) => whitelistList.add(WhitelistModel.fromJson(item)));
     jSonBlacklist
         .forEach((item) => blacklistList.add(BlacklistModel.fromJson(item)));
 
@@ -175,60 +171,84 @@ class EntranceProjectController extends GetxController {
 //////////// get to table
   DataRow createDataRow(item) {
     return DataRow(
-      onSelectChanged: (state) => item.firstname == null
-          ? showDialogCard(item).show(context)
-          : showDialogDetails(item).show(context),
+      // onSelectChanged: (state) => item.firstname == null
+      //     ? showDialogCard(item).show(context)
+      //     : showDialogDetails(item).show(context),
       cells: [
         DataCell(Center(
-          child: Text(item.idCard != null && item.idCard != ""
-              ? '${item.idCard}'
-              : '-'),
+          child: Text(
+            item.idCard != null && item.idCard != "" ? '${item.idCard}' : '-',
+            style: TextStyle(fontSize: 12),
+          ),
         )),
         DataCell(Center(
-            child: Text(item.licensePlate == '' || item.licensePlate == null
-                ? '-'
-                : item.licensePlate))),
+            child: Text(
+          item.licensePlate == '' || item.licensePlate == null
+              ? '-'
+              : item.licensePlate,
+          style: TextStyle(fontSize: 12),
+        ))),
+        // DataCell(Container(
+        //     width: 120,
+        //     child: Text(item.firstname == null
+        //         ? "-"
+        //         : "${item.firstname} ${item.lastname}"))),
+        DataCell(Center(
+            child: Text(
+          item.homeNumber,
+          style: TextStyle(fontSize: 12),
+        ))),
         DataCell(Container(
-            width: 120,
-            child: Text(item.firstname == null
-                ? "-"
-                : "${item.firstname} ${item.lastname}"))),
-        DataCell(Center(child: Text(item.homeNumber))),
-        DataCell(Container(
-            width: 138,
-            child: Text(item.listStatus == 'visitor'
-                ? 'นัดหมายเข้าโครงการ'
-                : item.listStatus == 'whitelist'
-                    ? 'รับเชิญพิเศษ'
-                    : 'ไม่มีสิทธิ์เข้าโครงการ'))),
-        DataCell(Container(
-          width: 77,
+          // width: 138,
           child: Center(
-            child: Text((item.listStatus == 'visitor')
-                ? item.inviteDate
-                : (item.listStatus == 'whitelist')
-                    ? '-'
-                    : '-'),
+            child: RoundButtonOutline(
+              width: 5,
+              height: 20,
+              fontSize: 12,
+              title: 'เพิ่มเติม',
+              press: () {
+                (item.firstname == null)
+                    ? showDialogCard(item).show(context)
+                    : showDialogDetails(item).show(context);
+              },
+            ),
           ),
         )),
-        DataCell(
-          Container(
-            width: 108,
-            child: Text((item.listStatus == 'visitor')
-                ? (item.datetimeIn != null)
-                    ? (item.datetimeOut != null)
-                        ? 'ออกจากโครงการ'
-                        : 'อยู่ในโครงการ'
-                    : 'รอดำเนินการ'
-                : (item.listStatus == 'whitelist')
-                    ? (item.datetimeIn != null)
-                        ? (item.datetimeOut != null)
-                            ? 'รอดำเนินการ'
-                            : 'อยู่ในโครงการ'
-                        : 'รอดำเนินการ'
-                    : '-'),
-          ),
-        ),
+        // DataCell(Container(
+        //     width: 138,
+        //     child: Text(item.listStatus == 'visitor'
+        //         ? 'นัดหมายเข้าโครงการ'
+        //         : item.listStatus == 'whitelist'
+        //             ? 'รับเชิญพิเศษ'
+        //             : 'ไม่มีสิทธิ์เข้าโครงการ'))),
+        // DataCell(Container(
+        //   width: 77,
+        //   child: Center(
+        //     child: Text((item.listStatus == 'visitor')
+        //         ? item.inviteDate
+        //         : (item.listStatus == 'whitelist')
+        //             ? '-'
+        //             : '-'),
+        //   ),
+        // )),
+        // DataCell(
+        //   Container(
+        //     width: 108,
+        //     child: Text((item.listStatus == 'visitor')
+        //         ? (item.datetimeIn != null)
+        //             ? (item.datetimeOut != null)
+        //                 ? 'ออกจากโครงการ'
+        //                 : 'อยู่ในโครงการ'
+        //             : 'รอดำเนินการ'
+        //         : (item.listStatus == 'whitelist')
+        //             ? (item.datetimeIn != null)
+        //                 ? (item.datetimeOut != null)
+        //                     ? 'รอดำเนินการ'
+        //                     : 'อยู่ในโครงการ'
+        //                 : 'รอดำเนินการ'
+        //             : '-'),
+        //   ),
+        // ),
       ],
     );
   }
@@ -541,11 +561,12 @@ class EntranceProjectController extends GetxController {
     List headerItems = [
       'เลขประจำตัวประชาชน',
       'เลขทะเบียนรถ',
-      'ชื่อ - นามสกุล',
+      // 'ชื่อ - นามสกุล',
       'บ้านเลขที่',
-      'ระดับ',
-      'วันที่นัดหมาย',
-      'สถานะ',
+      ''
+      // 'ระดับ',
+      // 'วันที่นัดหมาย',
+      // 'สถานะ',
     ];
 
     return headerItems
@@ -555,7 +576,7 @@ class EntranceProjectController extends GetxController {
               style: TextStyle(
                   fontFamily: fontRegular,
                   fontWeight: FontWeight.bold,
-                  fontSize: 14,
+                  fontSize: 12,
                   color: Colors.white),
               textAlign: TextAlign.center,
             )))
@@ -576,48 +597,6 @@ class EntranceProjectController extends GetxController {
     } catch (e) {
       print('error:${e}');
     }
-  }
-
-  // all List (not use)
-  DataRow createDataRowAllList(item) {
-    return DataRow(
-      onSelectChanged: (state) => print('พห 5418'),
-      cells: [
-        DataCell(Text(item['id_card'] != null && item['id_card'] != ""
-            ? '${item['id_card']}'
-            : '-')),
-        DataCell(
-            // Text('${item['license_plate'] ?? "-"}')),
-            Text(item['license_plate'] != null
-                ? '${item['license_plate']}'
-                : '-')),
-        DataCell(Text('${item['firstname'] ?? "-"} ${item['lastname'] ?? ""}')),
-        DataCell(Text('${item['home_number'] ?? "-"}')),
-        DataCell(Text(item['visitor_id'] != null
-            ? 'นัดหมายเข้าโครงการ'
-            : item['whitelist_id'] != null
-                ? 'รับเชิญพิเศษ'
-                : 'ไม่มีสิทธิ์เข้าโครงการ')),
-        DataCell(Text((item['visitor_id'] != null)
-            ? item['invite_date']
-            : (item['whitelist_id'] != null)
-                ? '-'
-                : '-')),
-        DataCell(Text((item['visitor_id'] != null)
-            ? (item['datetime_in'] != null)
-                ? (item['datetime_out'] != null)
-                    ? 'ออกจากโครงการ'
-                    : 'อยู่ในโครงการ'
-                : 'รอดำเนินการ'
-            : (item['whitelist_id'] != null)
-                ? (item['datetime_in'] != null)
-                    ? (item['datetime_out'] != null)
-                        ? 'รอดำเนินการ'
-                        : 'อยู่ในโครงการ'
-                    : 'รอดำเนินการ'
-                : '-')),
-      ],
-    );
   }
 
 //

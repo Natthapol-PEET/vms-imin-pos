@@ -5,9 +5,11 @@ class TitleContent extends StatelessWidget {
   const TitleContent({
     Key? key,
     required this.text,
+    this.fontSize = 28,
   }) : super(key: key);
 
   final String text;
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class TitleContent extends StatelessWidget {
             color: Colors.black,
             fontFamily: fontRegular,
             fontWeight: FontWeight.w600,
-            fontSize: 28,
+            fontSize: fontSize,
           ),
         ),
       ),

@@ -45,7 +45,7 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
     if (screenController.DeviceCurrent == Device.iminM2Pro) {
       return EntranceProjectScreenM2();
     } else {
-      return EntranceProjectScreenM2();
+      return EntranceProjectScreenD1Pro();
     }
   }
 }

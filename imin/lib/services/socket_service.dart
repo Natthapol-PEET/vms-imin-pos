@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:get/get.dart';
 import 'package:imin/controllers/entrance_project_controller.dart';
+import 'package:imin/controllers/entrance_project_controller_m2.dart';
 import 'package:imin/controllers/exit_project_controller.dart';
 import 'package:imin/controllers/socket_controller.dart';
 import 'package:imin/helpers/configs.dart';
@@ -10,6 +11,7 @@ class SocketService extends GetxController {
   final socketController = Get.put(SocketController());
   final exitController = Get.put(ExitProjectController());
   final entranceController = Get.put(EntranceProjectController());
+  final entranceControllerM2 = Get.put(EntranceProjectControllerM2());
 
   startSocketClient() {
     print("startSocketClient");
@@ -35,6 +37,7 @@ class SocketService extends GetxController {
         // เวลาเข้าโครงการ screen
         if (msg == "COMING_WALK_IN" || msg == "REGISTER_WALKIN") {
           entranceController.getEntranceData();
+          entranceControllerM2.getEntranceData();
         }
 
         // เวลาออกโครงการ screen

@@ -25,3 +25,6 @@ const String fontRegular = "Sarabun";
 const String fontNunitoSans = "NunitoSans";
 const String fontPromptRegular = "Prompt";
 const String fontRobotoRegular = "Roboto";
+const double normalM2FontSize = 10;
+const double smallM2FontSize = 8;
+const double titleM2FontSize = 20;

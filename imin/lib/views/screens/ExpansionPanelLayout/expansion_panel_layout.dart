@@ -1,4 +1,3 @@
-import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
@@ -6,9 +5,10 @@ import 'package:imin/controllers/login_controller.dart';
 import 'package:imin/controllers/on_will_pop_controller.dart';
 import 'package:imin/controllers/screen_controller.dart';
 import 'package:imin/helpers/constance.dart';
-import 'package:imin/services/socket_service.dart';
-import 'package:imin/views/widgets/round_button.dart';
-import 'package:imin/views/widgets/round_button_outline.dart';
+import 'package:imin/views/screens/EntranceProject/entrance_project_screen.dart';
+import 'package:imin/views/screens/ExpansionPanelLayout/burger_menu_d1_pro.dart';
+import 'package:imin/views/screens/ExpansionPanelLayout/burger_menu_m2_pro.dart';
+import 'package:imin/views/widgets/bottom_app_bar.dart';
 import 'package:imin/views/widgets/top_app_bar.dart';
 
 // ignore: must_be_immutable
@@ -16,7 +16,7 @@ class ExpansionPanelScreen extends StatelessWidget {
   ExpansionPanelScreen({
     Key? key,
   }) : super(key: key);
-
+  final GlobalKey<ScaffoldState> _key = GlobalKey(); // Create a key
   final onWillPopController = Get.put(OnWillPopController());
   final loginController = Get.put(LoginController());
   final screenController = Get.put(ScreenController());
@@ -36,205 +36,145 @@ class ExpansionPanelScreen extends StatelessWidget {
           children: [
             (screenController.DeviceCurrent == Device.iminM2Pro)
                 ? Container()
-                : Expanded(
-                    flex: 1,
-                    child: Container(
-                      color: themeBgColor,
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(top: size.height * 0.03),
-                            child: Image.asset(
-                              "assets/images/logo_horizontal.png",
-                              scale: 0.2,
-                            ),
-                          ),
-                          GetBuilder<ExpansionPanelController>(
-                            id: 'aVeryUniqueID', // here
-                            init: ExpansionPanelController(),
-                            builder: (controller) => Expanded(
-                              child: Column(
-                                children: [
-                                  buildMenu(controller, size),
-                                  logout(size, context),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                : MenuBergerD1Pro(),
             Expanded(
               flex: 4,
               child: GetBuilder<ExpansionPanelController>(
-                id: 'aopbmsbbffdgkb', // here
-                init: ExpansionPanelController(),
-                builder: (controller) => Column(
-                  children: [
-                    TopAppBar(),
-                    Expanded(
-                      child: controller.currentContent,
-                    ),
-                  ],
-                ),
-              ),
+                  id: 'aopbmsbbffdgkb', // here
+                  init: ExpansionPanelController(),
+                  builder: (controller) => (screenController.DeviceCurrent !=
+                          Device.iminM2Pro)
+                      ? Column(
+                          children: [
+                            TopAppBar(),
+                            Expanded(
+                              child: controller.currentContent,
+                            ),
+                          ],
+                        )
+                      : Scaffold(
+                          key: _key,
+                          appBar: AppBar(
+                            backgroundColor: themeBgColor,
+                            // leading: Text('data'),
+                            automaticallyImplyLeading: false,
+                            title: Row(
+                              children: [
+                                // SizedBox(
+                                //   width: 5.0,
+                                // ),
+                                SizedBox(
+                                  height: 38.0,
+                                  width: 40.0,
+                                  child: new IconButton(
+                                      padding: new EdgeInsets.only(right: 15),
+                                      color: Colors.white,
+                                      icon: Image.asset(
+                                        'assets/images/menu-hamburger.png',
+                                        scale: 1,
+                                        width: 60,
+                                        // height: 60,
+                                      ),
+                                      onPressed: () {
+                                        _key.currentState!.openDrawer();
+                                      }),
+                                ),
+                                Image.asset(
+                                  "assets/images/logo_horizontal.png",
+                                  scale: 2.0,
+                                )
+                              ],
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {},
+                                child: PopupMenuButton(
+                                  offset: Offset(80, size.height * 0.06),
+                                  icon: Image.asset(
+                                    'assets/images/bell-icon.png',
+                                    scale: 1.2,
+                                  ),
+                                  itemBuilder: (_) {
+                                    return [
+                                      PopupMenuItem(
+                                        child: Container(
+                                          width: size.width * 0.8,
+                                          child: Column(
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    "การแจ้งเตือน",
+                                                    style: TextStyle(
+                                                      fontFamily: fontRegular,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: iconCloseColor,
+                                                    ),
+                                                  ),
+                                                  InkWell(
+                                                    onTap: () => Get.back(),
+                                                    child: Icon(
+                                                      Icons.close,
+                                                      color: iconCloseColor,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              CardAlertSecurity(
+                                                title:
+                                                    'สัญญาณขอความช่วยเหลือ บ้านเลขที่ 100/2',
+                                                time: 'ตอนนี้',
+                                                color: redAlertColor,
+                                              ),
+                                              CardAlertSecurity(
+                                                title:
+                                                    'สัญญาณขอความช่วยเหลือ บ้านเลขที่ 101',
+                                                time: '2 นาทีที่แล้ว',
+                                                color: redAlertColor,
+                                              ),
+                                              CardAlertSecurity(
+                                                title:
+                                                    'สัญญาณขอความช่วยเหลือ บ้านเลขที่ 301',
+                                                time: '20 นาทีที่แล้ว',
+                                                color: redAlertColor,
+                                              ),
+                                              CardAlertSecurity(
+                                                title:
+                                                    'สัญญาณอุปกรณ์มีปัญหา บ้านเลขที่ 111',
+                                                time: '1 ชั่วโมงที่แล้ว',
+                                                color: orangeAlertColor,
+                                              ),
+                                              SizedBox(height: 5),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ];
+                                  },
+                                ),
+                              ),
+                            ],
+                            toolbarHeight: 45,
+                            // title: Text('title')
+                          ),
+                          body: Column(
+                            children: [
+                              Expanded(child: controller.currentContent),
+                              BottomAppBarOptions()
+                            ],
+                          ),
+                          drawer: Container(
+                              width: size.width * 0.6,
+                              child: Drawer(child: MenuBergerM2Pro())),
+                        )),
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  TextButton logout(Size size, BuildContext context) {
-    return TextButton(
-      onPressed: () async {
-        EasyDialog(
-          closeButton: false,
-          height: 240,
-          width: 450,
-          contentList: [
-            // title
-            Text(
-              "แจ้งเตือน",
-              style: TextStyle(
-                fontFamily: fontRegular,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Divider(
-              color: dividerColor,
-              thickness: 1,
-            ),
-            SizedBox(height: 20),
-            Text(
-              "ต้องการออกจากระบบหรือไม่ ?",
-              style: TextStyle(
-                fontFamily: fontRegular,
-                fontSize: 20,
-              ),
-            ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                RoundButton(
-                  title: "ยืนยัน",
-                  press: () async {
-                    await loginController.logout();
-
-                    // init socket
-                    SocketService socketService = SocketService();
-                    socketService.stopSocketClient();
-                  },
-                ),
-                SizedBox(width: 20),
-                RoundButtonOutline(
-                  title: "ยกเลิก",
-                  press: () => Get.back(),
-                ),
-              ],
-            ),
-          ],
-        ).show(context);
-      },
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-            vertical: size.height * 0.02, horizontal: size.width * 0.01),
-        child: Row(
-          children: [
-            Icon(Icons.exit_to_app, color: Colors.white),
-            SizedBox(width: size.width * 0.01),
-            Text(
-              'ออกจากระบบ',
-              style: TextStyle(
-                color: Colors.white,
-                fontFamily: fontRegular,
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Expanded buildMenu(ExpansionPanelController controller, Size size) {
-    return Expanded(
-      child: ListView.builder(
-        key: Key('builder ${controller.selected.toString()}'), //attention
-        itemCount: controller.itemData.length,
-        itemBuilder: (context, index) {
-          return Container(
-            color: themeBgColor,
-            child: ExpansionTile(
-              key: Key(index.toString()), //attention
-              initiallyExpanded: index == controller.selected, //attention,
-              expandedAlignment: Alignment.topLeft,
-              expandedCrossAxisAlignment: CrossAxisAlignment.start,
-              backgroundColor: Colors.white,
-              // collapsedIconColor: Colors.white,
-              // iconColor: Colors.white,
-              collapsedIconColor: controller.itemData[index].subItem.length > 0
-                  ? Colors.white
-                  : Colors.transparent,
-              iconColor: controller.itemData[index].subItem.length > 0
-                  ? Colors.white
-                  : Colors.transparent,
-              title: Row(
-                children: [
-                  Icon(controller.itemData[index].icon,
-                      color: index == controller.selected
-                          ? hilightTextColor
-                          : Colors.white),
-                  SizedBox(width: size.width * 0.01),
-                  Text(
-                    controller.itemData[index].titleItem,
-                    style: TextStyle(
-                      color: index == controller.selected
-                          ? hilightTextColor
-                          : Colors.white,
-                      fontFamily: fontRegular,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ],
-              ),
-              children: [
-                // for (var subItem in controller.itemData[index].subItem)
-                for (int i = 0;
-                    i < controller.itemData[index].subItem.length;
-                    i++) ...[
-                  InkWell(
-                    onTap: () => controller.updateSubItemSelector(index, i),
-                    // onTap: controller.itemData[index].onClick[i],
-                    child: Container(
-                      padding: EdgeInsets.only(
-                          left: size.width * 0.04, bottom: size.height * 0.02),
-                      width: double.infinity,
-                      child: Text(
-                        controller.itemData[index].subItem[i],
-                        style: TextStyle(
-                          color: controller.itemData[index].subItemSelect[i]
-                              ? hilightTextColor
-                              : textColor,
-                          fontFamily: fontRegular,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ),
-                  ),
-                ]
-              ],
-              onExpansionChanged: (v) =>
-                  controller.onExpansionChanged(v, index),
-            ),
-          );
-        },
       ),
     );
   }

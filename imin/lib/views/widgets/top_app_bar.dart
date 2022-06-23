@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:imin/controllers/login_controller.dart';
+import 'package:imin/controllers/screen_controller.dart';
 import 'package:imin/helpers/configs.dart';
 import 'package:imin/helpers/constance.dart';
+import 'package:imin/views/screens/ExpansionPanelLayout/burger_menu_d1_pro.dart';
 import 'package:imin/views/widgets/round_button.dart';
 
 class TopAppBar extends StatefulWidget {
@@ -17,6 +19,7 @@ class TopAppBar extends StatefulWidget {
 class _TopAppBarState extends State<TopAppBar>
     with SingleTickerProviderStateMixin {
   final loginController = Get.put(LoginController());
+  final screenController = Get.put(ScreenController());
 
   @override
   void initState() {
@@ -34,23 +37,47 @@ class _TopAppBarState extends State<TopAppBar>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          RoundButton(
-            title: 'Go to security center',
-            press: () {},
-          ),
+          (screenController.DeviceCurrent == Device.iminM2Pro)
+              ? Row(
+                  children: [
+                    SizedBox(
+                      width: 5.0,
+                    ),
+                    SizedBox(
+                      height: 38.0,
+                      width: 40.0,
+                      child: new IconButton(
+                          padding: new EdgeInsets.all(0.0),
+                          color: Colors.white,
+                          icon: Image.asset(
+                            'assets/images/menu-hamburger.png',
+                            scale: 1.4,
+                          ),
+                          onPressed: () {}),
+                    ),
+                    Image.asset(
+                      "assets/images/logo_horizontal.png",
+                      scale: 2.0,
+                    )
+                  ],
+                )
+              : RoundButton(
+                  title: 'Go to security center',
+                  press: () {},
+                ),
           Row(
             children: [
               // ภาษา
-              Image.asset('assets/images/thai-icon.png'),
-              SizedBox(width: size.width * 0.005),
-              Text(
-                'ภาษาไทย',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: fontRegular,
-                  fontSize: 14,
-                ),
-              ),
+              // Image.asset('assets/images/thai-icon.png'),
+              // SizedBox(width: size.width * 0.005),
+              // Text(
+              //   'ภาษาไทย',
+              //   style: TextStyle(
+              //     color: Colors.white,
+              //     fontFamily: fontRegular,
+              //     fontSize: 14,
+              //   ),
+              // ),
 
               TextButton(
                 onPressed: () {},
@@ -120,52 +147,60 @@ class _TopAppBarState extends State<TopAppBar>
               ),
 
               // profile
-              GetBuilder<LoginController>(
-                init: LoginController(),
-                builder: (controller) => CircleAvatar(
-                  radius: 20,
-                  backgroundImage: NetworkImage(
-                    ipServer +
-                        '/guard/profile_image/' +
-                        controller.dataProfile.profilePath,
-                    headers: <String, String>{
-                      'Authorization':
-                          'Bearer ${loginController.dataProfile.token}'
-                    },
-                  ),
-                  backgroundColor: Colors.transparent,
-                ),
-              ),
-              SizedBox(width: size.width * 0.005),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  GetBuilder<LoginController>(
-                    builder: (controller) => Text(
-                      '${controller.dataProfile.firstname} ${controller.dataProfile.lastname}',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: fontRegular,
+              (screenController.DeviceCurrent == Device.iminM2Pro)
+                  ? Container()
+                  : Container(
+                      child: Row(
+                        children: [
+                          GetBuilder<LoginController>(
+                            init: LoginController(),
+                            builder: (controller) => CircleAvatar(
+                              radius: 20,
+                              backgroundImage: NetworkImage(
+                                ipServer +
+                                    '/guard/profile_image/' +
+                                    controller.dataProfile.profilePath,
+                                headers: <String, String>{
+                                  'Authorization':
+                                      'Bearer ${loginController.dataProfile.token}'
+                                },
+                              ),
+                              backgroundColor: Colors.transparent,
+                            ),
+                          ),
+                          SizedBox(width: size.width * 0.005),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              GetBuilder<LoginController>(
+                                builder: (controller) => Text(
+                                  '${controller.dataProfile.firstname} ${controller.dataProfile.lastname}',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: fontRegular,
+                                  ),
+                                ),
+                              ),
+                              GetBuilder<LoginController>(
+                                builder: (controller) => Text(
+                                  // 'หัวหน้า รปภ.',
+                                  controller.dataProfile.role == 'guard'
+                                      ? 'รปภ.'
+                                      : 'หัวหน้า รปภ.',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: fontRegular,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(width: size.width * 0.01),
+                        ],
                       ),
                     ),
-                  ),
-                  GetBuilder<LoginController>(
-                    builder: (controller) => Text(
-                      // 'หัวหน้า รปภ.',
-                      controller.dataProfile.role == 'guard'
-                          ? 'รปภ.'
-                          : 'หัวหน้า รปภ.',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: fontRegular,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(width: size.width * 0.01),
             ],
           ),
         ],

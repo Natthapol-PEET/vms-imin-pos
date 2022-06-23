@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:imin/controllers/repassword_controller.dart';
+import 'package:imin/controllers/screen_controller.dart';
 import 'package:imin/models/item_model.dart';
 import 'package:imin/views/screens/ChangePassword/change_password_screen.dart';
 import 'package:imin/views/screens/EntranceProject/entrance_project_screen.dart';
@@ -13,6 +14,7 @@ class ExpansionPanelController extends GetxController {
   Widget currentContent = EntranceProjectScreen();
 
   final reController = Get.put(RePasswordController());
+  final screenController = Get.put(ScreenController());
 
   List<ItemModel> itemData = <ItemModel>[
     ItemModel(
@@ -40,6 +42,23 @@ class ExpansionPanelController extends GetxController {
         ProfileScreen(),
         ChangePasswordScreen(),
       ],
+    ),
+  ];
+  List<ItemModel> itemDataM2Pro = <ItemModel>[
+    ItemModel(
+      icon: Icons.timer,
+      titleItem: 'เวลาเข้าโครงการ',
+      currentContent: EntranceProjectScreen(),
+      subItem: [],
+      subItemSelect: [],
+      onClick: [],
+    ),
+    ItemModel(
+      icon: Icons.schedule,
+      titleItem: 'เวลาออกจากโครงการ',
+      currentContent: ExitProjectScreen(),
+      subItem: [],
+      onClick: [],
     ),
   ];
 

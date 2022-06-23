@@ -96,7 +96,7 @@ class UploadCard extends StatelessWidget {
               top: size.height * 0.02,
               bottom: (screenController.DeviceCurrent == Device.iminM2Pro)
                   ? size.height * normalM2FontSize * 0.0001
-                  : size.height * 0.08),
+                  : size.height * 0.07),
           child: Obx(() => Text(
                 'กรุณาอัพโหลดรูป' +
                     uploadPersonalController.selectedValue.value +
@@ -174,7 +174,7 @@ class UploadCard extends StatelessWidget {
                             height: (screenController.DeviceCurrent ==
                                     Device.iminM2Pro)
                                 ? size.height * normalM2FontSize * 0.035
-                                : size.height * 1,
+                                : size.height * 0.25,
                             headers: <String, String>{
                               'Authorization':
                                   'Bearer ${loginController.dataProfile.token}'
@@ -214,7 +214,7 @@ class UploadCard extends StatelessWidget {
                         : 150,
                     height: (screenController.DeviceCurrent == Device.iminM2Pro)
                         ? size.height * normalM2FontSize * 0.005
-                        : 150,
+                        : 40,
                     press: () {
                       cameraController.initCamera();
                       Timer(Duration(seconds: 1), () => Get.toNamed('/camera'));
@@ -261,7 +261,7 @@ class UploadCard extends StatelessWidget {
                         : 150,
                     height: (screenController.DeviceCurrent == Device.iminM2Pro)
                         ? size.height * normalM2FontSize * 0.005
-                        : 150,
+                        : 40,
                     press: () async {
                       final _imagePicker = ImagePicker();
 
@@ -296,7 +296,7 @@ class UploadCard extends StatelessWidget {
                       : 100,
                   height: (screenController.DeviceCurrent == Device.iminM2Pro)
                       ? size.height * normalM2FontSize * 0.005
-                      : 150,
+                      : 40,
                   title: 'ยกเลิก',
                   press: () {
                     cameraController.imageUrl.value = "";

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:imin/controllers/expansion_bottom_bar_controller.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/controllers/login_controller.dart';
 import 'package:imin/controllers/screen_controller.dart';
@@ -23,7 +24,8 @@ class _BottomAppBarOptionsState extends State<BottomAppBarOptions>
     with SingleTickerProviderStateMixin {
   final loginController = Get.put(LoginController());
   final screenController = Get.put(ScreenController());
-  final expandController = Get.put(ExpansionPanelController());
+  final expandController = Get.put(ExpansionAppBarController());
+  final expandController2 = Get.put(ExpansionPanelController());
 
   @override
   void initState() {
@@ -35,71 +37,99 @@ class _BottomAppBarOptionsState extends State<BottomAppBarOptions>
     final Size size = MediaQuery.of(context).size;
 
     return BottomAppBar(
-      // shape: shape,
+      // shape: shape
       color: themeBgColor,
       child: IconTheme(
         data: IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Expanded(
-              child: Container(
-                child: IconButton(
-                  tooltip: 'Open navigation menu',
-                  icon: Column(
+        child: Container(
+          height: 43,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              // if (centerLocations.contains(fabLocation)) const Spacer(),
+              // Expanded(
+              //   child: Container(
+              //     color: purpleBlueColor,
+              //     child: IconButton(
+              //       tooltip: 'Search',
+              //       icon: Column(
+              //         children: [
+              //           const Icon(
+              //             Icons.time_to_leave,
+              //             size: 15,
+              //           ),
+              //           Text(
+              //             'vehicle management',
+              //             style: TextStyle(
+              //                 fontSize: normalM2FontSize,
+              //                 color: textColorContrast),
+              //           )
+              //         ],
+              //       ),
+              //       onPressed: () {
+              //         expandController2.onExpansionChanged(true, 0);
+              //       },
+              //     ),
+              //   ),
+              // ),
+              GetBuilder<ExpansionAppBarController>(
+                id: 'aVeryUniqueID', // here
+                init: ExpansionAppBarController(),
+                builder: (controller) => Expanded(
+                  child: Column(
                     children: [
-                      const Icon(
-                        Icons.security,
-                        size: 20,
-                      ),
-                      Text(
-                        'security center',
-                        style: TextStyle(
-                            fontSize: normalM2FontSize,
-                            color: textColorContrast),
-                      )
+                      buildBottomMenu(controller, size),
                     ],
                   ),
-                  onPressed: () {},
                 ),
               ),
-            ),
-            // if (centerLocations.contains(fabLocation)) const Spacer(),
-            Expanded(
-              child: Container(
-                color: purpleBlueColor,
-                child: IconButton(
-                  tooltip: 'Search',
-                  icon: Column(
-                    children: [
-                      const Icon(
-                        Icons.time_to_leave,
-                        size: 20,
-                      ),
-                      Text(
-                        'vehicle management',
-                        style: TextStyle(
-                            fontSize: normalM2FontSize,
-                            color: textColorContrast),
-                      )
-                    ],
-                  ),
-                  onPressed: () {},
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Expanded buildBottomMenu(ExpansionAppBarController controller, Size size) {
+    return Expanded(
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              child: IconButton(
+                tooltip: 'Open navigation menu',
+                icon: Column(
+                  children: [
+                    const Icon(
+                      Icons.security,
+                      size: 15,
+                    ),
+                    Text(
+                      'security center',
+                      style: TextStyle(
+                          fontSize: normalM2FontSize, color: textColorContrast),
+                    )
+                  ],
                 ),
+                onPressed: () {},
               ),
             ),
+          ),
+          for (int i = 0; i < controller.itemData.length; i++) ...[
             Expanded(
               child: Container(
+                color:
+                    (controller.rememberSelected == i) ? purpleBlueColor : null,
                 child: IconButton(
-                  tooltip: 'Favorite',
+                  // tooltip: 'Search',
                   icon: Column(
                     children: [
-                      const Icon(
-                        Icons.settings,
-                        size: 20,
+                      Icon(
+                        controller.itemData[i].icon,
+                        size: 15,
                       ),
                       Text(
-                        'setting',
+                        controller.itemData[i].titleItem,
                         style: TextStyle(
                             fontSize: normalM2FontSize,
                             color: textColorContrast),
@@ -107,14 +137,48 @@ class _BottomAppBarOptionsState extends State<BottomAppBarOptions>
                     ],
                   ),
                   onPressed: () {
-                    expandController.updateSubItemSelector(2, 0);
+                    controller.onExpansionChanged(
+                        controller.itemData[i].expanded, i);
                   },
                 ),
               ),
             ),
-          ],
-        ),
+          ]
+        ],
       ),
+      //     child: ListView.builder(
+      //   key: Key('builder ${controller.selected.toString()}'), //attention
+      //   itemCount: controller.itemData.length,
+      //   itemBuilder: (context, index) {
+      //     return Expanded(
+      //       child: Container(
+      //         color:
+      //             (controller.itemData[index].expanded) ? purpleBlueColor : null,
+      //         child: IconButton(
+      //           tooltip: 'Favorite',
+      //           icon: Column(
+      //             children: [
+      //               Icon(
+      //                 controller.itemData[index].icon,
+      //                 size: 15,
+      //               ),
+      //               Text(
+      //                 controller.itemData[index].titleItem,
+      //                 style: TextStyle(
+      //                     fontSize: normalM2FontSize, color: textColorContrast),
+      //               )
+      //             ],
+      //           ),
+      //           onPressed: () {
+      //             controller.onExpansionChanged(
+      //                 controller.itemData[index].expanded, index);
+      //             print(index);
+      //           },
+      //         ),
+      //       ),
+      //     );
+      //   },
+      // )
     );
   }
 }

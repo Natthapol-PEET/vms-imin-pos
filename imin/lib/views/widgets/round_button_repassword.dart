@@ -7,11 +7,13 @@ class RoundButtonRePassword extends StatelessWidget {
     required this.title,
     required this.press,
     this.checkValidate,
+    this.fontSize = 16,
   }) : super(key: key);
 
   final String title;
   final VoidCallback? press;
   final bool? checkValidate;
+  final double? fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class RoundButtonRePassword extends StatelessWidget {
         title,
         style: TextStyle(
           color: textColorContrast,
-          fontSize: 18,
+          fontSize: fontSize,
           fontFamily: fontRegular,
           fontWeight: FontWeight.w500,
         ),

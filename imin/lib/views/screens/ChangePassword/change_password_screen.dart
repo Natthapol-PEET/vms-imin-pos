@@ -1,10 +1,14 @@
 import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:imin/controllers/expansion_bottom_bar_controller.dart';
+import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/controllers/login_controller.dart';
 import 'package:imin/controllers/on_will_pop_controller.dart';
 import 'package:imin/controllers/repassword_controller.dart';
+import 'package:imin/controllers/screen_controller.dart';
 import 'package:imin/helpers/constance.dart';
+import 'package:imin/views/screens/Profile/profile_screen.dart';
 import 'package:imin/views/widgets/round_button.dart';
 import 'package:imin/views/widgets/round_button_outline.dart';
 import 'package:imin/views/widgets/round_button_repassword.dart';
@@ -14,43 +18,96 @@ class ChangePasswordScreen extends StatelessWidget {
   ChangePasswordScreen({Key? key}) : super(key: key);
   final controller = Get.put(RePasswordController());
   final onWillPopController = Get.put(OnWillPopController());
-
+  final screenController = Get.put(ScreenController());
+  // final expandController = Get.put(ExpansionPanelController());
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     // Dialog Exit App
     onWillPopController.context = context;
+    // return ChangePasswordForm(size, context);
+    if (screenController.DeviceCurrent == Device.iminM2Pro) {
+      return ChangePasswordForm(size, context, smallM2FontSize,
+          normalM2FontSize, titleM2FontSize, 0.14, 0.1, 0);
+    } else {
+      return ChangePasswordForm(size, context, 14, 16, 26, 0.25, 0.1, 10);
+    }
+  }
+
+  SingleChildScrollView ChangePasswordForm(
+      Size size,
+      BuildContext context,
+      double smalltext,
+      double text,
+      double headText,
+      paddingWidth,
+      paddingHeight,
+      paddingTopInput) {
     return SingleChildScrollView(
       child: Column(
         children: [
           Stack(
             children: [
               Image.asset('assets/images/header_re_password.png'),
-              Positioned(
-                top: size.height * 0.05,
-                left: size.width * 0.05,
-                child: Text(
-                  'เปลี่ยนรหัสผ่าน',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: fontRegular,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 26,
-                  ),
-                ),
-              ),
+              (screenController.DeviceCurrent == Device.iminM2Pro)
+                  ? Positioned(
+                      top: size.height * 0.00,
+                      left: size.width * 0.00,
+                      child: Row(
+                        children: [
+                          GetBuilder<ExpansionPanelController>(
+                            id: 'aVeryUniqueID5', // here
+                            init: ExpansionPanelController(),
+                            builder: (controller) => IconButton(
+                                onPressed: () {
+                                  controller.currentContent = ProfileScreen();
+                                  controller.update(['aopbmsbbffdgkb']);
+                                },
+                                icon: Icon(Icons.navigate_before,
+                                    color: Colors.white)),
+                          ),
+                          Text(
+                            'เปลี่ยนรหัสผ่าน',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: fontRegular,
+                              fontWeight: FontWeight.w600,
+                              fontSize: headText,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : Positioned(
+                      top: size.height * 0.05,
+                      left: size.width * 0.05,
+                      child: Text(
+                        'เปลี่ยนรหัสผ่าน',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: fontRegular,
+                          fontWeight: FontWeight.w600,
+                          fontSize: headText,
+                        ),
+                      ),
+                    ),
             ],
           ),
 
           // content
           Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: size.width * 0.25, vertical: size.height * 0.1),
+                horizontal: size.width * paddingWidth,
+                vertical: size.height * paddingHeight),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Obx(
                   () => RoundTextFormPassword(
+                    fontSize: text,
+                    extendSize: text * 3,
+                    iconsize: text * 1.5,
+                    paddingTopInput: paddingTopInput.toDouble(),
                     icon: Icons.lock,
                     textTitle: "รหัสผ่านเก่า",
                     isVisibility: controller.isVisibilityOld.value,
@@ -62,6 +119,10 @@ class ChangePasswordScreen extends StatelessWidget {
 
                 Obx(
                   () => RoundTextFormPassword(
+                    fontSize: text,
+                    extendSize: text * 3,
+                    iconsize: text * 1.5,
+                    paddingTopInput: paddingTopInput.toDouble(),
                     icon: Icons.lock,
                     textTitle: "รหัสผ่านใหม่",
                     isVisibility: controller.isVisibilityNew.value,
@@ -92,7 +153,9 @@ class ChangePasswordScreen extends StatelessWidget {
                       if (controller.check.value.lenght > 0) ...[
                         Text(
                           controller.check.value.text,
-                          style: TextStyle(color: controller.check.value.color),
+                          style: TextStyle(
+                              color: controller.check.value.color,
+                              fontSize: text),
                         ),
                       ],
                     ],
@@ -107,7 +170,7 @@ class ChangePasswordScreen extends StatelessWidget {
                           textAlign: TextAlign.left,
                           style: TextStyle(
                             fontFamily: fontRegular,
-                            fontSize: 14,
+                            fontSize: smalltext,
                             color: Colors.redAccent,
                           ),
                         ),
@@ -118,6 +181,10 @@ class ChangePasswordScreen extends StatelessWidget {
 
                 Obx(
                   () => RoundTextFormPassword(
+                    fontSize: text,
+                    extendSize: text * 3,
+                    iconsize: text * 1.5,
+                    paddingTopInput: paddingTopInput.toDouble(),
                     icon: Icons.lock,
                     textTitle: "ยืนยันรหัสผ่านใหม่",
                     isVisibility: controller.isVisibilityReNew.value,
@@ -136,7 +203,7 @@ class ChangePasswordScreen extends StatelessWidget {
                           textAlign: TextAlign.left,
                           style: TextStyle(
                             fontFamily: fontRegular,
-                            fontSize: 14,
+                            fontSize: smalltext,
                             color: Colors.redAccent,
                           ),
                         ),
@@ -184,16 +251,22 @@ class ChangePasswordScreen extends StatelessWidget {
   }
 
   Row ResetPassword(Size size, BuildContext context) {
+    final double text = (screenController.DeviceCurrent == Device.iminM2Pro)
+        ? normalM2FontSize
+        : 20;
     return Row(
       children: [
         RoundButtonRePassword(
+          fontSize: text,
           title: 'บันทึก',
           // press: () =>
           //     logout(size, context), //controller.resetPassword(),
           press: () {
             EasyDialog(
               closeButton: false,
-              height: 200,
+              height: (screenController.DeviceCurrent == Device.iminM2Pro)
+                  ? 160
+                  : 200,
               width: 590,
               contentList: [
                 // title
@@ -201,7 +274,7 @@ class ChangePasswordScreen extends StatelessWidget {
                   "ยืนยันการเปลี่ยนรหัสผ่าน",
                   style: TextStyle(
                     fontFamily: fontRegular,
-                    fontSize: 24,
+                    fontSize: text,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -214,7 +287,7 @@ class ChangePasswordScreen extends StatelessWidget {
                   "เมื่อคุณยืนยันการเปลี่ยนรหัสผ่านแล้วให้ทำการล็อคอินเข้าระบบใหม่",
                   style: TextStyle(
                     fontFamily: fontRegular,
-                    fontSize: 20,
+                    fontSize: text,
                   ),
                 ),
                 SizedBox(height: 20),
@@ -222,6 +295,7 @@ class ChangePasswordScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     RoundButton(
+                      fontSize: text,
                       title: "ยืนยัน",
                       press: () {
                         final loginController = Get.put(LoginController());
@@ -232,6 +306,7 @@ class ChangePasswordScreen extends StatelessWidget {
                     ),
                     SizedBox(width: 20),
                     RoundButtonOutline(
+                      fontSize: text,
                       title: "ยกเลิก",
                       press: () => Get.back(),
                     ),

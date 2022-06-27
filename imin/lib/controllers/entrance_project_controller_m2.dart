@@ -36,7 +36,7 @@ class EntranceProjectControllerM2 extends GetxController {
   var startPaging = 1.obs;
   var selectPaging = 1.obs;
   var pagingRange = 4.obs;
-  var displayRowNumber = 9.obs;
+  var displayRowNumber = 8.obs;
   var totalPagingNumber = 1.obs;
 
   @override
@@ -144,11 +144,18 @@ class EntranceProjectControllerM2 extends GetxController {
     whitelistList.clear();
     blacklistList.clear();
     // print('json: ${jSon}');
-    jSonVisitor.forEach((item) => visitorList.add(VisitorModel.fromJson(item)));
-    jSonWhitelist
-        .forEach((item) => whitelistList.add(WhitelistModel.fromJson(item)));
-    jSonBlacklist
-        .forEach((item) => blacklistList.add(BlacklistModel.fromJson(item)));
+    if (jSonVisitor != false) {
+      jSonVisitor
+          .forEach((item) => visitorList.add(VisitorModel.fromJson(item)));
+    }
+    if (jSonWhitelist != false) {
+      jSonWhitelist
+          .forEach((item) => whitelistList.add(WhitelistModel.fromJson(item)));
+    }
+    if (jSonBlacklist != false) {
+      jSonBlacklist
+          .forEach((item) => blacklistList.add(BlacklistModel.fromJson(item)));
+    }
 
     // createRows(visitorList, whitelistList, blacklistList);
     filterSearchResults(searchValue);
@@ -178,7 +185,7 @@ class EntranceProjectControllerM2 extends GetxController {
         DataCell(Center(
           child: Text(
             item.idCard != null && item.idCard != "" ? '${item.idCard}' : '-',
-            style: TextStyle(fontSize: 12),
+            style: TextStyle(fontSize: normalM2FontSize),
           ),
         )),
         DataCell(Center(
@@ -186,7 +193,7 @@ class EntranceProjectControllerM2 extends GetxController {
           item.licensePlate == '' || item.licensePlate == null
               ? '-'
               : item.licensePlate,
-          style: TextStyle(fontSize: 12),
+          style: TextStyle(fontSize: normalM2FontSize),
         ))),
         // DataCell(Container(
         //     width: 120,
@@ -196,7 +203,7 @@ class EntranceProjectControllerM2 extends GetxController {
         DataCell(Center(
             child: Text(
           item.homeNumber,
-          style: TextStyle(fontSize: 12),
+          style: TextStyle(fontSize: normalM2FontSize),
         ))),
         DataCell(Container(
           // width: 138,
@@ -204,7 +211,7 @@ class EntranceProjectControllerM2 extends GetxController {
             child: RoundButtonOutline(
               width: 5,
               height: 20,
-              fontSize: 12,
+              fontSize: normalM2FontSize,
               title: 'เพิ่มเติม',
               press: () {
                 (item.firstname == null)
@@ -296,6 +303,8 @@ class EntranceProjectControllerM2 extends GetxController {
         ),
         Divider(color: dividerColor),
         FadeInImage(
+          height: 250,
+          width: 300,
           placeholder: AssetImage('assets/images/id-card-image.png'),
           image: NetworkImage(
             ipServerIminService + '/card/' + item.qrGenId + '/',

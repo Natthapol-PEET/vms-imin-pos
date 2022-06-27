@@ -7,7 +7,10 @@ import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/controllers/upload_personal_controller.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/views/screens/EntranceProject/upload_personal_screen.dart';
+import 'package:imin/views/screens/ExitProject/exit_project_d1_pro_screen.dart';
 import 'package:imin/views/screens/ExitProject/exit_project_screen.dart';
+import 'package:imin/views/widgets/round_button_icon.dart';
+import 'package:imin/views/widgets/round_button_number.dart';
 import 'package:imin/views/widgets/title_content.dart';
 
 class EntranceProjectScreenM2 extends StatefulWidget {
@@ -50,7 +53,7 @@ class _EntranceProjectScreenM2State extends State<EntranceProjectScreenM2> {
             children: [
               TitleContent(
                 text: 'เวลาเข้าโครงการ',
-                fontSize: 23,
+                fontSize: titleM2FontSize,
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
@@ -69,7 +72,7 @@ class _EntranceProjectScreenM2State extends State<EntranceProjectScreenM2> {
                       child: TextFormField(
                         onChanged: (v) =>
                             entranceController.filterSearchResults(v),
-                        style: TextStyle(fontSize: 12),
+                        style: TextStyle(fontSize: normalM2FontSize),
                         decoration: InputDecoration(
                           prefixIconConstraints:
                               BoxConstraints(minWidth: 23, maxHeight: 20),
@@ -101,6 +104,7 @@ class _EntranceProjectScreenM2State extends State<EntranceProjectScreenM2> {
                           builder: (c) => ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               primary: redAlertColor,
+                              // fixedSize: Size(105, 10),
                               side: BorderSide(
                                 width: 1,
                                 color: redAlertColor,
@@ -116,7 +120,7 @@ class _EntranceProjectScreenM2State extends State<EntranceProjectScreenM2> {
                               'เพิ่มผู้เข้าโครงการ',
                               style: TextStyle(
                                 color: textColorContrast,
-                                fontSize: 12,
+                                fontSize: normalM2FontSize,
                                 fontFamily: fontRegular,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -152,14 +156,14 @@ class _EntranceProjectScreenM2State extends State<EntranceProjectScreenM2> {
                       () => Row(
                         children: [
                           DataTable(
-                            // headingRowHeight: 30,
+                            headingRowHeight: size.height * 0.07,
                             horizontalMargin: 10,
                             showCheckboxColumn: false,
                             dividerThickness: 0.5,
                             columnSpacing:
                                 (entranceController.hasDataValue.value == true)
                                     ? 5
-                                    : 28,
+                                    : 27,
                             headingRowColor: MaterialStateColor.resolveWith(
                                 (states) => purpleBlueColor),
                             columns: c.createColumns(),
@@ -181,9 +185,9 @@ class _EntranceProjectScreenM2State extends State<EntranceProjectScreenM2> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         RoundButtonIcon(
-                          width: 20,
-                          height: 20,
-                          size: 10,
+                          width: smallM2FontSize * 2,
+                          height: smallM2FontSize * 2,
+                          size: smallM2FontSize,
                           icon: Icons.arrow_back_ios_new,
                           onClick: () => entranceController.onClickBackPaging(),
                           // onClick: () {},
@@ -204,9 +208,9 @@ class _EntranceProjectScreenM2State extends State<EntranceProjectScreenM2> {
                                         entranceController.pagingRange.value));
                             i++) ...[
                           RoundButtonNumber(
-                            width: 20,
-                            height: 20,
-                            fontSize: 10,
+                            width: smallM2FontSize * 2,
+                            height: smallM2FontSize * 2,
+                            fontSize: smallM2FontSize,
                             index: (i + 1).toString(),
                             selectd:
                                 entranceController.selectPaging.value == i + 1
@@ -217,9 +221,9 @@ class _EntranceProjectScreenM2State extends State<EntranceProjectScreenM2> {
                           ),
                         ],
                         RoundButtonIcon(
-                          width: 20,
-                          height: 20,
-                          size: 10,
+                          width: smallM2FontSize * 2,
+                          height: smallM2FontSize * 2,
+                          size: smallM2FontSize,
                           icon: Icons.arrow_forward_ios,
                           onClick: () => entranceController.onClickNextPaging(),
                           // onClick: () {},

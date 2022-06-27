@@ -10,6 +10,10 @@ class RoundTextFormPassword extends StatelessWidget {
     this.onClickVisibility,
     required this.onChange,
     this.matchPassword,
+    this.fontSize = 16,
+    this.extendSize = 48,
+    this.paddingTopInput = 10,
+    this.iconsize = 16 * 1.5,
   }) : super(key: key);
 
   final IconData icon;
@@ -18,6 +22,10 @@ class RoundTextFormPassword extends StatelessWidget {
   final VoidCallback? onClickVisibility;
   final onChange;
   final bool? matchPassword;
+  final double? fontSize;
+  final double? extendSize;
+  final double? paddingTopInput;
+  final double? iconsize;
 
   @override
   Widget build(BuildContext context) {
@@ -32,12 +40,13 @@ class RoundTextFormPassword extends StatelessWidget {
             textTitle,
             style: TextStyle(
               color: Colors.black,
-              fontSize: 16,
+              fontSize: fontSize,
               fontFamily: fontRegular,
               fontWeight: FontWeight.w400,
             ),
           ),
           Container(
+            height: extendSize,
             margin: EdgeInsets.only(top: size.height * 0.008),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -53,10 +62,12 @@ class RoundTextFormPassword extends StatelessWidget {
               ),
             ),
             child: TextFormField(
+              style: TextStyle(fontSize: fontSize),
               obscureText: isVisibility == true ? false : true,
               decoration: InputDecoration(
                   hintText: textTitle,
-                  contentPadding: EdgeInsets.only(left: 10, top: 10),
+                  contentPadding:
+                      EdgeInsets.only(left: 10, top: paddingTopInput!),
 
                   // prefixIcon: Padding(
                   //   padding:
@@ -70,6 +81,7 @@ class RoundTextFormPassword extends StatelessWidget {
                           ? Icons.visibility
                           : Icons.visibility_off,
                       color: isVisibility == true ? Colors.black : Colors.grey,
+                      size: iconsize,
                     ),
                   )),
               validator: (v) {

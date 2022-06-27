@@ -185,7 +185,8 @@ class ExitProjectController extends GetxController {
   String dummyDatetime(DateTime? v) {
     // 18 พฤษภาคม 2565
     v = v as DateTime;
-    return "${v.day} ${month_eng_to_thai(v.month)} ${christian_buddhist_year(v.year)}";
+    // return "${v.day} ${month_eng_to_thai(v.month)} ${christian_buddhist_year(v.year)}";
+    return "${v.day}/${v.month}/${v.year}";
   }
 
   String formatDateTime(String dateStr) {

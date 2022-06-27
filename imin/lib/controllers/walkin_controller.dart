@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:imin/controllers/login_controller.dart';
+import 'package:imin/controllers/screen_controller.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/models/blacklist_model.dart';
 import 'package:imin/models/visitor_model.dart';
@@ -12,6 +13,7 @@ import 'package:imin/services/get_enteance_project_blacklist_service.dart';
 
 class WalkinController extends GetxController {
   var loginController = Get.put(LoginController());
+  var screenController = Get.put(ScreenController());
 
   var context;
   var dataEntrance = [].obs;
@@ -206,7 +208,9 @@ class WalkinController extends GetxController {
     return headerItems
         .map((item) => DataColumn(
                 label: Container(
-              width: size.width * 0.282,
+              width: (screenController.DeviceCurrent == Device.iminM2Pro)
+                  ? size.width * 0.582
+                  : size.width * 0.282,
               child: Text(
                 item,
                 style: TextStyle(

@@ -8,12 +8,18 @@ class RoundButton extends StatelessWidget {
     required this.press,
     this.horizontal = 64.0,
     this.vertical = 9.6,
+    this.width = 150,
+    this.height = 40,
+    this.fontSize = 16,
   }) : super(key: key);
 
   final String title;
   final VoidCallback? press;
   final double horizontal;
   final double vertical;
+  final double width;
+  final double height;
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +29,7 @@ class RoundButton extends StatelessWidget {
       style: ButtonStyle(
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(5),
           ),
         ),
         padding: MaterialStateProperty.all<EdgeInsets>(
@@ -49,7 +55,7 @@ class RoundButton extends StatelessWidget {
         title,
         style: TextStyle(
           color: Colors.white,
-          fontSize: 16,
+          fontSize: fontSize,
           fontFamily: fontRegular,
           fontWeight: FontWeight.bold,
         ),

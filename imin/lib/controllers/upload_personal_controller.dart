@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:imin/controllers/login_controller.dart';
+import 'package:imin/controllers/screen_controller.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/services/register_walkin_service.dart';
 
 class UploadPersonalController extends GetxController {
   final loginController = Get.put(LoginController());
-
+  final screenController = Get.put(ScreenController());
   var checkHomeNumber = true.obs;
   var checkIdCard = true.obs;
 
@@ -17,6 +18,7 @@ class UploadPersonalController extends GetxController {
   var screenOne = true.obs;
 
   var selectedValue = "บัตรประจำตัวประชาชน".obs;
+
   List<DropdownMenuItem<String>> items = [
     'บัตรประจำตัวประชาชน',
     'ใบอนุญาตขับขี่',
@@ -28,6 +30,24 @@ class UploadPersonalController extends GetxController {
         style: TextStyle(
           color: Colors.black,
           fontSize: 24,
+          fontFamily: fontRegular,
+          // fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }).toList();
+
+  List<DropdownMenuItem<String>> itemsM2 = [
+    'บัตรประจำตัวประชาชน',
+    'ใบอนุญาตขับขี่',
+  ].map<DropdownMenuItem<String>>((String value) {
+    return DropdownMenuItem<String>(
+      value: value,
+      child: Text(
+        value,
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: normalM2FontSize,
           fontFamily: fontRegular,
           // fontWeight: FontWeight.bold,
         ),

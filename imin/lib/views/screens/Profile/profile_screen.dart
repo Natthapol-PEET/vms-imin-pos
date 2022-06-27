@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/controllers/login_controller.dart';
+import 'package:imin/controllers/screen_controller.dart';
 import 'package:imin/helpers/configs.dart';
 import 'package:imin/helpers/constance.dart';
+import 'package:imin/views/screens/ChangePassword/change_password_screen.dart';
+import 'package:imin/views/screens/EntranceProject/entrance_project_screen.dart';
 import 'package:imin/views/widgets/profile_image.dart';
 import 'package:imin/views/widgets/round_button.dart';
+import 'package:imin/views/widgets/round_button_outline.dart';
 import 'package:imin/views/widgets/round_input_form_field.dart';
 
 // ignore: must_be_immutable
@@ -17,6 +22,8 @@ class ProfileScreen extends StatelessWidget {
   final fullnameControl = TextEditingController(text: 'สุจิน สว่างเนตร');
   final levelControl = TextEditingController(text: 'รปภ.');
   final passwordControl = TextEditingController();
+  final screenController = Get.put(ScreenController());
+  // final expandController = Get.put(ExpansionPanelController());
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +43,9 @@ class ProfileScreen extends StatelessWidget {
               GetBuilder<LoginController>(
                 init: LoginController(),
                 builder: (controller) => CircleAvatar(
-                  radius: 120,
+                  radius: (screenController.DeviceCurrent == Device.iminM2Pro)
+                      ? 50
+                      : 120,
                   backgroundImage: NetworkImage(
                     ipServer +
                         '/guard/profile_image/' +
@@ -93,6 +102,30 @@ class ProfileScreen extends StatelessWidget {
                   ],
                 ),
               ),
+              (screenController.DeviceCurrent == Device.iminM2Pro)
+                  ? GetBuilder<ExpansionPanelController>(
+                      builder: (c) => RoundButtonOutline(
+                        title: 'แก้ไขข้อมูลส่วนตัว',
+                        fontSize: normalM2FontSize,
+                        press: () {
+                          c.currentContent = ChangePasswordScreen();
+                          c.update(['aopbmsbbffdgkb']);
+                        },
+                      ),
+                    )
+                  // Container()
+                  // ? RoundButtonOutline(
+                  //     title: 'แก้ไขข้อมูลส่วนตัว',
+                  //     fontSize: normalM2FontSize,
+                  //     press: () {
+                  //       // expandController.currentContent =
+                  //       //     EntranceProjectScreen()
+                  //     },
+
+                  //     // press: () async => confirmEditInfomation(context, size),
+                  //     // press: () async => saveInfomationStatus(context, size),
+                  //   )
+                  : Container()
               // RoundButton
               // RoundButtonOutline(
               //   title: 'แก้ไขข้อมูลส่วนตัว',
@@ -281,13 +314,16 @@ Future editInfomation(
 }
 
 Padding subTitleText(String text, double padding) {
+  final screenController = Get.put(ScreenController());
   return Padding(
     padding: EdgeInsets.only(bottom: padding),
     child: Text(
       text,
       style: TextStyle(
         fontFamily: fontRegular,
-        fontSize: 18,
+        fontSize: (screenController.DeviceCurrent == Device.iminM2Pro)
+            ? normalM2FontSize
+            : 18,
         fontWeight: FontWeight.w600,
       ),
     ),
@@ -295,6 +331,7 @@ Padding subTitleText(String text, double padding) {
 }
 
 Padding subDetailText(String text) {
+  final screenController = Get.put(ScreenController());
   return Padding(
     padding: const EdgeInsets.only(bottom: 20),
     child: Text(
@@ -302,7 +339,9 @@ Padding subDetailText(String text) {
       style: TextStyle(
         fontFamily: fontRegular,
         fontWeight: FontWeight.w400,
-        fontSize: 18,
+        fontSize: (screenController.DeviceCurrent == Device.iminM2Pro)
+            ? normalM2FontSize
+            : 18,
       ),
     ),
   );

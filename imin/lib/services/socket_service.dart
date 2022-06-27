@@ -40,6 +40,7 @@ class SocketService extends GetxController {
         // เวลาออกโครงการ screen
         if (msg == "COMING_WALK_IN" ||
             msg == "ADMIN_STAMP" ||
+            msg == "ADMIN_OPERATION" ||
             msg == "CHECKOUT") {
           exitController.getExitData();
         }

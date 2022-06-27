@@ -6,7 +6,10 @@ import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/controllers/upload_personal_controller.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/views/screens/EntranceProject/upload_personal_screen.dart';
+import 'package:imin/views/screens/ExitProject/exit_project_d1_pro_screen.dart';
 import 'package:imin/views/screens/ExitProject/exit_project_screen.dart';
+import 'package:imin/views/widgets/round_button_icon.dart';
+import 'package:imin/views/widgets/round_button_number.dart';
 import 'package:imin/views/widgets/title_content.dart';
 
 class EntranceProjectScreenD1Pro extends StatefulWidget {

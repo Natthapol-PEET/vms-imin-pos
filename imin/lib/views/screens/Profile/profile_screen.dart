@@ -105,7 +105,7 @@ class ProfileScreen extends StatelessWidget {
               (screenController.DeviceCurrent == Device.iminM2Pro)
                   ? GetBuilder<ExpansionPanelController>(
                       builder: (c) => RoundButtonOutline(
-                        title: 'แก้ไขข้อมูลส่วนตัว',
+                        title: 'เปลี่ยนรหัสผ่าน',
                         fontSize: normalM2FontSize,
                         press: () {
                           c.currentContent = ChangePasswordScreen();
@@ -257,7 +257,7 @@ Future editInfomation(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'แก้ไขข้อมูลส่วนตัว',
+                  'เปลี่ยนรหัสผ่าน',
                   style: TextStyle(
                     fontFamily: fontRegular,
                     fontWeight: FontWeight.bold,

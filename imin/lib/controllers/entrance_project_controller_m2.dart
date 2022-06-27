@@ -178,9 +178,9 @@ class EntranceProjectControllerM2 extends GetxController {
 //////////// get to table
   DataRow createDataRow(item) {
     return DataRow(
-      // onSelectChanged: (state) => item.firstname == null
-      //     ? showDialogCard(item).show(context)
-      //     : showDialogDetails(item).show(context),
+      onSelectChanged: (state) => item.firstname == null
+          ? showDialogCard(item).show(context)
+          : showDialogDetails(item).show(context),
       cells: [
         DataCell(Center(
           child: Text(
@@ -205,22 +205,22 @@ class EntranceProjectControllerM2 extends GetxController {
           item.homeNumber,
           style: TextStyle(fontSize: normalM2FontSize),
         ))),
-        DataCell(Container(
-          // width: 138,
-          child: Center(
-            child: RoundButtonOutline(
-              width: 5,
-              height: 20,
-              fontSize: normalM2FontSize,
-              title: 'เพิ่มเติม',
-              press: () {
-                (item.firstname == null)
-                    ? showDialogCard(item).show(context)
-                    : showDialogDetails(item).show(context);
-              },
-            ),
-          ),
-        )),
+        // DataCell(Container(
+        //   // width: 138,
+        //   child: Center(
+        //     child: RoundButtonOutline(
+        //       width: 5,
+        //       height: 20,
+        //       fontSize: normalM2FontSize,
+        //       title: 'เพิ่มเติม',
+        //       press: () {
+        //         (item.firstname == null)
+        //             ? showDialogCard(item).show(context)
+        //             : showDialogDetails(item).show(context);
+        //       },
+        //     ),
+        //   ),
+        // )),
         // DataCell(Container(
         //     width: 138,
         //     child: Text(item.listStatus == 'visitor'
@@ -572,7 +572,7 @@ class EntranceProjectControllerM2 extends GetxController {
       'เลขทะเบียนรถ',
       // 'ชื่อ - นามสกุล',
       'บ้านเลขที่',
-      ''
+      // ''
       // 'ระดับ',
       // 'วันที่นัดหมาย',
       // 'สถานะ',

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:imin/controllers/exit_project_controller.dart';
+import 'package:imin/controllers/exit_project_controller_m2.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/views/widgets/popup_item.dart';
 import 'package:imin/views/widgets/round_button_icon.dart';
@@ -16,7 +17,7 @@ class ExitProjectM2ProScreen extends StatelessWidget {
   }) : super(key: key);
 
   final Size size;
-  final ExitProjectController exitController;
+  final ExitProjectControllerM2 exitController;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,7 @@ class ExitProjectM2ProScreen extends StatelessWidget {
                 children: [
                   Container(
                     margin: EdgeInsets.only(
-                        top: 15, bottom: 15, left: 10, right: 15),
+                        top: 10, bottom: 10, left: 10, right: 15),
                     width: size.width * 0.53,
                     height: size.height * 0.05,
                     decoration: BoxDecoration(
@@ -84,85 +85,128 @@ class ExitProjectM2ProScreen extends StatelessWidget {
                                   PopupItem(
                                     child: Container(
                                       width: size.width * 0.8,
-                                      child: SfDateRangePicker(
-                                        showActionButtons: true,
-                                        // enableMultiView: true,
-                                        // viewSpacing: 20,
-                                        // era: EraMode.BUDDHIST_YEAR,
-                                        selectionMode:
-                                            DateRangePickerSelectionMode.range,
-                                        view: DateRangePickerView.month,
-                                        selectionShape:
-                                            DateRangePickerSelectionShape
-                                                .rectangle,
-                                        selectionTextStyle: TextStyle(
-                                          fontSize: normalM2FontSize,
-                                          fontFamily: fontRegular,
-                                          color: Colors.white,
-                                        ),
-                                        todayHighlightColor: purpleBlueColor,
-                                        headerStyle: DateRangePickerHeaderStyle(
-                                          textAlign: TextAlign.center,
-                                          textStyle: TextStyle(
-                                            fontFamily: fontRegular,
-                                            fontSize: normalM2FontSize,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black,
-                                          ),
-                                        ),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            height: size.height * 0.3,
+                                            child: SfDateRangePicker(
+                                              showActionButtons: false,
+                                              // enableMultiView: true,
+                                              // viewSpacing: 20,
+                                              // era: EraMode.BUDDHIST_YEAR,
+                                              selectionMode:
+                                                  DateRangePickerSelectionMode
+                                                      .range,
+                                              view: DateRangePickerView.month,
+                                              selectionShape:
+                                                  DateRangePickerSelectionShape
+                                                      .rectangle,
+                                              selectionTextStyle: TextStyle(
+                                                fontSize: normalM2FontSize,
+                                                fontFamily: fontRegular,
+                                                color: Colors.white,
+                                              ),
+                                              todayHighlightColor:
+                                                  purpleBlueColor,
+                                              headerStyle:
+                                                  DateRangePickerHeaderStyle(
+                                                textAlign: TextAlign.center,
+                                                textStyle: TextStyle(
+                                                  fontFamily: fontRegular,
+                                                  fontSize: normalM2FontSize,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
 
-                                        monthViewSettings:
-                                            DateRangePickerMonthViewSettings(
-                                          viewHeaderStyle:
-                                              DateRangePickerViewHeaderStyle(
-                                            textStyle: TextStyle(
-                                              fontFamily: fontRegular,
-                                              color: Colors.black,
-                                              fontSize: normalM2FontSize,
+                                              monthViewSettings:
+                                                  DateRangePickerMonthViewSettings(
+                                                viewHeaderStyle:
+                                                    DateRangePickerViewHeaderStyle(
+                                                  textStyle: TextStyle(
+                                                    fontFamily: fontRegular,
+                                                    color: Colors.black,
+                                                    fontSize: normalM2FontSize,
+                                                  ),
+                                                ),
+                                              ),
+
+                                              rangeTextStyle: TextStyle(
+                                                  fontSize: normalM2FontSize,
+                                                  fontFamily: fontRegular,
+                                                  color: Colors.black),
+                                              selectionColor: purpleBlueColor,
+                                              startRangeSelectionColor:
+                                                  purpleBlueColor,
+                                              endRangeSelectionColor:
+                                                  purpleBlueColor,
+                                              // rangeSelectionColor: Colors.purpleAccent,
+
+                                              monthCellStyle:
+                                                  DateRangePickerMonthCellStyle(
+                                                textStyle: TextStyle(
+                                                    fontSize: normalM2FontSize,
+                                                    fontFamily: fontRegular,
+                                                    color: Colors.black),
+                                                todayTextStyle: TextStyle(
+                                                  fontSize: normalM2FontSize,
+                                                  fontFamily: fontRegular,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              yearCellStyle:
+                                                  DateRangePickerYearCellStyle(
+                                                textStyle: TextStyle(
+                                                  fontSize: normalM2FontSize,
+                                                  fontFamily: fontRegular,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+
+                                              // confirmText: 'ตกลง',
+                                              // onSubmit: (v) => exitController
+                                              //     .submitSelectRangeTime(),
+                                              // cancelText: 'ยกเลิก',
+                                              // onCancel: () => Get.back(),
+                                              onSelectionChanged: (v) =>
+                                                  exitController
+                                                      .cleanAndCreateDummy(
+                                                          v.value.startDate,
+                                                          v.value.endDate),
                                             ),
                                           ),
-                                        ),
-
-                                        rangeTextStyle: TextStyle(
-                                            fontSize: normalM2FontSize,
-                                            fontFamily: fontRegular,
-                                            color: Colors.black),
-                                        selectionColor: purpleBlueColor,
-                                        startRangeSelectionColor:
-                                            purpleBlueColor,
-                                        endRangeSelectionColor: purpleBlueColor,
-                                        // rangeSelectionColor: Colors.purpleAccent,
-
-                                        monthCellStyle:
-                                            DateRangePickerMonthCellStyle(
-                                          textStyle: TextStyle(
-                                              fontSize: normalM2FontSize,
-                                              fontFamily: fontRegular,
-                                              color: Colors.black),
-                                          todayTextStyle: TextStyle(
-                                            fontSize: normalM2FontSize,
-                                            fontFamily: fontRegular,
-                                            color: Colors.black,
+                                          Container(
+                                            height: size.height * 0.05,
+                                            // color: Colors.amber,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    exitController
+                                                        .submitSelectRangeTime();
+                                                  },
+                                                  child: Text(
+                                                    "ตกลง",
+                                                    style: TextStyle(
+                                                        fontSize:
+                                                            normalM2FontSize),
+                                                  ),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Get.back();
+                                                  },
+                                                  child: Text("ยกเลิก",
+                                                      style: TextStyle(
+                                                          fontSize:
+                                                              normalM2FontSize)),
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        yearCellStyle:
-                                            DateRangePickerYearCellStyle(
-                                          textStyle: TextStyle(
-                                            fontSize: normalM2FontSize,
-                                            fontFamily: fontRegular,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-
-                                        confirmText: 'ตกลง',
-                                        onSubmit: (v) => exitController
-                                            .submitSelectRangeTime(),
-                                        cancelText: 'ยกเลิก',
-                                        onCancel: () => Get.back(),
-                                        onSelectionChanged: (v) =>
-                                            exitController.cleanAndCreateDummy(
-                                                v.value.startDate,
-                                                v.value.endDate),
+                                        ],
                                       ),
                                     ),
                                   ),
@@ -175,16 +219,23 @@ class ExitProjectM2ProScreen extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    width: size.width * 0.3,
+                    width: size.width * 0.36,
                     height: size.height * 0.05,
                     child: TextFormField(
+                      style: TextStyle(fontSize: normalM2FontSize),
                       initialValue: exitController.searchValue.value,
                       onChanged: exitController.searchOnchange,
                       decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.search, color: Colors.black),
+                        prefixIconConstraints:
+                            BoxConstraints(minWidth: 25, maxHeight: 20),
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: Colors.black,
+                          size: 20,
+                        ),
                         border: OutlineInputBorder(),
                         hintText: 'ค้นหาเลขทะเบียนรถ, บ้านเลขที่, ชื่อนามสกุล',
-                        contentPadding: EdgeInsets.symmetric(vertical: 10),
+                        contentPadding: EdgeInsets.symmetric(vertical: 1),
                         enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: textColor)),
                         focusedBorder: OutlineInputBorder(
@@ -217,7 +268,7 @@ class ExitProjectM2ProScreen extends StatelessWidget {
                 child: Theme(
                   data: Theme.of(context)
                       .copyWith(dividerColor: dividerTableColor),
-                  child: GetBuilder<ExitProjectController>(
+                  child: GetBuilder<ExitProjectControllerM2>(
                     id: 'update-exit-data-row',
                     builder: (c) => DataTable(
                       showCheckboxColumn: false,
@@ -241,6 +292,9 @@ class ExitProjectM2ProScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         RoundButtonIcon(
+                          width: smallM2FontSize * 2,
+                          height: smallM2FontSize * 2,
+                          size: smallM2FontSize,
                           icon: Icons.arrow_back_ios_new,
                           onClick: () => exitController.onClickBackPaging(),
                         ),
@@ -257,6 +311,9 @@ class ExitProjectM2ProScreen extends StatelessWidget {
                                         exitController.pagingRange.value));
                             i++) ...[
                           RoundButtonNumber(
+                            width: smallM2FontSize * 2,
+                            height: smallM2FontSize * 2,
+                            fontSize: smallM2FontSize,
                             index: (i + 1).toString(),
                             selectd:
                                 exitController.selectPaging.value == (i + 1)
@@ -267,6 +324,9 @@ class ExitProjectM2ProScreen extends StatelessWidget {
                           ),
                         ],
                         RoundButtonIcon(
+                          width: smallM2FontSize * 2,
+                          height: smallM2FontSize * 2,
+                          size: smallM2FontSize,
                           icon: Icons.arrow_forward_ios,
                           onClick: () => exitController.onClickNextPaging(),
                         ),

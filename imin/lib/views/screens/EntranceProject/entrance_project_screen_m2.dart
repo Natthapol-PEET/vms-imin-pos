@@ -62,7 +62,7 @@ class _EntranceProjectScreenM2State extends State<EntranceProjectScreenM2> {
                   children: [
                     Container(
                       margin: EdgeInsets.only(
-                          top: 15, bottom: 15, left: 0, right: 0),
+                          top: 10, bottom: 10, left: 0, right: 0),
                       width: size.width * 0.50,
                       height: size.height * 0.05,
                       decoration: BoxDecoration(
@@ -157,13 +157,13 @@ class _EntranceProjectScreenM2State extends State<EntranceProjectScreenM2> {
                         children: [
                           DataTable(
                             headingRowHeight: size.height * 0.07,
-                            horizontalMargin: 10,
+                            // horizontalMargin: 10,
                             showCheckboxColumn: false,
                             dividerThickness: 0.5,
                             columnSpacing:
                                 (entranceController.hasDataValue.value == true)
-                                    ? 5
-                                    : 27,
+                                    ? 26.5
+                                    : 26.5,
                             headingRowColor: MaterialStateColor.resolveWith(
                                 (states) => purpleBlueColor),
                             columns: c.createColumns(),

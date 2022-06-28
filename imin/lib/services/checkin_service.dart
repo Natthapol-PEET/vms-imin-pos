@@ -2,8 +2,16 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:imin/helpers/configs.dart';
 
-Future checkInApi(String listStatus, String listId, String homeId,
-    String dateIn, String token) async {
+Future checkInApi(
+    String listStatus,
+    String listId,
+    String homeId,
+    String dateIn,
+    String token,
+    String firstname,
+    String lastname,
+    String license_plate,
+    qr_gen_id) async {
   try {
     print('listStatus $listStatus');
     print('listId $listId');
@@ -20,7 +28,11 @@ Future checkInApi(String listStatus, String listId, String homeId,
         "classname": listStatus,
         "class_id": listId,
         "home_id": homeId,
-        "datetime_in": dateIn
+        "datetime_in": dateIn,
+        "firstname": firstname,
+        "lastname": lastname,
+        "license_plate": license_plate,
+        "qr_gen_id": qr_gen_id,
       }),
     );
 

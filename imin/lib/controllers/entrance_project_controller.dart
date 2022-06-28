@@ -483,8 +483,16 @@ class EntranceProjectController extends GetxController {
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(now);
     if (item.listStatus == 'visitor') {
-      var checkResponse = await checkInApi(item.listStatus, '${item.visitorId}',
-          '${item.homeId}', formattedDate, token);
+      var checkResponse = await checkInApi(
+          item.listStatus,
+          '${item.visitorId}',
+          '${item.homeId}',
+          formattedDate,
+          token,
+          item.firstname ?? '',
+          item.lastname ?? '',
+          item.licensePlate ?? '',
+          item.qrGenId);
       if (checkResponse == true) {
         EasyLoading.showSuccess('สำเร็จ');
 
@@ -501,8 +509,16 @@ class EntranceProjectController extends GetxController {
         return;
       }
     } else if (item.listStatus == 'whitelist') {
-      var checkResponse = await checkInApi(item.listStatus,
-          '${item.whitelistId}', '${item.homeId}', formattedDate, token);
+      var checkResponse = await checkInApi(
+          item.listStatus,
+          '${item.whitelistId}',
+          '${item.homeId}',
+          formattedDate,
+          token,
+          item.firstname ?? '',
+          item.lastname ?? '',
+          item.licensePlate ?? '',
+          item.qrGenId);
       if (checkResponse == true) {
         EasyLoading.showSuccess('สำเร็จ');
 

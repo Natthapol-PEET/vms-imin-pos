@@ -108,7 +108,7 @@ class MenuBergerM2Pro extends StatelessWidget {
       onPressed: () async {
         EasyDialog(
           closeButton: false,
-          height: 240,
+          height: 150,
           width: 450,
           contentList: [
             // title
@@ -116,7 +116,7 @@ class MenuBergerM2Pro extends StatelessWidget {
               "แจ้งเตือน",
               style: TextStyle(
                 fontFamily: fontRegular,
-                fontSize: 24,
+                fontSize: normalM2FontSize + 2,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -124,19 +124,20 @@ class MenuBergerM2Pro extends StatelessWidget {
               color: dividerColor,
               thickness: 1,
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
             Text(
               "ต้องการออกจากระบบหรือไม่ ?",
               style: TextStyle(
                 fontFamily: fontRegular,
-                fontSize: 20,
+                fontSize: normalM2FontSize,
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 RoundButton(
+                  fontSize: normalM2FontSize,
                   title: "ยืนยัน",
                   press: () async {
                     await loginController.logout();
@@ -146,8 +147,9 @@ class MenuBergerM2Pro extends StatelessWidget {
                     socketService.stopSocketClient();
                   },
                 ),
-                SizedBox(width: 20),
+                SizedBox(width: 10),
                 RoundButtonOutline(
+                  fontSize: normalM2FontSize,
                   title: "ยกเลิก",
                   press: () => Get.back(),
                 ),

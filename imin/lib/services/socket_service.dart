@@ -3,15 +3,20 @@ import 'package:get/get.dart';
 import 'package:imin/controllers/entrance_project_controller.dart';
 import 'package:imin/controllers/entrance_project_controller_m2.dart';
 import 'package:imin/controllers/exit_project_controller.dart';
+import 'package:imin/controllers/exit_project_controller_m2.dart';
+import 'package:imin/controllers/login_controller.dart';
 import 'package:imin/controllers/socket_controller.dart';
 import 'package:imin/helpers/configs.dart';
+import 'package:path/path.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
 class SocketService extends GetxController {
   final socketController = Get.put(SocketController());
   final exitController = Get.put(ExitProjectController());
+  final exitControllerM2 = Get.put(ExitProjectControllerM2());
   final entranceController = Get.put(EntranceProjectController());
   final entranceControllerM2 = Get.put(EntranceProjectControllerM2());
+  final loginController = Get.put(LoginController());
 
   startSocketClient() {
     print("startSocketClient");
@@ -35,7 +40,9 @@ class SocketService extends GetxController {
         print("socket message: $msg");
 
         // เวลาเข้าโครงการ screen
-        if (msg == "COMING_WALK_IN" || msg == "REGISTER_WALKIN") {
+        if (msg == "COMING_WALK_IN" || msg == "REGISTER_WALKIN" 
+        || msg == "CHECKOUT"||
+            msg == "ADMIN_OPERATION") {
           entranceController.getEntranceData();
           entranceControllerM2.getEntranceData();
         }
@@ -46,6 +53,33 @@ class SocketService extends GetxController {
             msg == "ADMIN_OPERATION" ||
             msg == "CHECKOUT") {
           exitController.getExitData();
+          exitControllerM2.getExitData();
+        }
+      });
+      socketController.socket!.on('toWeb/Disable', (msg) {
+        print("socket message: $msg");
+        final typeUser = msg.split('/')[0];
+        final idUser = msg.split('/')[1];
+        print("dataProfile ${loginController.dataProfile.guardId}");
+        // เวลาเข้าโครงการ screen
+        if (typeUser == "GUARD" && '$idUser' == '${loginController.dataProfile.guardId}') {
+          // entranceController.getEntranceData();
+          // entranceControllerM2.getEntranceData();
+          print("typeUser: $typeUser");
+          print("idUser: $idUser");
+        }
+      });
+      socketController.socket!.on('toWeb/Delete', (msg) {
+        print("socket messageDelete: $msg");
+        final typeUser = msg.split('/')[0];
+        final idUser = msg.split('/')[1];
+        print("dataProfile ${loginController.dataProfile.guardId}");
+        // เวลาเข้าโครงการ screen
+        if (typeUser == "GUARD" && '$idUser' == '${loginController.dataProfile.guardId}') {
+          // entranceController.getEntranceData();
+          // entranceControllerM2.getEntranceData();
+          print("typeUser: $typeUser");
+          print("idUser: $idUser");
         }
       });
     });

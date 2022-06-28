@@ -268,42 +268,46 @@ class EntranceProjectControllerM2 extends GetxController {
       height: (item.listStatus == 'visitor')
           ? (item.datetimeIn != null)
               ? (item.datetimeOut != null)
-                  ? 500
-                  : 500
-              : 550
+                  ? 440
+                  : 440
+              : 490
           : (item.listStatus == 'whitelist')
               ? (item.datetimeIn != null)
                   ? (item.datetimeOut != null)
-                      ? 550
-                      : 500
-                  : 550
-              : 500,
+                      ? 490
+                      : 440
+                  : 490
+              : 440,
       closeButton: false,
       contentList: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'ข้อมูลเพิ่มเติม',
-              style: TextStyle(
-                fontFamily: fontRegular,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+        Container(
+          height: 30,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'ข้อมูลเพิ่มเติม',
+                style: TextStyle(
+                  fontFamily: fontRegular,
+                  fontSize: normalM2FontSize + 2,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            TextButton(
-              onPressed: () => Get.back(),
-              style: TextButton.styleFrom(padding: EdgeInsets.zero),
-              child: Icon(
-                Icons.close,
-                color: Colors.black,
+              TextButton(
+                onPressed: () => Get.back(),
+                style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero, alignment: Alignment.centerRight),
+                child: Icon(
+                  Icons.close,
+                  color: Colors.black,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         Divider(color: dividerColor),
         FadeInImage(
-          height: 250,
+          height: 230,
           width: 300,
           placeholder: AssetImage('assets/images/id-card-image.png'),
           image: NetworkImage(
@@ -383,43 +387,46 @@ class EntranceProjectControllerM2 extends GetxController {
   EasyDialog showDialogDetails(dynamic item) {
     return EasyDialog(
       contentPadding: EdgeInsets.symmetric(horizontal: 20),
-      width: 400,
+      width: 300,
       height: (item.listStatus == 'visitor')
           ? (item.datetimeIn != null)
               ? (item.datetimeOut != null)
-                  ? 300
-                  : 300
-              : 350
+                  ? 220
+                  : 220
+              : 280
           : (item.listStatus == 'whitelist')
               ? (item.datetimeIn != null)
                   ? (item.datetimeOut != null)
-                      ? 350
-                      : 300
-                  : 350
-              : 300,
+                      ? 280
+                      : 220
+                  : 280
+              : 220,
       closeButton: false,
       contentListAlignment: CrossAxisAlignment.center,
       contentList: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'ข้อมูลเพิ่มเติม',
-              style: TextStyle(
-                fontFamily: fontRegular,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+        Container(
+          height: 30,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'ข้อมูลเพิ่มเติม',
+                style: TextStyle(
+                  fontFamily: fontRegular,
+                  fontSize: normalM2FontSize + 2,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            TextButton(
-              style: TextButton.styleFrom(padding: EdgeInsets.zero),
-              onPressed: () => Get.back(),
-              child: Icon(
-                Icons.close,
-                color: Colors.black,
+              TextButton(
+                style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                onPressed: () => Get.back(),
+                child: Icon(
+                  Icons.close,
+                  color: Colors.black,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         Divider(color: dividerColor),
         Row(
@@ -487,6 +494,7 @@ class EntranceProjectControllerM2 extends GetxController {
             item.datetimeOut == null) ...[
           RoundButtonOutline(
             title: 'เข้าโครงการ',
+            fontSize: normalM2FontSize,
             press: () {
               checkDataList(item);
             },
@@ -496,6 +504,7 @@ class EntranceProjectControllerM2 extends GetxController {
                 (item.datetimeIn != null && item.datetimeOut != null))) ...[
           RoundButtonOutline(
             title: 'เข้าโครงการ',
+            fontSize: normalM2FontSize,
             press: () {
               checkDataList(item);
             },
@@ -574,7 +583,7 @@ class EntranceProjectControllerM2 extends GetxController {
         text,
         style: TextStyle(
           fontFamily: fontRegular,
-          fontSize: 16,
+          fontSize: normalM2FontSize,
           fontWeight: FontWeight.bold,
         ),
       ),

@@ -59,6 +59,7 @@ class LoginScreenM2Pro extends StatelessWidget {
                           () => Column(
                             children: [
                               RoundTextFormField(
+                                editIcon:true,
                                 fontSize: normalM2FontSize + 2,
                                 icon: Icons.person_outline,
                                 textTitle: "ชื่อผู้ใช้",
@@ -86,6 +87,7 @@ class LoginScreenM2Pro extends StatelessWidget {
                                 ),
                               ],
                               RoundTextFormField(
+                                editIcon:true,
                                 icon: Icons.lock_outline,
                                 textTitle: "รหัสผ่าน",
                                 fontSize: normalM2FontSize + 2,

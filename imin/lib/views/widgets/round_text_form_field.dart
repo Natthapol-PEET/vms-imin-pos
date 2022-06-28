@@ -13,6 +13,7 @@ class RoundTextFormField extends StatelessWidget {
     this.invalid = true,
     this.onChange,
     this.initialValue,
+    this.editIcon = false,
     this.fontSize = 16,
   }) : super(key: key);
 
@@ -24,6 +25,7 @@ class RoundTextFormField extends StatelessWidget {
   final bool invalid;
   final Function(String)? onChange;
   String? initialValue;
+  final bool editIcon;
   final double fontSize;
 
   @override
@@ -89,7 +91,9 @@ class RoundTextFormField extends StatelessWidget {
                   child: Icon(
                     icon,
                     color: Colors.black,
-                    size: size.width * fontSize * 0.0045,
+                    size: (editIcon)
+                        ? size.width * fontSize * 0.0045
+                        : size.width * 0.02,
                   ),
                 ),
                 suffixIcon: textTitle == "รหัสผ่าน"

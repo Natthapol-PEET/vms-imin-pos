@@ -13,6 +13,7 @@ class RoundTextFormField extends StatelessWidget {
     this.invalid = true,
     this.onChange,
     this.initialValue,
+    this.fontSize = 16,
   }) : super(key: key);
 
   final IconData icon;
@@ -23,6 +24,7 @@ class RoundTextFormField extends StatelessWidget {
   final bool invalid;
   final Function(String)? onChange;
   String? initialValue;
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -37,12 +39,13 @@ class RoundTextFormField extends StatelessWidget {
             textTitle,
             style: TextStyle(
               color: Colors.white,
-              fontSize: 16,
+              fontSize: fontSize,
               fontFamily: fontRegular,
               fontWeight: FontWeight.w400,
             ),
           ),
           Container(
+            // height: size.height * fontSize * 0.0047,
             margin: EdgeInsets.only(top: size.height * 0.008),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -60,6 +63,9 @@ class RoundTextFormField extends StatelessWidget {
                   : isVisibility == true
                       ? false
                       : true,
+              style: TextStyle(
+                fontSize: fontSize,
+              ),
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.zero,
                 border: InputBorder.none,
@@ -80,7 +86,11 @@ class RoundTextFormField extends StatelessWidget {
                 //     BoxConstraints(minWidth: 23, maxHeight: 20),
                 prefixIcon: Padding(
                   padding: EdgeInsets.symmetric(horizontal: size.width * 0.008),
-                  child: Icon(icon, color: Colors.black),
+                  child: Icon(
+                    icon,
+                    color: Colors.black,
+                    size: size.width * fontSize * 0.0045,
+                  ),
                 ),
                 suffixIcon: textTitle == "รหัสผ่าน"
                     ? InkWell(

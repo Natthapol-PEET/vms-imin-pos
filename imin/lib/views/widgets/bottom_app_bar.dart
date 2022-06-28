@@ -118,8 +118,13 @@ class _BottomAppBarOptionsState extends State<BottomAppBarOptions>
           for (int i = 0; i < controller.itemData.length; i++) ...[
             Expanded(
               child: Container(
-                color:
-                    (controller.rememberSelected == i) ? purpleBlueColor : null,
+                color: (controller.rememberSelected == i)
+                    ? purpleBlueColor
+                    : (controller.rememberSelected == -1 &&
+                            controller.itemData[i].titleItem ==
+                                controller.itemData[0].titleItem)
+                        ? purpleBlueColor
+                        : null,
                 child: IconButton(
                   // tooltip: 'Search',
                   icon: Column(

@@ -521,7 +521,7 @@ class EntranceProjectControllerM2 extends GetxController {
           item.firstname ?? '',
           item.lastname ?? '',
           item.licensePlate ?? '',
-          item.qrGenId);
+          item.qrGenId ?? '');
       if (checkResponse == true) {
         EasyLoading.showSuccess('สำเร็จ');
 
@@ -547,7 +547,7 @@ class EntranceProjectControllerM2 extends GetxController {
           item.firstname ?? '',
           item.lastname ?? '',
           item.licensePlate ?? '',
-          item.qrGenId);
+          item.qrGenId ?? '');
       if (checkResponse == true) {
         EasyLoading.showSuccess('สำเร็จ');
 

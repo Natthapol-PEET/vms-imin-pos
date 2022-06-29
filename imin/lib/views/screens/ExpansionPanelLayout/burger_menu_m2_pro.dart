@@ -37,21 +37,30 @@ class MenuBergerM2Pro extends StatelessWidget {
               // mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(width: size.width * 0.02),
+                // Text('${loginController.dataProfile.profilePath}'),
                 GetBuilder<LoginController>(
                   init: LoginController(),
-                  builder: (controller) => CircleAvatar(
-                    radius: 30,
-                    backgroundImage: NetworkImage(
-                      ipServer +
-                          '/guard/profile_image/' +
-                          controller.dataProfile.profilePath,
-                      headers: <String, String>{
-                        'Authorization':
-                            'Bearer ${loginController.dataProfile.token}'
-                      },
-                    ),
-                    backgroundColor: Colors.transparent,
-                  ),
+                  builder: (controller) =>
+                      (controller.dataProfile.profilePath != null)
+                          ? CircleAvatar(
+                              radius: 30,
+                              backgroundImage: NetworkImage(
+                                ipServer +
+                                    '/guard/profile_image/' +
+                                    controller.dataProfile.profilePath,
+                                headers: <String, String>{
+                                  'Authorization':
+                                      'Bearer ${loginController.dataProfile.token}'
+                                },
+                              ),
+                              backgroundColor: Colors.transparent,
+                            )
+                          : CircleAvatar(
+                              radius: 30,
+                              backgroundImage: ExactAssetImage(
+                                  'assets/images/people-icon.png'),
+                              backgroundColor: Colors.transparent,
+                            ),
                 ),
                 SizedBox(width: size.width * 0.05),
                 Column(

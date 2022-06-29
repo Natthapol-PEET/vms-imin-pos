@@ -42,21 +42,48 @@ class ProfileScreen extends StatelessWidget {
               // Profile
               GetBuilder<LoginController>(
                 init: LoginController(),
-                builder: (controller) => CircleAvatar(
-                  radius: (screenController.DeviceCurrent == Device.iminM2Pro)
-                      ? 50
-                      : 120,
-                  backgroundImage: NetworkImage(
-                    ipServer +
-                        '/guard/profile_image/' +
-                        controller.dataProfile.profilePath,
-                    headers: <String, String>{
-                      'Authorization':
-                          'Bearer ${loginController.dataProfile.token}'
-                    },
-                  ),
-                  backgroundColor: Colors.transparent,
-                ),
+                builder: (controller) =>
+                    // CircleAvatar(
+                    //   radius: (screenController.DeviceCurrent == Device.iminM2Pro)
+                    //       ? 50
+                    //       : 120,
+                    //   backgroundImage: NetworkImage(
+                    //     ipServer +
+                    //         '/guard/profile_image/' +
+                    //         controller.dataProfile.profilePath,
+                    //     headers: <String, String>{
+                    //       'Authorization':
+                    //           'Bearer ${loginController.dataProfile.token}'
+                    //     },
+                    //   ),
+                    //   backgroundColor: Colors.transparent,
+                    // ),
+                    (controller.dataProfile.profilePath != null)
+                        ? CircleAvatar(
+                            radius: (screenController.DeviceCurrent ==
+                                    Device.iminM2Pro)
+                                ? 50
+                                : 120,
+                            backgroundImage: NetworkImage(
+                              ipServer +
+                                  '/guard/profile_image/' +
+                                  controller.dataProfile.profilePath,
+                              headers: <String, String>{
+                                'Authorization':
+                                    'Bearer ${loginController.dataProfile.token}'
+                              },
+                            ),
+                            backgroundColor: Colors.transparent,
+                          )
+                        : CircleAvatar(
+                            radius: (screenController.DeviceCurrent ==
+                                    Device.iminM2Pro)
+                                ? 50
+                                : 120,
+                            backgroundImage: ExactAssetImage(
+                                'assets/images/people-icon.png'),
+                            backgroundColor: Colors.black,
+                          ),
               ),
 
               // Content

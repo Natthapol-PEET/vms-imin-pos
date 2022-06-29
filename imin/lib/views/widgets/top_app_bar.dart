@@ -153,21 +153,29 @@ class _TopAppBarState extends State<TopAppBar>
                       child: Row(
                         children: [
                           GetBuilder<LoginController>(
-                            init: LoginController(),
-                            builder: (controller) => CircleAvatar(
-                              radius: 20,
-                              backgroundImage: NetworkImage(
-                                ipServer +
-                                    '/guard/profile_image/' +
-                                    controller.dataProfile.profilePath,
-                                headers: <String, String>{
-                                  'Authorization':
-                                      'Bearer ${loginController.dataProfile.token}'
-                                },
-                              ),
-                              backgroundColor: Colors.transparent,
-                            ),
-                          ),
+                              init: LoginController(),
+                              builder: (controller) =>
+                                  (controller.dataProfile.profilePath != null)
+                                      ? CircleAvatar(
+                                          radius: 20,
+                                          backgroundImage: NetworkImage(
+                                            ipServer +
+                                                '/guard/profile_image/' +
+                                                controller
+                                                    .dataProfile.profilePath,
+                                            headers: <String, String>{
+                                              'Authorization':
+                                                  'Bearer ${loginController.dataProfile.token}'
+                                            },
+                                          ),
+                                          backgroundColor: Colors.transparent,
+                                        )
+                                      : CircleAvatar(
+                                          radius: 20,
+                                          backgroundImage: ExactAssetImage(
+                                              'assets/images/people-icon.png'),
+                                          backgroundColor: Colors.transparent,
+                                        )),
                           SizedBox(width: size.width * 0.005),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
@@ -72,7 +73,7 @@ class LoginController extends GetxController {
       usernameControl.value.text,
       passwordControl.value.text,
     );
-
+    // print(dataProfile.Response);
     if (dataProfile == 'not call api') {
       EasyLoading.dismiss();
       alertSystemOnConnectInternet().show(context);
@@ -100,6 +101,13 @@ class LoginController extends GetxController {
       return true;
     } else {
       EasyLoading.dismiss();
+      if (json.decode(dataProfile.body)['detail'] ==
+          'This user account has been disabled.')
+      // print(json.decode(dataProfile.body)['detail']);
+      {
+        EasyLoading.showError('ผู้ใช้ถูกระงับ');
+        return false;
+      }
       EasyLoading.showError('ข้อมูลผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
       return false;
     }

@@ -15,6 +15,8 @@ Future loginApi(String user, String password) async {
     );
 
     print('response.statusCode: ${response.statusCode}');
+    // print(json.decode(response.body)['detail']);
+    print(json.decode(utf8.decode(response.bodyBytes))['detail']);
 
     if (response.statusCode == 200) {
       return LoginModel.fromJson(json.decode(utf8.decode(response.bodyBytes)));

@@ -67,6 +67,7 @@ class SocketService extends GetxController {
           // entranceControllerM2.getEntranceData();
           print("typeUser: $typeUser");
           print("idUser: $idUser");
+          loginController.logout();
         }
       });
       socketController.socket!.on('toWeb/Delete', (msg) {
@@ -80,6 +81,7 @@ class SocketService extends GetxController {
           // entranceControllerM2.getEntranceData();
           print("typeUser: $typeUser");
           print("idUser: $idUser");
+          loginController.logout();
         }
       });
     });

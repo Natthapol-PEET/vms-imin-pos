@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:camera/camera.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:imin/controllers/printer_controller.dart';
 import 'package:imin/helpers/configs.dart';
 import 'package:imin/services/upload_personal_service.dart';
 import 'package:imin/views/widgets/not_connect_internet.dart';
@@ -12,9 +13,10 @@ class TakePictureController extends GetxController {
   late CameraDescription camera;
   late CameraController controller;
   late Future<void> initializeControllerFuture;
-
+  // final printerController = Get.put(PrinterController());
   var imagePath = "".obs;
   var response = Map<String, dynamic>().obs;
+  var walkinIdPic = "".obs;
   var imageUrl = "".obs;
 
   clear() {
@@ -23,6 +25,7 @@ class TakePictureController extends GetxController {
     response.value = {
       "code": "",
     };
+    // printerController.qrId.value = "";
   }
 
   @override
@@ -30,6 +33,7 @@ class TakePictureController extends GetxController {
     response.value = {
       "code": "",
     };
+    // printerController.qrId.value = "";
 
     super.onInit();
   }
@@ -49,7 +53,9 @@ class TakePictureController extends GetxController {
   uploadPersonalApi(XFile image, String classCard) async {
     EasyLoading.show(status: 'กรุณารอสักครู่...');
     var responseApi = await uploadPersonal(image.path, classCard);
-
+    final printerController = Get.put(PrinterController());
+    print('response');
+    print(response['code']);
     responseApi.stream.transform(utf8.decoder).listen((value) {
       Map<String, dynamic> json;
 
@@ -65,6 +71,7 @@ class TakePictureController extends GetxController {
       if (json['code'] != null) {
         // imagePath.value = image.path;
         response.value = json;
+        printerController.qrId.value = json['code'];
         imageUrl.value = ipServerIminService + '/card/' + json['code'] + '/';
         EasyLoading.dismiss();
       } else {

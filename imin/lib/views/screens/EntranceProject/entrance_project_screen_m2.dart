@@ -6,6 +6,7 @@ import 'package:imin/controllers/entrance_project_controller_m2.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/controllers/upload_personal_controller.dart';
 import 'package:imin/helpers/constance.dart';
+import 'package:imin/views/screens/EntranceProject/printer_screen.dart';
 import 'package:imin/views/screens/EntranceProject/upload_personal_screen.dart';
 import 'package:imin/views/screens/ExitProject/exit_project_d1_pro_screen.dart';
 import 'package:imin/views/screens/ExitProject/exit_project_screen.dart';
@@ -51,9 +52,14 @@ class _EntranceProjectScreenM2State extends State<EntranceProjectScreenM2> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TitleContent(
-                text: 'เวลาเข้าโครงการ',
-                fontSize: titleM2FontSize,
+              Row(
+                children: [
+                  TitleContent(
+                    text: 'เวลาเข้าโครงการ',
+                    fontSize: titleM2FontSize,
+                  ),
+                  // TextButton(onPressed: () {}, child: Text('ทดสอบปริ้น'))
+                ],
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
@@ -114,6 +120,7 @@ class _EntranceProjectScreenM2State extends State<EntranceProjectScreenM2> {
                               cameraController.imageUrl.value = "";
                               uploadPersonalController.initValue();
                               c.currentContent = UploadPersonalScreen();
+                              // c.currentContent = PrinterScreen();
                               c.update(['aopbmsbbffdgkb']);
                             },
                             child: Text(

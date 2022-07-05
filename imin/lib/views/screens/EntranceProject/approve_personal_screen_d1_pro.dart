@@ -13,6 +13,7 @@ import 'package:imin/controllers/camera_controller.dart';
 import 'package:imin/controllers/entrance_project_controller.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/controllers/login_controller.dart';
+import 'package:imin/controllers/printer_controller.dart';
 import 'package:imin/controllers/screen_controller.dart';
 import 'package:imin/controllers/upload_personal_controller.dart';
 import 'package:imin/controllers/walkin_controller.dart';
@@ -279,9 +280,15 @@ class NextInputD1Pro extends StatelessWidget {
         ),
         SizedBox(height: size.height * 0.03),
         Center(
-          child: RoundButton(
-            title: 'พิมพ์',
-            press: () {},
+          child: GetBuilder<PrinterController>(
+            id: 'update-printre-data-row',
+            builder: (c) => RoundButton(
+              title: 'พิมพ์',
+              press: () {
+                c.printTicket();
+                print('print Reciepe');
+              },
+            ),
           ),
         ),
         SizedBox(height: size.height * 0.01),

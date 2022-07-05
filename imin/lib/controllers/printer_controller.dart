@@ -97,6 +97,7 @@ class PrinterController extends GetxController {
     List<int> bytes = [];
     final fDate = new DateFormat('dd/MM/yy');
     final fTime = new DateFormat('HH:mm');
+    print('check D1 ${qrId}');
     // Text(f.format(DateTime.now()));
     CapabilityProfile profile = await CapabilityProfile.load();
     final generator = Generator(PaperSize.mm58, profile);
@@ -167,22 +168,22 @@ class PrinterController extends GetxController {
         await CharsetConverter.encode("CP865", "Thai: ใบเสร็จ-ใบรับผ้า");
     String decoded =
         await CharsetConverter.decode("CP865", Uint8List.fromList(encThai));
-    print('decoded 865');
+    // print('decoded 865');
 
     Uint8List encThaiCP874 =
         await CharsetConverter.encode("CP874", "Thai: ใบเสร็จ-ใบรับผ้า");
     String decodedCP874 = await CharsetConverter.decode(
         "CP874", Uint8List.fromList(encThaiCP874));
-    print('decoded CP874');
-    print(decodedCP874);
+    // print('decoded CP874');
+    // print(decodedCP874);
 
     // bytes += generator.textEncoded(encThaiCP874,
     //     styles: PosStyles(codeTable: 'CP874'));
     // bytes += generator.text(decodedCP874,
     //     styles: PosStyles(codeTable: 'CP874'), containsChinese: true);
 
-    print('bytes');
-    print(bytes);
+    // print('bytes');
+    // print(bytes);
     ////////////////////////////
     bytes += generator.cut();
     return bytes;

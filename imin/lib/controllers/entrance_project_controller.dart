@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:imin/controllers/login_controller.dart';
+import 'package:imin/controllers/screen_controller.dart';
 import 'package:imin/functions/dialog_gate.dart';
 import 'package:imin/helpers/configs.dart';
 import 'package:imin/helpers/constance.dart';
@@ -21,6 +22,7 @@ import 'package:intl/intl.dart';
 
 class EntranceProjectController extends GetxController {
   var loginController = Get.put(LoginController());
+  final screenController = Get.put(ScreenController());
 
   var context;
   var dataEntrance = [].obs;
@@ -276,14 +278,26 @@ class EntranceProjectController extends GetxController {
         ),
         Divider(color: dividerColor),
         FadeInImage(
+          height: (screenController.DeviceCurrent == Device.iminM2Pro)
+              ? context.height * normalM2FontSize * 0.035
+              : 250,
           placeholder: AssetImage('assets/images/id-card-image.png'),
           image: NetworkImage(
             ipServerIminService + '/card/' + item.qrGenId + '/',
             headers: <String, String>{
               'Authorization': 'Bearer ${loginController.dataProfile.token}'
             },
+            scale: 1.2,
           ),
         ),
+        // Image.network(
+        //   ipServerIminService + '/card/' + item.qrGenId + '/',
+        //   scale: 1.2,
+        //   // height: context.height * 0.25,
+        //   headers: <String, String>{
+        //     'Authorization': 'Bearer ${loginController.dataProfile.token}'
+        //   },
+        // ),
         SizedBox(height: 20),
         Row(
           children: [

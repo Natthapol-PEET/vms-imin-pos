@@ -6,6 +6,7 @@ import 'package:imin/controllers/entrance_project_controller_m2.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/controllers/upload_personal_controller.dart';
 import 'package:imin/helpers/constance.dart';
+// import 'package:imin/views/screens/EntranceProject/printerBlue.dart';
 import 'package:imin/views/screens/EntranceProject/printer_screen.dart';
 import 'package:imin/views/screens/EntranceProject/upload_personal_screen.dart';
 import 'package:imin/views/screens/ExitProject/exit_project_d1_pro_screen.dart';
@@ -121,6 +122,7 @@ class _EntranceProjectScreenM2State extends State<EntranceProjectScreenM2> {
                               uploadPersonalController.initValue();
                               c.currentContent = UploadPersonalScreen();
                               // c.currentContent = PrinterScreen();
+                              // c.currentContent = PrinterBlueScreen();
                               c.update(['aopbmsbbffdgkb']);
                             },
                             child: Text(

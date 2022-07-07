@@ -106,7 +106,7 @@ class PrinterController extends GetxController {
     // final generator = Generator(PaperSize.mm58, profile);
     // final Ticket generator = Ticket(PaperSize.mm58, profile);
     // final Ticket generator = Ticket(PaperSize.mm58, profile);
-
+    PosStyles styles = const PosStyles();
     bytes += generator.text("ARTANI",
         styles: PosStyles(
           bold: true,
@@ -130,7 +130,8 @@ class PrinterController extends GetxController {
       size: QRSize(0x10),
     );
     bytes += generator.text(' ', styles: PosStyles(align: PosAlign.center));
-    bytes += generator.text('Scan QR to enter the project.',
+    bytes += generator.text(' ', styles: PosStyles(align: PosAlign.center));
+    bytes += generator.text('Scan QR to enter the village.',
         styles: PosStyles(
           align: PosAlign.center,
         ));
@@ -140,17 +141,36 @@ class PrinterController extends GetxController {
           align: PosAlign.left,
           bold: true,
         ));
-    bytes += generator.text(
-        '1. if there is a charge,Payment must be made via Mobile Payment before leaving the village',
+    bytes += generator.text('1.If there is a charge,Payment ',
         styles: PosStyles(
           align: PosAlign.left,
         ));
-    bytes += generator.text(
-        "2. If you don't get an E-Stamp before leaving the project,Contact the residents or juristic persons to make an E-Stamp.",
+    bytes += generator.text('must be made via Mobile Payment',
+        styles: PosStyles(
+          align: PosAlign.left,
+        ));
+    bytes += generator.text('before leaving the village',
+        styles: PosStyles(
+          align: PosAlign.left,
+        ));
+    bytes += generator.text("2.If you don't get an E-Stamp ",
+        styles: PosStyles(
+          align: PosAlign.left,
+        ));
+    bytes += generator.text("before leaving the village,",
+        styles: PosStyles(
+          align: PosAlign.left,
+        ));
+    bytes += generator.text("Contact the resident or juristic",
+        styles: PosStyles(
+          align: PosAlign.left,
+        ));
+    bytes += generator.text("to make an E-Stamp.",
         styles: PosStyles(
           align: PosAlign.left,
         ));
 
+//  bytes += generator.image(imgSrc);
     // bytes += generator.text("บ้านเลขที่ 1/1",
     //     styles: PosStyles(align: PosAlign.center, codeTable: 'CP1252'),
     //     containsChinese: true);

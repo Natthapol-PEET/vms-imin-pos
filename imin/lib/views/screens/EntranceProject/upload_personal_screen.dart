@@ -96,7 +96,7 @@ class UploadCard extends StatelessWidget {
               top: size.height * 0.02,
               bottom: (screenController.DeviceCurrent == Device.iminM2Pro)
                   ? size.height * normalM2FontSize * 0.0001
-                  : size.height * 0.07),
+                  : size.height * 0.02),
           child: Obx(() => Text(
                 'กรุณาอัพโหลดรูป' +
                     uploadPersonalController.selectedValue.value +
@@ -168,18 +168,34 @@ class UploadCard extends StatelessWidget {
                                 'assets/images/license-card.png',
                                 scale: 2.5,
                               )
-                        : Image.network(
-                            cameraController.imageUrl.value,
-                            scale: 1.2,
-                            height: (screenController.DeviceCurrent ==
-                                    Device.iminM2Pro)
-                                ? size.height * normalM2FontSize * 0.035
-                                : size.height * 0.25,
-                            headers: <String, String>{
-                              'Authorization':
-                                  'Bearer ${loginController.dataProfile.token}'
-                            },
-                          ),
+                        : (screenController.DeviceCurrent == Device.iminM2Pro)
+                            ? Image.network(
+                                cameraController.imageUrl.value,
+                                scale: 1.2,
+                                height: (screenController.DeviceCurrent ==
+                                        Device.iminM2Pro)
+                                    ? size.height * normalM2FontSize * 0.035
+                                    : size.height * 0.25,
+                                headers: <String, String>{
+                                  'Authorization':
+                                      'Bearer ${loginController.dataProfile.token}'
+                                },
+                              )
+                            : RotatedBox(
+                                quarterTurns: 3,
+                                child: Image.network(
+                                  cameraController.imageUrl.value,
+                                  scale: 1.2,
+                                  height: (screenController.DeviceCurrent ==
+                                          Device.iminM2Pro)
+                                      ? size.height * normalM2FontSize * 0.035
+                                      : size.height * 0.25,
+                                  headers: <String, String>{
+                                    'Authorization':
+                                        'Bearer ${loginController.dataProfile.token}'
+                                  },
+                                ),
+                              ),
                   ),
                 ),
                 Padding(
@@ -337,5 +353,3 @@ class UploadCard extends StatelessWidget {
     );
   }
 }
-
-

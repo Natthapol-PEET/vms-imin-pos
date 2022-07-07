@@ -1,0 +1,2 @@
+flutter build apk --release --no-sound-null-safety  
+flutter install -d all  

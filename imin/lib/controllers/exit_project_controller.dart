@@ -5,6 +5,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:imin/Functions/time_to_thai.dart';
 import 'package:imin/controllers/login_controller.dart';
+import 'package:imin/controllers/screen_controller.dart';
 import 'package:imin/functions/dialog_gate.dart';
 import 'package:imin/helpers/configs.dart';
 import 'package:imin/helpers/constance.dart';
@@ -17,6 +18,7 @@ import 'package:imin/views/widgets/round_button_outline.dart';
 
 class ExitProjectController extends GetxController {
   final loginController = Get.put(LoginController());
+  final screenController = Get.put(ScreenController());
 
   var context;
 
@@ -328,13 +330,26 @@ class ExitProjectController extends GetxController {
           ],
         ),
         Divider(color: dividerColor),
-        FadeInImage(
+        // FadeInImage(
+        //   placeholder: AssetImage('assets/images/id-card-image.png'),
+        //   image: NetworkImage(
+        //     ipServerIminService + '/card/' + item.qrGenId + '/',
+        //     headers: <String, String>{
+        //       'Authorization': 'Bearer ${loginController.dataProfile.token}'
+        //     },
+        //   ),
+        // ),
+          FadeInImage(
+          height: (screenController.DeviceCurrent == Device.iminM2Pro)
+              ? context.height * normalM2FontSize * 0.035
+              : 250,
           placeholder: AssetImage('assets/images/id-card-image.png'),
           image: NetworkImage(
             ipServerIminService + '/card/' + item.qrGenId + '/',
             headers: <String, String>{
               'Authorization': 'Bearer ${loginController.dataProfile.token}'
             },
+            scale: 1.2,
           ),
         ),
         SizedBox(height: 20),

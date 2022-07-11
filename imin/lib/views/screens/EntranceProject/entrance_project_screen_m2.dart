@@ -6,6 +6,7 @@ import 'package:imin/controllers/entrance_project_controller_m2.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/controllers/upload_personal_controller.dart';
 import 'package:imin/helpers/constance.dart';
+import 'package:imin/views/screens/EntranceProject/printerBlue.dart';
 // import 'package:imin/views/screens/EntranceProject/printerBlue.dart';
 import 'package:imin/views/screens/EntranceProject/printer_screen.dart';
 import 'package:imin/views/screens/EntranceProject/upload_personal_screen.dart';
@@ -14,6 +15,7 @@ import 'package:imin/views/screens/ExitProject/exit_project_screen.dart';
 import 'package:imin/views/widgets/round_button_icon.dart';
 import 'package:imin/views/widgets/round_button_number.dart';
 import 'package:imin/views/widgets/title_content.dart';
+// import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 
 class EntranceProjectScreenM2 extends StatefulWidget {
   EntranceProjectScreenM2({Key? key}) : super(key: key);

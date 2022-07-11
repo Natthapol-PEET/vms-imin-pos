@@ -99,7 +99,7 @@
 
 //     _devices = devices;
 
-//     if (isConnected!) {
+//     if (isConnected) {
 //       connected.value = true;
 //     }
 //   }

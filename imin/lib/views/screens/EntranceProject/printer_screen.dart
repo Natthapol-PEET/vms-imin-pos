@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:ffi';
 import 'dart:typed_data';
+import 'dart:ui';
 // import 'package:dropdown_search/dropdown_search.dart';
 import 'package:bluetooth_thermal_printer/bluetooth_thermal_printer.dart';
 import 'package:charset_converter/charset_converter.dart';
@@ -10,6 +11,7 @@ import 'package:dropdownfield/dropdownfield.dart';
 import 'package:easy_dialog/easy_dialog.dart';
 // import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -39,6 +41,7 @@ class PrinterScreen extends StatelessWidget {
   final uploadPersonalController = Get.put(UploadPersonalController());
   final cameraController = Get.put(TakePictureController());
   final screenController = Get.put(ScreenController());
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -72,7 +75,7 @@ class UploadCard extends StatelessWidget {
   UploadCard({
     Key? key,
   }) : super(key: key);
-
+  GlobalKey globalKey = GlobalKey();
   final uploadPersonalController = Get.put(UploadPersonalController());
   final cameraController = Get.put(TakePictureController());
   final loginController = Get.put(LoginController());
@@ -81,6 +84,22 @@ class UploadCard extends StatelessWidget {
 
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
+    Future<void> capturePng() async {
+      RenderRepaintBoundary boundary =
+          globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+      var image = await boundary.toImage();
+      print('image');
+      print(image);
+      ByteData? byteData = await image.toByteData(format: ImageByteFormat.png);
+      // printerController.printTicketPic(byteData);
+      Uint8List pngBytes = byteData!.buffer.asUint8List();
+      // list
+      printerController.printTicketPic(image);
+      // print('pngBytes');
+      // print(pngBytes);
+      // YOUR_BYTES = pngBytes;
+    }
 
     return MaterialApp(
       home: Scaffold(
@@ -140,10 +159,29 @@ class UploadCard extends StatelessWidget {
               // ),
               TextButton(
                 onPressed: printerController.connected.value
-                    ? printerController.printTicket
-                    : printerController.printTicket,
+                    ? () {
+                        printerController.printTicket();
+                        // printerController.globalPicKey.value = globalKey;
+                        // capturePng();
+                      }
+                    : () {
+                        printerController.printTicket();
+                        // capturePng();
+                      },
                 child: Text("Print Ticket"),
               ),
+              // FormPrinterPic(globalKey: globalKey),
+              RepaintBoundary(
+                key: globalKey,
+                child: Container(
+                  width: 350,
+                  color: Colors.white,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [Text('ทดสอบ'), Text('data')],
+                  ),
+                ),
+              )
             ],
           ),
         ),
@@ -151,3 +189,27 @@ class UploadCard extends StatelessWidget {
     );
   }
 }
+
+// class FormPrinterPic extends StatelessWidget {
+//   const FormPrinterPic({
+//     Key? key,
+//     required this.globalKey,
+//   }) : super(key: key);
+
+//   final GlobalKey<State<StatefulWidget>> globalKey;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return RepaintBoundary(
+//       key: globalKey,
+//       child: Container(
+//         width: 350,
+//         color: Colors.white,
+//         child: Row(
+//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//           children: [Text('ทดสอบ'), Text('data')],
+//         ),
+//       ),
+//     );
+//   }
+// }

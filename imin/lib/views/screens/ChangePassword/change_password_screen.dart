@@ -155,7 +155,7 @@ class ChangePasswordScreen extends StatelessWidget {
                           controller.check.value.text,
                           style: TextStyle(
                               color: controller.check.value.color,
-                              fontSize: text),
+                              fontSize: smalltext),
                         ),
                       ],
                     ],

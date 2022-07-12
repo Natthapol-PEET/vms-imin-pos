@@ -10,6 +10,7 @@ import 'package:imin/models/account_model.dart';
 import 'package:imin/services/change_password_service.dart';
 
 class RePasswordController extends GetxController {
+  var loginController = Get.put(LoginController());
   var isVisibilityOld = false.obs;
   var isVisibilityNew = false.obs;
   var isVisibilityReNew = false.obs;
@@ -132,14 +133,16 @@ class RePasswordController extends GetxController {
   }
 
   void resetPassword(String username) async {
+    final loginController = Get.put(LoginController());
     EasyLoading.show(status: 'loading...');
 
     // print('oldPass:' + oldPasswordValue.value);
     // print('newPass:' + newPasswordValue.value);
     if (checkValidatePassword.value == true) {
       // print('username: $username');
-      var response = await changePasswordApi(
-          username, oldPasswordValue.value, newPasswordValue.value);
+
+      var response = await changePasswordApi(username, oldPasswordValue.value,
+          newPasswordValue.value, loginController.dataProfile.token);
       // print('success: ${checkChangePassword}');
 
       Map<String, dynamic> json = jsonDecode(response.body);
@@ -147,7 +150,7 @@ class RePasswordController extends GetxController {
       print('json: $json');
 
       if (response.statusCode == 200) {
-        final loginController = Get.put(LoginController());
+        // final loginController = Get.put(LoginController());
 
         var account = AccountModel(
           id: 1,
@@ -155,7 +158,8 @@ class RePasswordController extends GetxController {
           password: loginController.password.value,
           isLogin: 0,
         );
-        await Account().updateAccount(account);
+        // await Account().updateAccount(account);
+        await loginController.acc.updateAccount(account);
 
         Timer(Duration(seconds: 1), () {
           EasyLoading.dismiss();

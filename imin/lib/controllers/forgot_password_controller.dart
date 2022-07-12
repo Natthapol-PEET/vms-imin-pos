@@ -21,6 +21,7 @@ class ForgotPasswordController extends GetxController {
   void requestEmail(context) async {
     EasyLoading.show(status: 'loading...');
     var response = await requestRecoveryPasswordApi(emailValue.value);
+    // print(jsonDecode(response.body));
     Map<String, dynamic> json = jsonDecode(response.body);
     // print(response.body.detail);
     if (response.statusCode == 200 &&

@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:ffi';
+import 'dart:typed_data';
+import 'dart:ui';
 // import 'package:dropdown_search/dropdown_search.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:dropdownfield/dropdownfield.dart';
 import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -22,8 +26,10 @@ import 'package:imin/helpers/configs.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/services/gate_service.dart';
 import 'package:imin/views/screens/Demo/select.dart';
+import 'package:imin/views/widgets/picture_to_slip_printer.dart';
 import 'package:imin/views/widgets/round_button.dart';
 import 'package:imin/views/widgets/round_button_outline.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'entrance_project_screen.dart';
 
@@ -289,12 +295,17 @@ class NextInputM2Pro extends StatelessWidget {
         ),
         SizedBox(height: size.height * 0.03),
         Center(
-          child: GetBuilder<PrinterController>(
+          child:
+              // GetBuilder<PrinterController>(
+              GetBuilder<ExpansionPanelController>(
             id: 'update-printre-data-row',
             builder: (c) => RoundButton(
               title: 'พิมพ์',
               press: () {
-                c.printTicket();
+                // c.printTicket();
+                // c.currentContent = UploadPersonalScreen();
+                dialogDetailPicPrinter(size, context).show(context);
+                c.update(['aopbmsbbffdgkb']);
                 print('print Reciepe');
               },
             ),
@@ -323,6 +334,63 @@ class NextInputM2Pro extends StatelessWidget {
             ),
           ),
         ),
+      ],
+    );
+  }
+
+  EasyDialog dialogDetailPicPrinter(Size size, BuildContext context) {
+    GlobalKey globalKey = GlobalKey();
+    GlobalKey globalKey2 = GlobalKey();
+    GlobalKey globalKey3 = GlobalKey();
+    Future<void> capturePng() async {
+      RenderRepaintBoundary boundary =
+          globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+      RenderRepaintBoundary boundary2 = globalKey2.currentContext!
+          .findRenderObject() as RenderRepaintBoundary;
+      RenderRepaintBoundary boundary3 = globalKey3.currentContext!
+          .findRenderObject() as RenderRepaintBoundary;
+      var image = await boundary.toImage();
+      var image2 = await boundary2.toImage();
+      var image3 = await boundary3.toImage();
+      print('image');
+      print(image);
+      ByteData? byteData = await image.toByteData(format: ImageByteFormat.png);
+      ByteData? byteData2 =
+          await image2.toByteData(format: ImageByteFormat.png);
+      ByteData? byteData3 =
+          await image3.toByteData(format: ImageByteFormat.png);
+      // printerController.printTicketPic(byteData);
+      Uint8List pngBytes = byteData!.buffer.asUint8List();
+      Uint8List pngBytes2 = byteData2!.buffer.asUint8List();
+      Uint8List pngBytes3 = byteData3!.buffer.asUint8List();
+      // list
+      printerController.printTicketPic(pngBytes, pngBytes2, pngBytes3);
+      // print('pngBytes');
+      // print(pngBytes);
+      // YOUR_BYTES = pngBytes;
+    }
+
+    Timer(Duration(milliseconds: 150), () {
+      // EasyLoading.dismiss();
+      capturePng();
+      Get.back();
+      // Get.toNamed('/login');
+    });
+
+    return EasyDialog(
+      width: 400,
+      height: size.height * 0.7,
+      contentListAlignment: CrossAxisAlignment.start,
+      closeButton: false,
+      contentList: [
+        FormSlip(
+          globalKey: globalKey,
+          homeAddress: uploadPersonalController.homeNumber.value,
+          onDate: new DateFormat('dd/MM/yy'),
+          onTime: new DateFormat('HH:mm'),
+        ),
+        FormSlip2(globalKey: globalKey2),
+        FormSlip3(globalKey: globalKey3),
       ],
     );
   }

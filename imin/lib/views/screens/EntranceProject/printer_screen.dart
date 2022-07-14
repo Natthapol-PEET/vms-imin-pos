@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ffi';
+import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui';
 // import 'package:dropdown_search/dropdown_search.dart';
@@ -9,6 +9,7 @@ import 'package:charset_converter/charset_converter.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:dropdownfield/dropdownfield.dart';
 import 'package:easy_dialog/easy_dialog.dart';
+import 'package:flutter/cupertino.dart';
 // import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -30,8 +31,10 @@ import 'package:imin/services/gate_service.dart';
 import 'package:imin/views/screens/Demo/select.dart';
 import 'package:imin/views/screens/EntranceProject/approve_personal_screen_d1_pro.dart';
 import 'package:imin/views/screens/EntranceProject/approve_personal_screen_m2_pro.dart';
+import 'package:imin/views/widgets/picture_to_slip_printer.dart';
 import 'package:imin/views/widgets/round_button.dart';
 import 'package:imin/views/widgets/round_button_outline.dart';
+import 'package:intl/intl.dart';
 import 'entrance_project_screen.dart';
 
 // ignore: must_be_immutable
@@ -76,6 +79,8 @@ class UploadCard extends StatelessWidget {
     Key? key,
   }) : super(key: key);
   GlobalKey globalKey = GlobalKey();
+  GlobalKey globalKey2 = GlobalKey();
+  GlobalKey globalKey3 = GlobalKey();
   final uploadPersonalController = Get.put(UploadPersonalController());
   final cameraController = Get.put(TakePictureController());
   final loginController = Get.put(LoginController());
@@ -88,18 +93,82 @@ class UploadCard extends StatelessWidget {
     Future<void> capturePng() async {
       RenderRepaintBoundary boundary =
           globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+      RenderRepaintBoundary boundary2 = globalKey2.currentContext!
+          .findRenderObject() as RenderRepaintBoundary;
+      RenderRepaintBoundary boundary3 = globalKey3.currentContext!
+          .findRenderObject() as RenderRepaintBoundary;
       var image = await boundary.toImage();
+      var image2 = await boundary2.toImage();
+      var image3 = await boundary3.toImage();
       print('image');
       print(image);
       ByteData? byteData = await image.toByteData(format: ImageByteFormat.png);
+      ByteData? byteData2 =
+          await image2.toByteData(format: ImageByteFormat.png);
+      ByteData? byteData3 =
+          await image3.toByteData(format: ImageByteFormat.png);
       // printerController.printTicketPic(byteData);
       Uint8List pngBytes = byteData!.buffer.asUint8List();
+      Uint8List pngBytes2 = byteData2!.buffer.asUint8List();
+      Uint8List pngBytes3 = byteData3!.buffer.asUint8List();
       // list
-      printerController.printTicketPic(image);
+      printerController.printTicketPic(pngBytes, pngBytes2, pngBytes3);
       // print('pngBytes');
       // print(pngBytes);
       // YOUR_BYTES = pngBytes;
     }
+
+    // Future<Uint8List> createImageFromWidget(Widget widget,
+    //     {Duration? wait, Size? logicalSize, Size? imageSize}) async {
+    //   final RenderRepaintBoundary repaintBoundary = RenderRepaintBoundary();
+
+    //   logicalSize ??= window.physicalSize / window.devicePixelRatio;
+    //   imageSize ??= window.physicalSize;
+
+    //   assert(logicalSize.aspectRatio == imageSize.aspectRatio);
+
+    //   final RenderView renderView = RenderView(
+    //     window: ,
+    //     child: RenderPositionedBox(
+    //         alignment: Alignment.center, child: repaintBoundary),
+    //     configuration: ViewConfiguration(
+    //       size: logicalSize,
+    //       devicePixelRatio: 1.0,
+    //     ),
+    //   );
+
+    //   final PipelineOwner pipelineOwner = PipelineOwner();
+    //   final BuildOwner buildOwner = BuildOwner();
+
+    //   pipelineOwner.rootNode = renderView;
+    //   renderView.prepareInitialFrame();
+
+    //   final RenderObjectToWidgetElement<RenderBox> rootElement =
+    //       RenderObjectToWidgetAdapter<RenderBox>(
+    //     container: repaintBoundary,
+    //     child: widget,
+    //   ).attachToRenderTree(buildOwner);
+
+    //   buildOwner.buildScope(rootElement);
+
+    //   if (wait != null) {
+    //     await Future.delayed(wait);
+    //   }
+
+    //   buildOwner.buildScope(rootElement);
+    //   buildOwner.finalizeTree();
+
+    //   pipelineOwner.flushLayout();
+    //   pipelineOwner.flushCompositingBits();
+    //   pipelineOwner.flushPaint();
+
+    //   final Image image = await repaintBoundary.toImage(
+    //       pixelRatio: imageSize.width / logicalSize.width);
+    //   final ByteData byteData =
+    //       await image.toByteData(format: ImageByteFormat.png);
+
+    //   return byteData.buffer.asUint8List();
+    // }
 
     return MaterialApp(
       home: Scaffold(
@@ -107,81 +176,43 @@ class UploadCard extends StatelessWidget {
           title: const Text('Bluetooth Thermal Printer Demo'),
         ),
         body: Container(
-          padding: EdgeInsets.all(20),
+          // padding: EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Text("Search Paired Bluetooth"),
-              // TextButton(
-              //   onPressed: () {
-              //     printerController.getBluetooth();
-              //   },
-              //   child: Text("Search"),
-              // ),
-              // GetBuilder<PrinterController>(
-              //   id: 'update-printre-data-row',
-              //   builder: (c) => Obx(
-              //     () => Container(
-              //       height: 200,
-              //       child: ListView.builder(
-              //         itemCount:
-              //             printerController.availableBluetoothDevices.length > 0
-              //                 ? printerController
-              //                     .availableBluetoothDevices.length
-              //                 : 0,
-              //         itemBuilder: (context, index) {
-              //           return ListTile(
-              //             onTap: () {
-              //               String select = printerController
-              //                   .availableBluetoothDevices[index];
-              //               List list = select.split("#");
-              //               // String name = list[0];
-              //               String mac = list[1];
-              //               printerController.setConnect(mac);
-              //             },
-              //             title: Text(
-              //                 '${printerController.availableBluetoothDevices[index]}'),
-              //             subtitle: Text("Click to connect"),
-              //           );
-              //         },
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              // SizedBox(
-              //   height: 30,
-              // ),
-              // TextButton(
-              //   onPressed: printerController.connected.value
-              //       ? printerController.printGraphics
-              //       : null,
-              //   child: Text("Print"),
-              // ),
               TextButton(
                 onPressed: printerController.connected.value
                     ? () {
-                        printerController.printTicket();
+                        // printerController.printTicket();
                         // printerController.globalPicKey.value = globalKey;
-                        // capturePng();
+                        capturePng();
                       }
                     : () {
-                        printerController.printTicket();
-                        // capturePng();
+                        // printerController.printTicket();
+                        capturePng();
                       },
                 child: Text("Print Ticket"),
               ),
               // FormPrinterPic(globalKey: globalKey),
-              RepaintBoundary(
-                key: globalKey,
-                child: Container(
-                  width: 350,
-                  color: Colors.white,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [Text('ทดสอบ'), Text('data')],
-                  ),
-                ),
-              )
+              FormSlip(
+                globalKey: globalKey,
+                homeAddress: '11/3',
+                onDate: new DateFormat('dd/MM/yy'),
+                onTime: new DateFormat('HH:mm'),
+              ),
+              FormSlip2(globalKey: globalKey2),
+              FormSlip3(globalKey: globalKey3),
+              // Opacity(
+              //     opacity: 1.0,
+              //     child: new Padding(
+              //       padding: const EdgeInsets.only(
+              //         left: 16.0,
+              //       ),
+              //       child: FormSlip(globalKey: globalKey),
+              //     ))
+              // Capturer(
+              //   overRepaintKey: globalKey,
+              // )
             ],
           ),
         ),
@@ -190,8 +221,51 @@ class UploadCard extends StatelessWidget {
   }
 }
 
-// class FormPrinterPic extends StatelessWidget {
-//   const FormPrinterPic({
+// class FormSlip extends StatelessWidget {
+//   const FormSlip({
+//     Key? key,
+//     required this.globalKey,
+//     required this.homeAddress,
+//     this.onDate,
+//     this.onTime,
+//   }) : super(key: key);
+
+//   final GlobalKey<State<StatefulWidget>> globalKey;
+//   final homeAddress;
+//   final onDate;
+//   final onTime;
+//   // final onDate = new DateFormat('dd/MM/yy');
+//   //   final onTime = new DateFormat('HH:mm');
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return RepaintBoundary(
+//       key: globalKey,
+//       child: Container(
+//           width: 450,
+//           color: Colors.white,
+//           child:
+//               //  Row(
+//               //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//               //   children: [Text('ทดสอบ'), Text('data')],
+//               // ),
+//               Column(
+//             children: [
+//               Text(
+//                 'บ้านเลขที่ ${homeAddress}',
+//                 style: TextStyle(fontSize: 20),
+//               ),
+//               Text(
+//                   'วันที่ : ${onDate.format(DateTime.now())} เวลา : ${onTime.format(DateTime.now())}',
+//                   style: TextStyle(fontSize: 20))
+//             ],
+//           )),
+//     );
+//   }
+// }
+
+// class FormSlip2 extends StatelessWidget {
+//   const FormSlip2({
 //     Key? key,
 //     required this.globalKey,
 //   }) : super(key: key);
@@ -203,13 +277,105 @@ class UploadCard extends StatelessWidget {
 //     return RepaintBoundary(
 //       key: globalKey,
 //       child: Container(
-//         width: 350,
-//         color: Colors.white,
-//         child: Row(
-//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//           children: [Text('ทดสอบ'), Text('data')],
+//           width: 450,
+//           color: Colors.white,
+//           child:
+//               //  Row(
+//               //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//               //   children: [Text('ทดสอบ'), Text('data')],
+//               // ),
+//               Column(
+//             children: [
+//               Text(
+//                 'แสกน QR นี้เพื่อแสกนเข้าโครงการ',
+//                 style: TextStyle(fontSize: 15),
+//               ),
+//             ],
+//           )),
+//     );
+//   }
+// }
+
+// class FormSlip3 extends StatelessWidget {
+//   const FormSlip3({
+//     Key? key,
+//     required this.globalKey,
+//   }) : super(key: key);
+
+//   final GlobalKey<State<StatefulWidget>> globalKey;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return RepaintBoundary(
+//       key: globalKey,
+//       child: Container(
+//           width: 450,
+//           color: Colors.white,
+//           child:
+//               //  Row(
+//               //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//               //   children: [Text('ทดสอบ'), Text('data')],
+//               // ),
+//               Column(
+//             children: [
+//               Text(
+//                 'หมายเหตุ',
+//                 style: TextStyle(fontSize: 20),
+//               ),
+//               Text(
+//                   '1. หากมีการชำระเงินต้องทำการชำระเงินผ่าน Mobile Payment ให้เรียบร้อยก่อนออกจากโครงการ',
+//                   style: TextStyle(fontSize: 20)),
+//               Text(
+//                   '2. หากไม่ได้ E-Stamp ก่อนออกจากโครงการ ให้ติดต่อลูกบ้านหรือนิติบุคคลเพื่อทำการ E-Stamp',
+//                   style: TextStyle(fontSize: 20)),
+//             ],
+//           )),
+//     );
+//   }
+// }
+
+// class Capturer extends StatelessWidget {
+//   static final Random random = Random();
+
+//   // final GlobalKey<OverRepaintBoundaryState> overRepaintKey;
+//   final GlobalKey<State<StatefulWidget>> overRepaintKey;
+
+//   const Capturer({Key? key, required this.overRepaintKey}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return SingleChildScrollView(
+//       child: OverRepaintBoundary(
+//         key: overRepaintKey,
+//         child: RepaintBoundary(
+//           child: Column(
+//             children: List.generate(
+//               30,
+//               (i) => Container(
+//                 color: Color.fromRGBO(random.nextInt(256), random.nextInt(256),
+//                     random.nextInt(256), 1.0),
+//                 height: 100,
+//               ),
+//             ),
+//           ),
 //         ),
 //       ),
 //     );
+//   }
+// }
+
+// class OverRepaintBoundary extends StatefulWidget {
+//   final Widget child;
+
+//   const OverRepaintBoundary({Key? key, required this.child}) : super(key: key);
+
+//   @override
+//   OverRepaintBoundaryState createState() => OverRepaintBoundaryState();
+// }
+
+// class OverRepaintBoundaryState extends State<OverRepaintBoundary> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return widget.child;
 //   }
 // }

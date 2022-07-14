@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'dart:ui';
+import 'package:image/image.dart';
 
 import 'package:bluetooth_thermal_printer/bluetooth_thermal_printer.dart';
 import 'package:charset_converter/charset_converter.dart';
@@ -79,11 +81,11 @@ class PrinterController extends GetxController {
     // print('Print result: ${res.msg}');
   }
 
-  Future<void> printTicketPic( bytesPic) async {
+  Future<void> printTicketPic(bytesPic, bytesPic2, bytesPic3) async {
     String? isConnected = await BluetoothThermalPrinter.connectionStatus;
     print('ticket');
     if (isConnected == "true") {
-      List<int> bytes = await getTicketPic(bytesPic);
+      List<int> bytes = await getTicketPic(bytesPic, bytesPic2, bytesPic3);
       // List<int> bytes2 = bytesPic;
       // print("bytes2: $bytes2");
       // final result2 = await BluetoothThermalPrinter.writeBytes(bytes2);
@@ -245,7 +247,7 @@ class PrinterController extends GetxController {
     // return [];
   }
 
-  Future<List<int>> getTicketPic( pngBytes) async {
+  Future<List<int>> getTicketPic(pngBytes, pngBytes2, pngBytes3) async {
     List<int> bytes = [];
     final fDate = new DateFormat('dd/MM/yy');
     final fTime = new DateFormat('HH:mm');
@@ -268,7 +270,29 @@ class PrinterController extends GetxController {
           width: PosTextSize.size2,
         ),
         linesAfter: 1);
-    bytes += generator.image(pngBytes);
+    final image = decodeImage(pngBytes)!;
+    bytes += generator.image(
+      image,
+      align: PosAlign.center,
+    );
+    bytes += generator.text(' ', styles: PosStyles(align: PosAlign.center));
+    bytes += generator.qrcode(
+      qrId.value,
+      align: PosAlign.center,
+      size: QRSize(0x10),
+    );
+    // bytes += generator.text(' ', styles: PosStyles(align: PosAlign.center));
+    final image2 = decodeImage(pngBytes2)!;
+    bytes += generator.image(
+      image2,
+      align: PosAlign.center,
+    );
+    bytes += generator.hr(ch: '_');
+    final image3 = decodeImage(pngBytes3)!;
+    bytes += generator.image(
+      image3,
+      align: PosAlign.center,
+    );
     // bytes += generator.image();
 //  bytes += generator.image(imgSrc);
     // bytes += generator.text("บ้านเลขที่ 1/1",

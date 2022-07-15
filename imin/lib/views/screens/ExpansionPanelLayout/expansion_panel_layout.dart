@@ -76,7 +76,10 @@ class ExpansionPanelScreen extends StatelessWidget {
                                         // height: 60,
                                       ),
                                       onPressed: () {
+                                        controller.keyDrawer = _key;
+                                        print('key: $_key');
                                         _key.currentState!.openDrawer();
+                                        // _key.currentState!.openEndDrawer();
                                       }),
                                 ),
                                 Image.asset(

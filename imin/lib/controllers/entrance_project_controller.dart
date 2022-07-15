@@ -508,7 +508,7 @@ class EntranceProjectController extends GetxController {
           item.licensePlate ?? '',
           item.qrGenId ?? '');
       if (checkResponse == true) {
-        EasyLoading.showSuccess('สำเร็จ');
+        // EasyLoading.showSuccess('สำเร็จ');
 
         Get.back();
         showDialogOpenGate(item).show(context);
@@ -534,7 +534,7 @@ class EntranceProjectController extends GetxController {
           item.licensePlate ?? '',
           item.qrGenId ?? '');
       if (checkResponse == true) {
-        EasyLoading.showSuccess('สำเร็จ');
+        // EasyLoading.showSuccess('สำเร็จ');
 
         Get.back();
         showDialogOpenGate(item).show(context);

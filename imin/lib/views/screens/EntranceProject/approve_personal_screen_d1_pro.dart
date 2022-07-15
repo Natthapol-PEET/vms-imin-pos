@@ -24,6 +24,7 @@ import 'package:imin/services/gate_service.dart';
 import 'package:imin/views/screens/Demo/select.dart';
 import 'package:imin/views/widgets/round_button.dart';
 import 'package:imin/views/widgets/round_button_outline.dart';
+import 'package:imin/views/widgets/show_detail_printer.dart';
 import 'entrance_project_screen.dart';
 
 // ignore: must_be_immutable
@@ -214,6 +215,7 @@ class NextInputD1Pro extends StatelessWidget {
 
                             var response = await c.checkInput(
                                 code, loginController.dataProfile.guardId);
+                            // print('response: $response');
                             EasyLoading.dismiss();
 
                             if (response.runtimeType == int) {
@@ -285,7 +287,8 @@ class NextInputD1Pro extends StatelessWidget {
             builder: (c) => RoundButton(
               title: 'พิมพ์',
               press: () {
-                c.printTicket();
+                // c.printTicket();
+                dialogDetailPicPrinter(size, context).show(context);
                 print('print Reciepe');
               },
             ),

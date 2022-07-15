@@ -98,9 +98,14 @@ class FormSlip3 extends StatelessWidget {
               // ),
               Column(
             children: [
-              Text(
-                'หมายเหตุ',
-                style: TextStyle(fontSize: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    'หมายเหตุ',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ],
               ),
               Text(
                   '1. หากมีการชำระเงินต้องทำการชำระเงินผ่าน Mobile Payment ให้เรียบร้อยก่อนออกจากโครงการ',

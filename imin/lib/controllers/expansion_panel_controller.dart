@@ -12,6 +12,7 @@ class ExpansionPanelController extends GetxController {
   int selected = -1.obs; //attention
   int rememberSelected = -1.obs;
   Widget currentContent = EntranceProjectScreen();
+  GlobalKey<ScaffoldState> keyDrawer = GlobalKey();
 
   final reController = Get.put(RePasswordController());
   final screenController = Get.put(ScreenController());
@@ -64,8 +65,16 @@ class ExpansionPanelController extends GetxController {
 
   onExpansionChanged(bool v, int index) {
     if (rememberSelected == index && v == false) {
-      selected = -1;
-      update(['aVeryUniqueID']);
+      if (screenController.DeviceCurrent == Device.iminM2Pro) {
+        keyDrawer.currentState!.openEndDrawer();
+        print('keyUpdate: $keyDrawer');
+        update(['aVeryUniqueID']);
+      } else {
+        selected = -1;
+      }
+      // selected = -1;
+
+      update(['aopbmsbbffdgkb']);
       return;
     }
 
@@ -80,6 +89,9 @@ class ExpansionPanelController extends GetxController {
 
     selected = index;
 
+    if (screenController.DeviceCurrent == Device.iminM2Pro) {
+      keyDrawer.currentState!.openEndDrawer();
+    }
     reController.clear();
 
     // update menu
@@ -98,8 +110,9 @@ class ExpansionPanelController extends GetxController {
         itemData[itemDataIndex].subItemSelect[i] = false;
       }
     }
-    // print('selector: ${itemData[itemDataIndex].subItemSelect[i]}');
-
+    if (screenController.DeviceCurrent == Device.iminM2Pro) {
+      keyDrawer.currentState!.openEndDrawer();
+    }
     reController.clear();
 
     // update menu

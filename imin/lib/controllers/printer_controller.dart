@@ -82,6 +82,7 @@ class PrinterController extends GetxController {
   }
 
   Future<void> printTicketPic(bytesPic, bytesPic2, bytesPic3) async {
+    // setConnect('');
     String? isConnected = await BluetoothThermalPrinter.connectionStatus;
     print('ticket');
     if (isConnected == "true") {
@@ -279,7 +280,9 @@ class PrinterController extends GetxController {
     bytes += generator.qrcode(
       qrId.value,
       align: PosAlign.center,
-      size: QRSize(0x10),
+      size: (screenController.DeviceCurrent == Device.iminM2Pro)
+          ? QRSize(0x10)
+          : QRSize(0x30),
     );
     // bytes += generator.text(' ', styles: PosStyles(align: PosAlign.center));
     final image2 = decodeImage(pngBytes2)!;

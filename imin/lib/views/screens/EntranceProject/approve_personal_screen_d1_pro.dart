@@ -456,6 +456,15 @@ class TextInputSelect extends StatelessWidget {
           height: 45,
           margin: EdgeInsets.only(top: 5, bottom: 5),
           child: DropdownSearch(
+            emptyBuilder: (BuildContext context, String? name) => Container(
+                // color: Colors.amber,
+                width: size.width,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [Text("ไม่มีข้อมูล")],
+                ),
+              ),
             showSearchBox: true,
             items: initValue,
             // dropdownSearchDecoration:

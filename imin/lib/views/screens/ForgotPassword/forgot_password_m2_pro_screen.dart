@@ -71,7 +71,7 @@ class ForgotPasswordM2Pro extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                'ระบบจะส่งลิงค์รีเซ็ทรหัสผ่านให้ทางอีเมลของคุณ',
+                                'ระบบจะส่งลิงก์รีเซ็ตรหัสผ่านให้ทางอีเมลของคุณ',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: normalM2FontSize + 2,

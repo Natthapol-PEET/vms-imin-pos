@@ -539,6 +539,16 @@ class TextInputSelect extends StatelessWidget {
                 buttonColor: Colors.amber),
             child: DropdownSearch(
               // dropdownSearchBaseStyle: TextStyle(fontSize: 10),
+              emptyBuilder: (BuildContext context, String? name) => Container(
+                // color: Colors.amber,
+                width: size.width,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [Text("ไม่มีข้อมูล")],
+                ),
+              ),
+              // _customDropDownExampleMultiSelection,
               showSearchBox: true,
               items: initValue,
               // dropdownSearchDecoration:
@@ -550,5 +560,10 @@ class TextInputSelect extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Widget _customDropDownExampleMultiSelection(
+      BuildContext context, String? name) {
+    return Text("No item selected");
   }
 }

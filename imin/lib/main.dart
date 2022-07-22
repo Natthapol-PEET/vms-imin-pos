@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
+import 'package:imin/custom_animation.dart';
 import 'package:imin/views/screens/ChangePassword/change_password_screen.dart';
 import 'package:imin/views/screens/Demo/calendar_screen.dart';
 import 'package:imin/views/screens/Demo/camera_screen.dart';
@@ -26,10 +27,26 @@ import 'controllers/screen_controller.dart';
 
 void main() async {
   runApp(MyApp());
-
+  configLoading();
+  EasyLoading.instance.loadingStyle = EasyLoadingStyle.custom;
   // The following line will enable the Android and iOS wakelock.
   WidgetsFlutterBinding.ensureInitialized();
   Wakelock.enable();
+}
+
+void configLoading() {
+  EasyLoading.instance
+    ..displayDuration = const Duration(milliseconds: 1000)
+    ..indicatorType = EasyLoadingIndicatorType.fadingCircle
+    ..loadingStyle = EasyLoadingStyle.dark
+    ..indicatorSize = 40
+    ..radius = 10.0
+    ..progressColor = Colors.black
+    ..backgroundColor = Colors.white
+    ..indicatorColor = Colors.black
+    ..textColor = Colors.black
+    // ..maskColor = Colors.blue.withOpacity(0.5)
+    ..userInteractions = true;
 }
 
 class MyApp extends StatelessWidget {
@@ -53,7 +70,18 @@ class MyApp extends StatelessWidget {
         const Locale('th', 'TH'), // Thai
       ],
       locale: const Locale('th', 'TH'),
-      builder: EasyLoading.init(),
+      builder: (BuildContext context, var child) {
+        return FlutterEasyLoading(
+            child: GestureDetector(
+          onTap: () {
+            FocusScopeNode currentFocus = FocusScope.of(context);
+            if (!currentFocus.hasPrimaryFocus) {
+              currentFocus.unfocus();
+            }
+          },
+          child: child,
+        ));
+      },
       initialRoute: '/loading',
       getPages: [
         // Screens

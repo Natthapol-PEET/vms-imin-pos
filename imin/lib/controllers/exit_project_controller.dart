@@ -149,6 +149,7 @@ class ExitProjectController extends GetxController {
     return list.where((item) {
       DateTime strToDatetime =
           DateTime.parse(item.datetimeIn.replaceAll("T", " "));
+      print('entDatetime $strToDatetime');
       if (startDatetime!.isBefore(strToDatetime) &&
           endDatetime!.isAfter(strToDatetime)) {
         return true;
@@ -277,7 +278,7 @@ class ExitProjectController extends GetxController {
               press: () => Get.back(),
             ),
             RoundButton(
-              title: 'ตกลง',
+              title: 'ยืนยัน',
               press: () async {
                 // call exit project api
                 await exitProjectApi(
@@ -339,7 +340,7 @@ class ExitProjectController extends GetxController {
         //     },
         //   ),
         // ),
-          FadeInImage(
+        FadeInImage(
           height: (screenController.DeviceCurrent == Device.iminM2Pro)
               ? context.height * normalM2FontSize * 0.035
               : 250,

@@ -260,7 +260,7 @@ class ExitProjectControllerM2 extends GetxController {
               press: () => Get.back(),
             ),
             RoundButton(
-              title: 'ตกลง',
+              title: 'ยืนยัน',
               press: () async {
                 // call exit project api
                 await exitProjectApi(

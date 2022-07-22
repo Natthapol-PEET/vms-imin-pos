@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:imin/data/account.dart';
@@ -90,8 +91,9 @@ class LoginController extends GetxController {
         );
         acc.updateAccount(account);
       }
-
       EasyLoading.dismiss();
+      // EasyLoadingStyle.custom;
+      
       EasyLoading.showSuccess('เข้าสู่ระบบสำเร็จ');
       expandController.setDefaultValues();
 

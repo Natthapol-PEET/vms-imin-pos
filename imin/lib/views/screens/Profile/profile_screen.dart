@@ -256,7 +256,7 @@ class ProfileScreen extends StatelessWidget {
           ),
         ),
         actions: [
-          RoundButton(title: 'ตกลง', press: () => Get.back()),
+          RoundButton(title: 'ยืนยัน', press: () => Get.back()),
         ],
       ),
     );

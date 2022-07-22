@@ -134,7 +134,7 @@ class RePasswordController extends GetxController {
 
   void resetPassword(String username) async {
     final loginController = Get.put(LoginController());
-    EasyLoading.show(status: 'loading...');
+    EasyLoading.show(status: 'โหลดข้อมูล...');
 
     // print('oldPass:' + oldPasswordValue.value);
     // print('newPass:' + newPasswordValue.value);

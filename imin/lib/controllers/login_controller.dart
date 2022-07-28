@@ -22,7 +22,7 @@ class LoginController extends GetxController {
   var isLogin = 0.obs;
 
   var dataProfile;
-
+  var loginCheck = true.obs;
   var usernameControl = TextEditingController().obs;
   var passwordControl = TextEditingController().obs;
 
@@ -46,9 +46,7 @@ class LoginController extends GetxController {
     isLogin.value = data[0].isLogin;
   }
 
-  Future login(BuildContext context, expandController) async {
-    EasyLoading.show(status: 'กรุณารอสักครู่...');
-
+  checkInput() {
     bool check = false;
 
     if (usernameControl.value.text == "") {
@@ -64,6 +62,29 @@ class LoginController extends GetxController {
     } else {
       passwordCheck(true);
     }
+    print('check : $userCheck $passwordCheck');
+    return check;
+  }
+
+  Future login(BuildContext context, expandController) async {
+    EasyLoading.show(status: 'กรุณารอสักครู่...');
+
+    // bool check = false;
+
+    // if (usernameControl.value.text == "") {
+    //   userCheck(false);
+    //   check = true;
+    // } else {
+    //   userCheck(true);
+    // }
+
+    // if (passwordControl.value.text == "") {
+    //   passwordCheck(false);
+    //   check = true;
+    // } else {
+    //   passwordCheck(true);
+    // }
+    bool check = checkInput();
 
     if (check) {
       EasyLoading.dismiss();
@@ -93,13 +114,13 @@ class LoginController extends GetxController {
       }
       EasyLoading.dismiss();
       // EasyLoadingStyle.custom;
-      
+
       EasyLoading.showSuccess('เข้าสู่ระบบสำเร็จ');
       expandController.setDefaultValues();
 
       EasyLoading.dismiss();
       Timer(Duration(microseconds: 200), () => Get.toNamed('/expansion_panel'));
-
+      loginCheck.value = true;
       return true;
     } else {
       EasyLoading.dismiss();
@@ -111,6 +132,7 @@ class LoginController extends GetxController {
         return false;
       }
       EasyLoading.showError('ข้อมูลผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
+      loginCheck.value = false;
       return false;
     }
   }

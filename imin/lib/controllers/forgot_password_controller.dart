@@ -23,9 +23,9 @@ class ForgotPasswordController extends GetxController {
     var response = await requestRecoveryPasswordApi(emailValue.value);
     // print(jsonDecode(response.body));
     Map<String, dynamic> json = jsonDecode(response.body);
-    // print(response.body.detail);
+    print(json['message']);
     if (response.statusCode == 200 &&
-        json['message'] == 'Send link to E-mail Successful') {
+        json['detail'] == 'Send link to E-mail Successful') {
       // print('response.statusCode: ${response.statusCode}');
       // if (response.statusCode == 200) {
       EasyLoading.dismiss();
@@ -73,7 +73,9 @@ class ForgotPasswordController extends GetxController {
       //     ),
       //   ],
       // ).show(context);
-      EasyLoading.showSuccess('ส่งสำเร็จ');
+      checkEmail(false);
+      EasyLoading.showSuccess(
+          'ระบบได้ส่งลิงก์สำหรับเปลี่ยนรหัสผ่านไปยังอีเมลของคุณ');
       Timer(Duration(seconds: 1), () {
         Get.toNamed('/login');
       });

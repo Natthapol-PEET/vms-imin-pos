@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 // Color
 const Color themeBgColor = Color(0xFF14112F);
+const Color secondaryColor = Color(0xFF3059D1);
 const Color goldColor = Color(0xFFB2A37A);
 const Color iconGoldColor = Color(0xFFD1BA7D);
 const Color dividerColor = Color(0xFFB8B7B2);

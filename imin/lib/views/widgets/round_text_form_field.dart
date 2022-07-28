@@ -47,7 +47,7 @@ class RoundTextFormField extends StatelessWidget {
             ),
           ),
           Container(
-            // height: size.height * fontSize * 0.0047,
+            height: size.height * fontSize * 0.0047,
             margin: EdgeInsets.only(top: size.height * 0.008),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -74,23 +74,25 @@ class RoundTextFormField extends StatelessWidget {
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                     color: invalid ? Colors.transparent : Colors.red,
+                    // color: invalid ? Colors.transparent : Colors.transparent,
                     width: 1.5,
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                     color: invalid ? Colors.transparent : Colors.red,
+                    // color: invalid ? Colors.transparent : Colors.transparent,
                     width: 1.5,
                   ),
                 ),
-                hintText: textTitle,
+                // hintText: textTitle, //placeholder
                 // prefixIconConstraints:
                 //     BoxConstraints(minWidth: 23, maxHeight: 20),
                 prefixIcon: Padding(
                   padding: EdgeInsets.symmetric(horizontal: size.width * 0.008),
                   child: Icon(
                     icon,
-                    color: Colors.black,
+                    color: Colors.grey,
                     size: (editIcon)
                         ? size.width * fontSize * 0.0045
                         : size.width * 0.02,
@@ -103,8 +105,9 @@ class RoundTextFormField extends StatelessWidget {
                           isVisibility == true
                               ? Icons.visibility_outlined
                               : Icons.visibility_off_outlined,
-                          color:
-                              isVisibility == true ? Colors.black : Colors.grey,
+                          color: isVisibility == true
+                              ? secondaryColor
+                              : secondaryColor,
                         ),
                       )
                     : null,

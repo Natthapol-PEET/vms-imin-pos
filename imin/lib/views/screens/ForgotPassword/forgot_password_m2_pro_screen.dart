@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:imin/controllers/forgot_password_controller.dart';
@@ -8,6 +9,7 @@ class ForgotPasswordM2Pro extends StatelessWidget {
   ForgotPasswordM2Pro({Key? key}) : super(key: key);
   final controller = Get.put(ForgotPasswordController());
   final onWillPopController = Get.put(OnWillPopController());
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -81,21 +83,41 @@ class ForgotPasswordM2Pro extends StatelessWidget {
                               ),
                               // email
                               Container(
+                                height: size.height *
+                                    (normalM2FontSize + 2) *
+                                    0.0047,
                                 margin:
                                     EdgeInsets.only(top: size.height * 0.017),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(8),
                                 ),
-                                child: TextFormField(
-                                  style:
-                                      TextStyle(fontSize: normalM2FontSize + 2),
-                                  onChanged: (value) =>
+                                child: Center(
+                                  child: TextFormField(
+                                    // validator: (value) =>
+                                    //     EmailValidator.validate(value!)
+                                    //         ? 'sadasd'
+                                    //         : "Please enter a valid email",
+                                    // textAlignVertical: TextAlignVertical.center,
+                                    style: TextStyle(
+                                        fontSize: normalM2FontSize + 2),
+                                    onChanged: (value) => {
                                       controller.emailValue.value = value,
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: 'กรอกอีเมล',
-                                    contentPadding: EdgeInsets.only(left: 20),
+                                      EmailValidator.validate(value)
+                                          ? controller.checkEmail(true)
+                                          : controller.checkEmail(false)
+                                    },
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: 'กรอกอีเมล',
+                                      // contentPadding: EdgeInsets.only(
+                                      //     left: 20, top: 10 * 0.00005),
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: size.height *
+                                              (normalM2FontSize + 2) *
+                                              0.0017,
+                                          horizontal: 20.0),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -145,37 +167,41 @@ class ForgotPasswordM2Pro extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        ElevatedButton(
-          style: ButtonStyle(
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+        Obx(
+          () => ElevatedButton(
+            style: ButtonStyle(
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
-            ),
-            padding: MaterialStateProperty.all<EdgeInsets>(
-              EdgeInsets.symmetric(
-                horizontal: size.width * 0.406,
-                vertical: size.height * 0.02,
+              padding: MaterialStateProperty.all<EdgeInsets>(
+                EdgeInsets.symmetric(
+                  horizontal: size.width * 0.406,
+                  vertical: size.height * 0.01,
+                ),
               ),
-            ),
-            backgroundColor: MaterialStateProperty.resolveWith<Color>(
-              (Set<MaterialState> states) {
-                if (states.contains(MaterialState.pressed))
+              backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                (Set<MaterialState> states) {
+                  if (states.contains(MaterialState.pressed))
+                    return hilightTextColor;
+                  else if (states.contains(MaterialState.disabled))
+                    return Colors.grey;
                   return hilightTextColor;
-                else if (states.contains(MaterialState.disabled))
-                  return Colors.grey;
-                return hilightTextColor;
-              },
+                },
+              ),
             ),
-          ),
-          onPressed: () => {controller.requestEmail(context)},
-          child: Text(
-            'ส่ง',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: normalM2FontSize + 2,
-              fontFamily: fontRegular,
-              fontWeight: FontWeight.w500,
+            onPressed: controller.checkEmail.value
+                ? () => {controller.requestEmail(context)}
+                : null,
+            child: Text(
+              'ส่ง',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: normalM2FontSize + 2,
+                fontFamily: fontRegular,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ),

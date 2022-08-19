@@ -1,4 +1,4 @@
-package com.imin.printer;
+package com.imin.vms;
 
 // Flutter Plugin
 import androidx.annotation.NonNull;

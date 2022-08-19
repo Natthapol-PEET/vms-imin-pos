@@ -257,6 +257,9 @@ class PrinterController extends GetxController {
     // Text(f.format(DateTime.now()));
     CapabilityProfile profile = await CapabilityProfile.load();
     final generator = Generator(PaperSize.mm58, profile);
+    final image = decodeImage(pngBytes)!;
+    final image2 = decodeImage(pngBytes2);
+    final image3 = decodeImage(pngBytes3);
     bytes += generator.setGlobalCodeTable('CP874');
     // final  profile = await CapabilityProfile.getAvailableProfiles();
     // final generator = Generator(PaperSize.mm58, profile);
@@ -271,7 +274,7 @@ class PrinterController extends GetxController {
           width: PosTextSize.size2,
         ),
         linesAfter: 1);
-    final image = decodeImage(pngBytes)!;
+    
     bytes += generator.image(
       image,
       align: PosAlign.center,
@@ -285,13 +288,13 @@ class PrinterController extends GetxController {
           : QRSize(0x30),
     );
     // bytes += generator.text(' ', styles: PosStyles(align: PosAlign.center));
-    final image2 = decodeImage(pngBytes2)!;
+    
     bytes += generator.image(
       image2,
       align: PosAlign.center,
     );
     bytes += generator.hr(ch: '_');
-    final image3 = decodeImage(pngBytes3)!;
+    
     bytes += generator.image(
       image3,
       align: PosAlign.center,

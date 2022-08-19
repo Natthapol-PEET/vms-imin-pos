@@ -1,26 +1,15 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:ffi';
 // import 'package:dropdown_search/dropdown_search.dart';
-import 'package:dropdown_search/dropdown_search.dart';
-import 'package:dropdownfield/dropdownfield.dart';
-import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:imin/controllers/camera_controller.dart';
-import 'package:imin/controllers/entrance_project_controller.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/controllers/login_controller.dart';
 import 'package:imin/controllers/screen_controller.dart';
 import 'package:imin/controllers/upload_personal_controller.dart';
 import 'package:imin/controllers/walkin_controller.dart';
-import 'package:imin/functions/dialog_gate.dart';
-import 'package:imin/helpers/configs.dart';
 import 'package:imin/helpers/constance.dart';
-import 'package:imin/services/gate_service.dart';
-import 'package:imin/views/screens/Demo/select.dart';
 import 'package:imin/views/screens/EntranceProject/approve_personal_screen_d1_pro.dart';
 import 'package:imin/views/screens/EntranceProject/approve_personal_screen_m2_pro.dart';
 import 'package:imin/views/widgets/round_button.dart';
@@ -63,15 +52,30 @@ class UploadPersonalScreen extends StatelessWidget {
   }
 }
 
-class UploadCard extends StatelessWidget {
+class UploadCard extends StatefulWidget {
   UploadCard({
     Key? key,
   }) : super(key: key);
 
+  @override
+  _UploadCardState createState() => _UploadCardState();
+}
+
+class _UploadCardState extends State<UploadCard> {
   final uploadPersonalController = Get.put(UploadPersonalController());
+
   final cameraController = Get.put(TakePictureController());
+
   final loginController = Get.put(LoginController());
+
   final screenController = Get.put(ScreenController());
+  final walkinController = Get.put(WalkinController());
+  @override
+  void initState() {
+    // syncFunction();getAllHome
+    walkinController.getAllHome();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -238,27 +242,6 @@ class UploadCard extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 5),
-                // Obx(
-                //   () => RoundButtonOutline(
-                //     title: cameraController.imageUrl.value == ""
-                //         ? 'ถ่ายภาพ'
-                //         : 'ถ่ายภาพใหม่',
-                //     press: () async {
-                //       final _imagePicker = ImagePicker();
-
-                //       XFile _pickedFile = await _imagePicker.pickImage(
-                //         source: ImageSource.camera,
-                //         maxHeight: 480,
-                //         maxWidth: 640,
-                //         // imageQuality: 0-100
-                //         imageQuality: 50,
-                //       ) as XFile;
-                //       // File _imageFilePicked = File(_pickedFile.path);
-                //       // print(_imageFilePicked);
-                //       cameraController.uploadPersonalApi(_pickedFile);
-                //     },
-                //   ),
-                // ),
                 SizedBox(
                     height: (screenController.DeviceCurrent == Device.iminM2Pro)
                         ? normalM2FontSize * 0.1

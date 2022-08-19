@@ -152,7 +152,40 @@ class ProfileScreen extends StatelessWidget {
                   //     // press: () async => confirmEditInfomation(context, size),
                   //     // press: () async => saveInfomationStatus(context, size),
                   //   )
-                  : Container()
+                  : Container(),
+              // Column(
+              //   children: [
+              //     Text(
+              //       '012345678901234567890123456789',
+              //       style: TextStyle(fontSize: 12),
+              //     ),
+              //     Text(
+              //       'Text Size:  15',
+              //       style: TextStyle(fontSize: 15),
+              //     ),
+              //     Text(
+              //       'Text Size:  18',
+              //       style: TextStyle(fontSize: 18),
+              //     ),
+              //     Text(
+              //       'Text Size:  20',
+              //       style: TextStyle(fontSize: 20),
+              //     ),
+              //     Text(
+              //       '012345678901234567890123456789',
+              //       style: TextStyle(fontSize: 22),
+              //     ),
+              //     Text(
+              //       'Text Size:  24',
+              //       style: TextStyle(fontSize: 24),
+              //     ),
+              //     Text(
+              //       'Text Size:  26',
+              //       style: TextStyle(fontSize: 26),
+              //     ),
+              //   ],
+              // )
+
               // RoundButton
               // RoundButtonOutline(
               //   title: 'แก้ไขข้อมูลส่วนตัว',

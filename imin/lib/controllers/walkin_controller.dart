@@ -51,7 +51,7 @@ class WalkinController extends GetxController {
 
     if (response.runtimeType is bool) return;
 
-    print('response');
+    print('responseHome');
     print(response);
 
     List homeList = [];

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:imin/controllers/expansion_bottom_bar_controller.dart';
 import 'package:imin/data/account.dart';
 import 'package:imin/models/account_model.dart';
 import 'package:imin/models/login_model.dart';
@@ -139,7 +140,9 @@ class LoginController extends GetxController {
 
   Future logout() async {
     EasyLoading.show(status: 'กรุณารอสักครู่...');
-
+    final expansionAppBarController = Get.put(ExpansionAppBarController());
+    expansionAppBarController.onExpansionChanged(
+        expansionAppBarController.itemData[0].expanded, 0);
     var account = AccountModel(
       id: 1,
       username: username.value,

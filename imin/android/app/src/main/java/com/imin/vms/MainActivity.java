@@ -13,9 +13,16 @@ import android.os.BatteryManager;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
+import android.bluetooth.BluetoothDevice;
+
+import android.widget.ArrayAdapter;
+import android.content.Context;
+import android.view.View;
 
 public class MainActivity extends FlutterActivity {
     private static final String CHANNEL = "samples.flutter.dev/battery";
+    private int bluetoothPosition = 0;
+    // private DeviceListAdapter mAdapter;
 
     @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
@@ -32,6 +39,17 @@ public class MainActivity extends FlutterActivity {
                                 } else {
                                     result.error("UNAVAILABLE", "Battery level not available.", null);
                                 }
+                            }
+
+                            if (call.method.equals("setInitPrinter")) {
+                                int initPrinter = setInitPrinter();
+                                // Log.i("xgh", "deviceModel:2" );
+                                result.success(initPrinter);
+                                // if (initPrinter != -1) {
+                                //     result.success(initPrinter);
+                                // } else {
+                                //     result.error("UNAVAILABLE", "Battery level not available.", null);
+                                // }
                             } else {
                                 result.notImplemented();
                             }
@@ -52,4 +70,37 @@ public class MainActivity extends FlutterActivity {
 
         return batteryLevel;
     }
+
+    private int setInitPrinter() {
+        // BluetoothDevice device = mAdapter.getItem(bluetoothPosition);
+        // startActivity(new Intent(this,TestPrintActivity.class));
+        // Log.i("xgh", "deviceModel:" + device);
+        return 5;
+    }
 }
+
+// class DeviceListAdapter extends ArrayAdapter<BluetoothDevice> {
+
+//     public DeviceListAdapter(Context context) {
+//         super(context, 0);
+//     }
+
+//     @TargetApi(Build.VERSION_CODES.ECLAIR)
+//     @Override
+//     public View getView(int position, View convertView, ViewGroup parent) {
+
+//         BluetoothDevice device = getItem(position);
+//         if (convertView == null) {
+//             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_bluetooth_device, parent, false);
+//         }
+
+//         TextView tvDeviceName = (TextView) convertView.findViewById(R.id.tv_device_name);
+//         CheckBox cbDevice = (CheckBox) convertView.findViewById(R.id.cb_device);
+
+//         tvDeviceName.setText(device.getName());
+
+//         cbDevice.setChecked(position == bluetoothPosition);
+
+//         return convertView;
+//     }
+// }

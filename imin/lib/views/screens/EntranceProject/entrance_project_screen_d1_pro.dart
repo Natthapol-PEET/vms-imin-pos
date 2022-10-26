@@ -11,6 +11,7 @@ import 'package:imin/views/screens/ExitProject/exit_project_screen.dart';
 import 'package:imin/views/widgets/round_button_icon.dart';
 import 'package:imin/views/widgets/round_button_number.dart';
 import 'package:imin/views/widgets/title_content.dart';
+import 'package:flutter/services.dart';
 
 class EntranceProjectScreenD1Pro extends StatefulWidget {
   EntranceProjectScreenD1Pro({Key? key}) : super(key: key);
@@ -31,9 +32,40 @@ class _EntranceProjectScreenD1ProState
     entranceController.getEntranceData(); // 3 list
   }
 
+  static const platform = MethodChannel('samples.flutter.dev/battery');
+  String _batteryLevel = 'Unknown battery level.';
+  Future<void> _getBatteryLevel() async {
+    String batteryLevel;
+    try {
+      final int result = await platform.invokeMethod('getBatteryLevel');
+      batteryLevel = 'Battery level at $result % .';
+    } on PlatformException catch (e) {
+      batteryLevel = "Failed to get battery level: '${e.message}'.";
+    }
+    entranceController.totalValue.value = batteryLevel;
+    setState(() {
+      _batteryLevel = batteryLevel;
+    });
+  }
+  Future<void> _getValue() async {
+    String totalValue;
+    try {
+      var result = await platform.invokeMethod('setInitPrinter');
+      totalValue = 'Battery level at $result % .';
+    } on PlatformException catch (e) {
+      totalValue = "Failed to get battery level: '${e.message}'.";
+    }
+    entranceController.totalValue.value = totalValue;
+    setState(() {
+      _batteryLevel = totalValue;
+    });
+  }
+
   @override
   void initState() {
     // syncFunction();
+
+    _getBatteryLevel();
     super.initState();
   }
 
@@ -52,6 +84,7 @@ class _EntranceProjectScreenD1ProState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TitleContent(text: 'เวลาเข้าโครงการ'),
+              // Text(entranceController.totalValue.value),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
                 child: Row(

@@ -40,6 +40,7 @@ class EntranceProjectController extends GetxController {
   var pagingRange = 4.obs;
   var displayRowNumber = 9.obs;
   var totalPagingNumber = 1.obs;
+  var totalValue = ''.obs;
 
   @override
   void onInit() {

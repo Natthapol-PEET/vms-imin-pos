@@ -26,6 +26,7 @@ import 'package:imin/views/widgets/round_button.dart';
 import 'package:imin/views/widgets/round_button_outline.dart';
 import 'package:imin/views/widgets/show_detail_printer.dart';
 import 'entrance_project_screen.dart';
+// import 'package:flutter/services.dart';
 
 // ignore: must_be_immutable
 
@@ -42,6 +43,7 @@ class NextInputD1Pro extends StatelessWidget {
   final loginController = Get.put(LoginController());
   final walkinController = Get.put(WalkinController());
   final screenController = Get.put(ScreenController());
+  
 
   @override
   Widget build(BuildContext context) {

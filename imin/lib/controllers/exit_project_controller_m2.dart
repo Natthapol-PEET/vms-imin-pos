@@ -33,7 +33,7 @@ class ExitProjectControllerM2 extends GetxController {
   var startPaging = 1.obs;
   var selectPaging = 1.obs;
   var pagingRange = 4.obs;
-  var displayRowNumber = 9.obs;
+  var displayRowNumber = 7.obs;
   var totalPagingNumber = 1.obs;
 
   @override

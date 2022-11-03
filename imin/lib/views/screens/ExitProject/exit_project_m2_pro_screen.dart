@@ -246,6 +246,7 @@ class ExitProjectM2ProScreen extends StatelessWidget {
                   ),
                 ],
               ),
+              // table list
               Container(
                 width: size.width,
                 decoration: BoxDecoration(
@@ -263,7 +264,7 @@ class ExitProjectM2ProScreen extends StatelessWidget {
                   left: size.width * 0.03,
                   right: size.width * 0.03,
                   top: size.height * 0.01,
-                  bottom: size.height * 0.02,
+                  // bottom: size.height * 0.02,
                 ),
                 child: Theme(
                   data: Theme.of(context)
@@ -282,7 +283,31 @@ class ExitProjectM2ProScreen extends StatelessWidget {
                   ),
                 ),
               ),
-
+              // show nodata
+              GetBuilder<ExitProjectControllerM2>(
+                id: 'update-exit-data-row',
+                builder: (c) => (c.dataRow.length <= 0)
+                    ? Container(
+                        color: themeBgColor,
+                        height: size.height * 0.2,
+                        width: size.width,
+                        margin: EdgeInsets.symmetric(
+                          horizontal: size.width * 0.03,
+                          // vertical: size.height * 0.01
+                        ),
+                        child: Image.asset(
+                          'assets/images/NodataTable.png',
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    : Container(),
+              ),
+              // space
+              Container(
+                // color: themeBgColor,
+                height: size.height * 0.02,
+                width: size.width,
+              ),
               // Button Group
               Obx(() => Container(
                     margin: EdgeInsets.symmetric(horizontal: size.width * 0.03),

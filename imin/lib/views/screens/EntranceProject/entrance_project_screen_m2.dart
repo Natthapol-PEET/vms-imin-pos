@@ -143,6 +143,7 @@ class _EntranceProjectScreenM2State extends State<EntranceProjectScreenM2> {
                   ],
                 ),
               ),
+              // table list
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -156,8 +157,9 @@ class _EntranceProjectScreenM2State extends State<EntranceProjectScreenM2> {
                   ],
                 ),
                 margin: EdgeInsets.symmetric(
-                    horizontal: size.width * 0.03,
-                    vertical: size.height * 0.005),
+                  horizontal: size.width * 0.03,
+                  // vertical: size.height * 0.005
+                ),
                 child: Theme(
                   data: Theme.of(context)
                       .copyWith(dividerColor: dividerTableColor),
@@ -186,6 +188,31 @@ class _EntranceProjectScreenM2State extends State<EntranceProjectScreenM2> {
                     ),
                   ),
                 ),
+              ),
+              // show nodata
+              GetBuilder<EntranceProjectControllerM2>(
+                id: 'update-enteance-data-row',
+                builder: (c) => (c.dataRow.length <= 0)
+                    ? Container(
+                        color: themeBgColor,
+                        height: size.height * 0.2,
+                        width: size.width,
+                        margin: EdgeInsets.symmetric(
+                          horizontal: size.width * 0.03,
+                          // vertical: size.height * 0.01
+                        ),
+                        child: Image.asset(
+                          'assets/images/NodataTable.png',
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    : Container(),
+              ),
+              // space
+              Container(
+                // color: themeBgColor,
+                height: size.height * 0.02,
+                width: size.width,
               ),
               // Button Group
               Obx(() => Container(

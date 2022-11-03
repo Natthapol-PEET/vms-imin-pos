@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/controllers/login_controller.dart';
+import 'package:imin/controllers/main_controller.dart';
 import 'package:imin/controllers/on_will_pop_controller.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/services/socket_service.dart';
@@ -25,6 +26,7 @@ class LoginScreenM2Pro extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final MainController mainController;
     return WillPopScope(
       onWillPop: onWillPopController.onWillPop,
       child: Scaffold(
@@ -249,6 +251,25 @@ class LoginScreenM2Pro extends StatelessWidget {
                     ),
                   ),
                 ),
+                Positioned(
+                  top: size.height * 0.95,
+                  left: size.width * 0.8,
+                  child:
+                      // Obx(() => Text(mainController.version_app.value))
+                      //     Container(
+                      //   color: themeBgColor,
+                      //   width: size.width * 0.5,
+                      //   height: size.height * 0.5,
+                      // ),
+                      GetBuilder<MainController>(
+                    id: 'aVeryUniqueIDqwer', // here
+                    init: MainController(),
+                    builder: (controller) => Text(
+                      controller.version_app.value,
+                      style: TextStyle(color: Colors.grey[850]),
+                    ),
+                  ),
+                )
               ]),
             ],
           ),

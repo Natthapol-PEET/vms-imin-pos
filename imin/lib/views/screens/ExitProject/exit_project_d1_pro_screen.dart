@@ -8,7 +8,6 @@ import 'package:imin/views/widgets/round_button_number.dart';
 import 'package:imin/views/widgets/title_content.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
-
 class ExitProjectD1ProScreen extends StatelessWidget {
   const ExitProjectD1ProScreen({
     Key? key,
@@ -52,7 +51,8 @@ class ExitProjectD1ProScreen extends StatelessWidget {
                               Obx(
                                 () => Text(
                                   // 'ช่วงวัน : 1 มิถุนายน 2564 - 1 กรกฎาคม 2564',
-                                  'ช่วงวัน : ' + exitController.startEndRange.value,
+                                  'ช่วงวัน : ' +
+                                      exitController.startEndRange.value,
                                   style: TextStyle(
                                     fontFamily: fontRegular,
                                     fontWeight: FontWeight.bold,
@@ -133,8 +133,8 @@ class ExitProjectD1ProScreen extends StatelessWidget {
                                       ),
 
                                       confirmText: 'ตกลง',
-                                      onSubmit: (v) =>
-                                          exitController.submitSelectRangeTime(),
+                                      onSubmit: (v) => exitController
+                                          .submitSelectRangeTime(),
                                       cancelText: 'ยกเลิก',
                                       onCancel: () => Get.back(),
                                       onSelectionChanged: (v) =>
@@ -172,6 +172,7 @@ class ExitProjectD1ProScreen extends StatelessWidget {
                   ),
                 ],
               ),
+              // table list
               Container(
                 width: size.width,
                 decoration: BoxDecoration(
@@ -208,7 +209,31 @@ class ExitProjectD1ProScreen extends StatelessWidget {
                   ),
                 ),
               ),
-
+              // show nodata
+              // GetBuilder<ExitProjectController>(
+              //   id: 'update-exit-data-row',
+              //   builder: (c) => (c.dataRow.length <= 0)
+              //       ? Container(
+              //           color: themeBgColor,
+              //           height: size.height * 0.2,
+              //           width: size.width,
+              //           margin: EdgeInsets.symmetric(
+              //             horizontal: size.width * 0.03,
+              //             // vertical: size.height * 0.01
+              //           ),
+              //           child: Image.asset(
+              //             'assets/images/NodataTable.png',
+              //             fit: BoxFit.cover,
+              //           ),
+              //         )
+              //       : Container(),
+              // ),
+              // // space
+              // Container(
+              //   // color: themeBgColor,
+              //   height: size.height * 0.02,
+              //   width: size.width,
+              // ),
               // Button Group
               Obx(() => Container(
                     margin: EdgeInsets.symmetric(horizontal: size.width * 0.03),
@@ -226,7 +251,8 @@ class ExitProjectD1ProScreen extends StatelessWidget {
                                 (exitController.totalPagingNumber.value <
                                         (exitController.startPaging.value +
                                             exitController.pagingRange.value)
-                                    ? exitController.totalPagingNumber.value == 1
+                                    ? exitController.totalPagingNumber.value ==
+                                            1
                                         ? 1
                                         : exitController.totalPagingNumber.value
                                     : (exitController.startPaging.value +
@@ -234,10 +260,12 @@ class ExitProjectD1ProScreen extends StatelessWidget {
                             i++) ...[
                           RoundButtonNumber(
                             index: (i + 1).toString(),
-                            selectd: exitController.selectPaging.value == (i + 1)
-                                ? true
-                                : false,
-                            onClick: () => exitController.onClickPaging((i + 1)),
+                            selectd:
+                                exitController.selectPaging.value == (i + 1)
+                                    ? true
+                                    : false,
+                            onClick: () =>
+                                exitController.onClickPaging((i + 1)),
                           ),
                         ],
                         RoundButtonIcon(
@@ -254,8 +282,3 @@ class ExitProjectD1ProScreen extends StatelessWidget {
     );
   }
 }
-
-
-
-
-

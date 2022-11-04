@@ -289,7 +289,7 @@ class ExitProjectM2ProScreen extends StatelessWidget {
                 builder: (c) => (c.dataRow.length <= 0)
                     ? Container(
                         color: themeBgColor,
-                        height: size.height * 0.2,
+                        height: size.height * 0.5,
                         width: size.width,
                         margin: EdgeInsets.symmetric(
                           horizontal: size.width * 0.03,

@@ -47,6 +47,7 @@ class _EntranceProjectScreenD1ProState
       _batteryLevel = batteryLevel;
     });
   }
+
   Future<void> _getValue() async {
     String totalValue;
     try {
@@ -154,6 +155,7 @@ class _EntranceProjectScreenD1ProState
                   ],
                 ),
               ),
+              // table list
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -167,8 +169,9 @@ class _EntranceProjectScreenD1ProState
                   ],
                 ),
                 margin: EdgeInsets.symmetric(
-                    horizontal: size.width * 0.03,
-                    vertical: size.height * 0.01),
+                  horizontal: size.width * 0.03,
+                  // vertical: size.height * 0.01
+                ),
                 child: Theme(
                   data: Theme.of(context)
                       .copyWith(dividerColor: dividerTableColor),
@@ -195,6 +198,49 @@ class _EntranceProjectScreenD1ProState
                     ),
                   ),
                 ),
+              ),
+              // show nodata
+              GetBuilder<EntranceProjectController>(
+                id: 'update-enteance-data-row',
+                builder: (c) => (c.dataRow.length <= 0)
+                    ? Container(
+                        // color: whi,
+                        height: size.height * 0.57,
+                        width: size.width,
+                        margin: EdgeInsets.symmetric(
+                          horizontal: size.width * 0.03,
+                          // vertical: size.height * 0.01
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          // borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey,
+                              blurRadius: 10,
+                              offset: Offset(0, 2), // Shadow position
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          // crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/images/empty_box.png',
+                              fit: BoxFit.none,
+                            ),
+                            Text('ไม่มีข้อมูล')
+                          ],
+                        ),
+                      )
+                    : Container(),
+              ),
+              // space
+              Container(
+                // color: themeBgColor,
+                height: size.height * 0.02,
+                width: size.width,
               ),
               // Button Group
               Obx(() => Container(

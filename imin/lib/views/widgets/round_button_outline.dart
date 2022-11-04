@@ -8,7 +8,7 @@ class RoundButtonOutline extends StatelessWidget {
     required this.press,
     this.width = 150,
     this.height = 40,
-    this.fontSize = 18,
+    this.fontSize = 16,
   }) : super(key: key);
 
   final String title;

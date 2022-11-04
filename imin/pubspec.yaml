@@ -126,6 +126,7 @@ flutter:
     - assets/images/open-gate.png
     - assets/images/NodataTable.png
     - assets/images/menu-hamburger.png
+    - assets/images/empty_box.png
 
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

@@ -12,6 +12,12 @@ import 'package:imin/views/widgets/round_button_icon.dart';
 import 'package:imin/views/widgets/round_button_number.dart';
 import 'package:imin/views/widgets/title_content.dart';
 import 'package:flutter/services.dart';
+import 'dart:io';
+import 'dart:developer';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class EntranceProjectScreenD1Pro extends StatefulWidget {
   EntranceProjectScreenD1Pro({Key? key}) : super(key: key);
@@ -26,7 +32,9 @@ class _EntranceProjectScreenD1ProState
   final entranceController = Get.put(EntranceProjectController());
   final uploadPersonalController = Get.put(UploadPersonalController());
   final cameraController = Get.put(TakePictureController());
-
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  QRViewController? qrReaderController;
+  Barcode? resultQrReader;
   syncFunction() async {
     // controller.getDataEntrance(); //Allist
     entranceController.getEntranceData(); // 3 list
@@ -150,6 +158,19 @@ class _EntranceProjectScreenD1ProState
                             ),
                           ),
                         ),
+                        // Text(
+                        //   'แสกน QR Code',
+                        //   style: TextStyle(
+                        //     color: textColorContrast,
+                        //     fontSize: 18,
+                        //     fontFamily: fontRegular,
+                        //     fontWeight: FontWeight.w500,
+                        //   ),
+                        // ),
+                        // TextButton(
+                        //     onPressed: () => [],
+                        //     // onPressed: () => controller.getEntranceData(),
+                        //     child: Text('แสกน QR Code')),
                       ],
                     ),
                   ],
@@ -289,9 +310,61 @@ class _EntranceProjectScreenD1ProState
                     ),
                   )),
             ],
+
+            // children: [
+            //   Expanded(flex: 4, child: _buildQrView(context)),
+            // ],
           ),
         ),
       ],
     );
+  }
+
+  // qrreader
+  Widget _buildQrView(BuildContext context) {
+    // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
+    var scanArea = (MediaQuery.of(context).size.width < 400 ||
+            MediaQuery.of(context).size.height < 400)
+        ? 150.0
+        : 300.0;
+    // To ensure the Scanner view is properly sizes after rotation
+    // we need to listen for Flutter SizeChanged notification and update controller
+    return QRView(
+      key: qrKey,
+      onQRViewCreated: _onQRViewCreated,
+      overlay: QrScannerOverlayShape(
+          borderColor: Colors.red,
+          borderRadius: 10,
+          borderLength: 30,
+          borderWidth: 10,
+          cutOutSize: scanArea),
+      onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
+    );
+  }
+
+  void _onQRViewCreated(QRViewController qrReaderController) {
+    setState(() {
+      this.qrReaderController = qrReaderController;
+    });
+    qrReaderController.scannedDataStream.listen((scanData) {
+      setState(() {
+        resultQrReader = scanData;
+      });
+    });
+  }
+
+  void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
+    log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
+    if (!p) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('no Permission')),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    qrReaderController?.dispose();
+    super.dispose();
   }
 }

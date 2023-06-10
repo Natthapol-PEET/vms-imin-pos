@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:imin/controllers/camera_controller.dart';
 import 'package:imin/controllers/entrance_project_controller.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
+import 'package:imin/controllers/qr_code_reader_controller.dart';
 import 'package:imin/controllers/screen_controller.dart';
 import 'package:imin/controllers/upload_personal_controller.dart';
 import 'package:imin/helpers/constance.dart';
@@ -46,6 +47,7 @@ class _EntranceProjectScreenState extends State<EntranceProjectScreen> {
       return EntranceProjectScreenM2();
     } else {
       return EntranceProjectScreenD1Pro();
+      // return QRViewExample();
     }
   }
 }

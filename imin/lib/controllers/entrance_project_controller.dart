@@ -312,6 +312,7 @@ class EntranceProjectController extends GetxController {
                 textDetial('สถานะ'),
               ],
             ),
+            
             SizedBox(width: 20),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,

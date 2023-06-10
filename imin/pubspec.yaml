@@ -83,6 +83,7 @@ dependencies:
   intl: ^0.17.0
   image: ^2.1.19
   email_validator: ^2.1.16
+  qr_code_scanner: ^0.3.5
   # blue_thermal_printer: ^1.2.2
   # blue_thermal_printer: ^1.2.2
   # blue_thermal_printer: ^0.0.1

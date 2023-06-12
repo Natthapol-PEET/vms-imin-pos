@@ -6,6 +6,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:imin/custom_animation.dart';
+import 'package:imin/views/screens/CamareQr/camera_qr_screen.dart';
 import 'package:imin/views/screens/ChangePassword/change_password_screen.dart';
 import 'package:imin/views/screens/Demo/calendar_screen.dart';
 import 'package:imin/views/screens/Demo/camera_screen.dart';
@@ -105,6 +106,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/exit_project', page: () => ExitProjectScreen()),
         GetPage(name: '/upload_personal', page: () => UploadPersonalScreen()),
         GetPage(name: '/camera', page: () => TakePictureScreen()),
+        GetPage(name: '/camera_qr', page: () => ScanQrScreen()),
 
         // demos
         GetPage(name: '/demo', page: () => ExpansionPanelDemo()),

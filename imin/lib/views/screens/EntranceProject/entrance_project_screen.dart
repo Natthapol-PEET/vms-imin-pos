@@ -2,16 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:imin/controllers/camera_controller.dart';
 import 'package:imin/controllers/entrance_project_controller.dart';
-import 'package:imin/controllers/expansion_panel_controller.dart';
-import 'package:imin/controllers/qr_code_reader_controller.dart';
 import 'package:imin/controllers/screen_controller.dart';
 import 'package:imin/controllers/upload_personal_controller.dart';
-import 'package:imin/helpers/constance.dart';
 import 'package:imin/views/screens/EntranceProject/entrance_project_screen_d1_pro.dart';
 import 'package:imin/views/screens/EntranceProject/entrance_project_screen_m2.dart';
-import 'package:imin/views/screens/EntranceProject/upload_personal_screen.dart';
-import 'package:imin/views/screens/ExitProject/exit_project_screen.dart';
-import 'package:imin/views/widgets/title_content.dart';
 
 class EntranceProjectScreen extends StatefulWidget {
   EntranceProjectScreen({Key? key}) : super(key: key);

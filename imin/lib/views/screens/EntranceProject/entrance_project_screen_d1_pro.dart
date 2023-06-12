@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:imin/controllers/camera_controller.dart';
@@ -5,6 +8,7 @@ import 'package:imin/controllers/entrance_project_controller.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/controllers/upload_personal_controller.dart';
 import 'package:imin/helpers/constance.dart';
+import 'package:imin/views/screens/CamareQr/camera_qr_screen.dart';
 import 'package:imin/views/screens/EntranceProject/upload_personal_screen.dart';
 import 'package:imin/views/screens/ExitProject/exit_project_d1_pro_screen.dart';
 import 'package:imin/views/screens/ExitProject/exit_project_screen.dart';
@@ -158,6 +162,51 @@ class _EntranceProjectScreenD1ProState
                             ),
                           ),
                         ),
+                        // GetBuilder<ExpansionPanelController>(
+                        //   builder: (c) => ElevatedButton(
+                        //     style: ElevatedButton.styleFrom(
+                        //       primary: redAlertColor,
+                        //       side: BorderSide(
+                        //         width: 1,
+                        //         color: redAlertColor,
+                        //       ),
+                        //     ),
+                        //     onPressed: () {
+                        //       // cameraController.imageUrl.value = "";
+                        //       // uploadPersonalController.initValue();
+                        //       // c.currentContent = ScanQrScreen();
+                        //       // c.update(['aopbmsbbffdgkb']);
+                        //       EasyDialog(
+                        //         contentPadding:
+                        //             EdgeInsets.symmetric(horizontal: 20),
+                        //         width: size.width,
+                        //         height: size.height,
+                        //         closeButton: false,
+                        //         contentList: [
+                        //           Text(
+                        //             'แสกน QR Code',
+                        //             style: TextStyle(
+                        //               color: textColorContrast,
+                        //               fontSize: 18,
+                        //               fontFamily: fontRegular,
+                        //               fontWeight: FontWeight.w500,
+                        //             ),
+                        //           ),
+                        //         ],
+                        //       );
+                        //     },
+                        //     child: Text(
+                        //       'แสกน QR Code',
+                        //       style: TextStyle(
+                        //         color: textColorContrast,
+                        //         fontSize: 18,
+                        //         fontFamily: fontRegular,
+                        //         fontWeight: FontWeight.w500,
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
+
                         // Text(
                         //   'แสกน QR Code',
                         //   style: TextStyle(
@@ -167,10 +216,21 @@ class _EntranceProjectScreenD1ProState
                         //     fontWeight: FontWeight.w500,
                         //   ),
                         // ),
-                        // TextButton(
-                        //     onPressed: () => [],
-                        //     // onPressed: () => controller.getEntranceData(),
-                        //     child: Text('แสกน QR Code')),
+
+                        GetBuilder<EntranceProjectController>(
+                          id: 'update-enteance-camera-qr',
+                          builder: (c) => Row(
+                            children: [
+                              ElevatedButton(
+                                  onPressed: () {
+                                    showQrCamera(size).show(context);
+                                    c.update(['update-enteance-camera-qr']);
+                                  },
+                                  // onPressed: () => controller.getEntranceData(),
+                                  child: Text('แสกน QR Code')),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -320,51 +380,73 @@ class _EntranceProjectScreenD1ProState
     );
   }
 
-  // qrreader
-  Widget _buildQrView(BuildContext context) {
-    // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
-    var scanArea = (MediaQuery.of(context).size.width < 400 ||
-            MediaQuery.of(context).size.height < 400)
-        ? 150.0
-        : 300.0;
-    // To ensure the Scanner view is properly sizes after rotation
-    // we need to listen for Flutter SizeChanged notification and update controller
-    return QRView(
-      key: qrKey,
-      onQRViewCreated: _onQRViewCreated,
-      overlay: QrScannerOverlayShape(
-          borderColor: Colors.red,
-          borderRadius: 10,
-          borderLength: 30,
-          borderWidth: 10,
-          cutOutSize: scanArea),
-      onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
+  EasyDialog showQrCamera(Size size) {
+    return EasyDialog(
+      contentPadding: EdgeInsets.symmetric(horizontal: 20),
+      width: size.width,
+      height: size.height,
+      closeButton: true,
+      cardColor: Colors.black,
+      contentList: [
+        // Text(
+        //   'แสกน QR Code',
+        //   style: TextStyle(
+        //     color: Colors.black,
+        //     fontSize: 18,
+        //     fontFamily: fontRegular,
+        //     fontWeight: FontWeight.w500,
+        //   ),
+        // ),
+        ScanQrScreen()
+      ],
     );
   }
 
-  void _onQRViewCreated(QRViewController qrReaderController) {
-    setState(() {
-      this.qrReaderController = qrReaderController;
-    });
-    qrReaderController.scannedDataStream.listen((scanData) {
-      setState(() {
-        resultQrReader = scanData;
-      });
-    });
-  }
+  // // qrreader
+  // Widget _buildQrView(BuildContext context) {
+  //   // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
+  //   var scanArea = (MediaQuery.of(context).size.width < 400 ||
+  //           MediaQuery.of(context).size.height < 400)
+  //       ? 150.0
+  //       : 300.0;
+  //   // To ensure the Scanner view is properly sizes after rotation
+  //   // we need to listen for Flutter SizeChanged notification and update controller
+  //   return QRView(
+  //     key: qrKey,
+  //     onQRViewCreated: _onQRViewCreated,
+  //     overlay: QrScannerOverlayShape(
+  //         borderColor: Colors.red,
+  //         borderRadius: 10,
+  //         borderLength: 30,
+  //         borderWidth: 10,
+  //         cutOutSize: scanArea),
+  //     onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
+  //   );
+  // }
 
-  void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
-    log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
-    if (!p) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('no Permission')),
-      );
-    }
-  }
+  // void _onQRViewCreated(QRViewController qrReaderController) {
+  //   setState(() {
+  //     this.qrReaderController = qrReaderController;
+  //   });
+  //   qrReaderController.scannedDataStream.listen((scanData) {
+  //     setState(() {
+  //       resultQrReader = scanData;
+  //     });
+  //   });
+  // }
 
-  @override
-  void dispose() {
-    qrReaderController?.dispose();
-    super.dispose();
-  }
+  // void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
+  //   log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
+  //   if (!p) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text('no Permission')),
+  //     );
+  //   }
+  // }
+
+  // @override
+  // void dispose() {
+  //   qrReaderController?.dispose();
+  //   super.dispose();
+  // }
 }

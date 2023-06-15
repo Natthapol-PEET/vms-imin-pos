@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:imin/controllers/camera_qr_controller.dart';
 import 'package:imin/controllers/exit_project_controller.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/views/widgets/popup_item.dart';
@@ -28,149 +29,210 @@ class ExitProjectD1ProScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TitleContent(text: 'เวลาออกจากโครงการ'),
-              Row(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(
-                        top: 15, bottom: 15, left: 40, right: 15),
-                    width: size.width * 0.33,
-                    height: size.height * 0.05,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: textColor),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(Icons.calendar_today),
-                              SizedBox(width: 10),
-                              Obx(
-                                () => Text(
-                                  // 'ช่วงวัน : 1 มิถุนายน 2564 - 1 กรกฎาคม 2564',
-                                  'ช่วงวัน : ' +
-                                      exitController.startEndRange.value,
-                                  style: TextStyle(
-                                    fontFamily: fontRegular,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
+              Container(
+                // color: Colors.yellow,
+                margin: EdgeInsets.only(left: 40, right: 40),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(
+                              top: 15, bottom: 15, left: 0, right: 15),
+                          width: size.width * 0.28,
+                          height: size.height * 0.05,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: textColor),
+                            borderRadius: BorderRadius.circular(4),
                           ),
-                          PopupMenuButton(
-                            offset: Offset(80, size.height * 0.06),
-                            icon: Icon(Icons.expand_more, color: Colors.black),
-                            itemBuilder: (_) {
-                              return [
-                                PopupItem(
-                                  child: Container(
-                                    width: size.width * 0.8,
-                                    child: SfDateRangePicker(
-                                      showActionButtons: true,
-                                      // enableMultiView: true,
-                                      // viewSpacing: 20,
-                                      // era: EraMode.BUDDHIST_YEAR,
-                                      selectionMode:
-                                          DateRangePickerSelectionMode.range,
-                                      view: DateRangePickerView.month,
-                                      selectionShape:
-                                          DateRangePickerSelectionShape
-                                              .rectangle,
-                                      selectionTextStyle: TextStyle(
-                                        fontFamily: fontRegular,
-                                        color: Colors.white,
-                                      ),
-                                      todayHighlightColor: purpleBlueColor,
-                                      headerStyle: DateRangePickerHeaderStyle(
-                                        textAlign: TextAlign.center,
-                                        textStyle: TextStyle(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(Icons.calendar_today),
+                                    SizedBox(width: 10),
+                                    Obx(
+                                      () => Text(
+                                        // 'ช่วงวัน : 1 มิถุนายน 2564 - 1 กรกฎาคม 2564',
+                                        'ช่วงวัน : ' +
+                                            exitController.startEndRange.value,
+                                        style: TextStyle(
                                           fontFamily: fontRegular,
-                                          fontSize: 18,
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.black,
                                         ),
                                       ),
+                                    ),
+                                  ],
+                                ),
+                                PopupMenuButton(
+                                  offset: Offset(80, size.height * 0.06),
+                                  icon: Icon(Icons.expand_more,
+                                      color: Colors.black),
+                                  itemBuilder: (_) {
+                                    return [
+                                      PopupItem(
+                                        child: Container(
+                                          width: size.width * 0.8,
+                                          child: SfDateRangePicker(
+                                            showActionButtons: true,
+                                            // enableMultiView: true,
+                                            // viewSpacing: 20,
+                                            // era: EraMode.BUDDHIST_YEAR,
+                                            selectionMode:
+                                                DateRangePickerSelectionMode
+                                                    .range,
+                                            view: DateRangePickerView.month,
+                                            selectionShape:
+                                                DateRangePickerSelectionShape
+                                                    .rectangle,
+                                            selectionTextStyle: TextStyle(
+                                              fontFamily: fontRegular,
+                                              color: Colors.white,
+                                            ),
+                                            todayHighlightColor:
+                                                purpleBlueColor,
+                                            headerStyle:
+                                                DateRangePickerHeaderStyle(
+                                              textAlign: TextAlign.center,
+                                              textStyle: TextStyle(
+                                                fontFamily: fontRegular,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
+                                              ),
+                                            ),
 
-                                      monthViewSettings:
-                                          DateRangePickerMonthViewSettings(
-                                        viewHeaderStyle:
-                                            DateRangePickerViewHeaderStyle(
-                                          textStyle: TextStyle(
-                                            fontFamily: fontRegular,
-                                            color: Colors.black,
+                                            monthViewSettings:
+                                                DateRangePickerMonthViewSettings(
+                                              viewHeaderStyle:
+                                                  DateRangePickerViewHeaderStyle(
+                                                textStyle: TextStyle(
+                                                  fontFamily: fontRegular,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+
+                                            rangeTextStyle: TextStyle(
+                                                fontFamily: fontRegular,
+                                                color: Colors.black),
+                                            selectionColor: purpleBlueColor,
+                                            startRangeSelectionColor:
+                                                purpleBlueColor,
+                                            endRangeSelectionColor:
+                                                purpleBlueColor,
+                                            // rangeSelectionColor: Colors.purpleAccent,
+
+                                            monthCellStyle:
+                                                DateRangePickerMonthCellStyle(
+                                              textStyle: TextStyle(
+                                                  fontFamily: fontRegular,
+                                                  color: Colors.black),
+                                              todayTextStyle: TextStyle(
+                                                fontFamily: fontRegular,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            yearCellStyle:
+                                                DateRangePickerYearCellStyle(
+                                              textStyle: TextStyle(
+                                                fontFamily: fontRegular,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+
+                                            confirmText: 'ตกลง',
+                                            onSubmit: (v) => exitController
+                                                .submitSelectRangeTime(),
+                                            cancelText: 'ยกเลิก',
+                                            onCancel: () => Get.back(),
+                                            onSelectionChanged: (v) =>
+                                                exitController
+                                                    .cleanAndCreateDummy(
+                                                        v.value.startDate,
+                                                        v.value.endDate),
                                           ),
                                         ),
                                       ),
-
-                                      rangeTextStyle: TextStyle(
-                                          fontFamily: fontRegular,
-                                          color: Colors.black),
-                                      selectionColor: purpleBlueColor,
-                                      startRangeSelectionColor: purpleBlueColor,
-                                      endRangeSelectionColor: purpleBlueColor,
-                                      // rangeSelectionColor: Colors.purpleAccent,
-
-                                      monthCellStyle:
-                                          DateRangePickerMonthCellStyle(
-                                        textStyle: TextStyle(
-                                            fontFamily: fontRegular,
-                                            color: Colors.black),
-                                        todayTextStyle: TextStyle(
-                                          fontFamily: fontRegular,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                      yearCellStyle:
-                                          DateRangePickerYearCellStyle(
-                                        textStyle: TextStyle(
-                                          fontFamily: fontRegular,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-
-                                      confirmText: 'ตกลง',
-                                      onSubmit: (v) => exitController
-                                          .submitSelectRangeTime(),
-                                      cancelText: 'ยกเลิก',
-                                      onCancel: () => Get.back(),
-                                      onSelectionChanged: (v) =>
-                                          exitController.cleanAndCreateDummy(
-                                              v.value.startDate,
-                                              v.value.endDate),
-                                    ),
-                                  ),
+                                    ];
+                                  },
                                 ),
-                              ];
-                            },
+                              ],
+                            ),
                           ),
+                        ),
+                        Container(
+                          width: size.width * 0.28,
+                          height: size.height * 0.05,
+                          child: TextFormField(
+                            initialValue: exitController.searchValue.value,
+                            onChanged: exitController.searchOnchange,
+                            decoration: InputDecoration(
+                              prefixIcon:
+                                  Icon(Icons.search, color: Colors.black),
+                              border: OutlineInputBorder(),
+                              hintText:
+                                  'ค้นหาเลขทะเบียนรถ, บ้านเลขที่, ชื่อนามสกุล',
+                              contentPadding:
+                                  EdgeInsets.symmetric(vertical: 10),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: textColor)),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: purpleBlueColor),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    GetBuilder<ScanQrController>(
+                      id: 'update-exit-camera-qr',
+                      builder: (c) => Row(
+                        children: [
+                          ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: redAlertColor,
+                                side: BorderSide(
+                                  width: 1,
+                                  color: redAlertColor,
+                                ),
+                              ),
+                              onPressed: () {
+                                c
+                                    .showQrCamera(
+                                        size: size, currentPage: exitPage)
+                                    .show(context);
+                                c.update(['update-exit-camera-qr']);
+                              },
+                              child: RichText(
+                                  text: TextSpan(children: [
+                                WidgetSpan(
+                                    child: Padding(
+                                  padding: const EdgeInsets.only(right: 5.0),
+                                  child: Icon(
+                                    Icons.qr_code,
+                                    size: 16,
+                                  ),
+                                )),
+                                TextSpan(
+                                  text: 'แสกน QR Code',
+                                  style: TextStyle(
+                                    color: textColorContrast,
+                                    fontSize: 16,
+                                    fontFamily: fontRegular,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                )
+                              ]))),
                         ],
                       ),
                     ),
-                  ),
-                  Container(
-                    width: size.width * 0.3,
-                    height: size.height * 0.05,
-                    child: TextFormField(
-                      initialValue: exitController.searchValue.value,
-                      onChanged: exitController.searchOnchange,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.search, color: Colors.black),
-                        border: OutlineInputBorder(),
-                        hintText: 'ค้นหาเลขทะเบียนรถ, บ้านเลขที่, ชื่อนามสกุล',
-                        contentPadding: EdgeInsets.symmetric(vertical: 10),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: textColor)),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: purpleBlueColor),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               // table list
               Container(
@@ -241,7 +303,7 @@ class ExitProjectD1ProScreen extends StatelessWidget {
                               fit: BoxFit.none,
                             ),
                             Text('ไม่มีข้อมูล')
-                          ],  
+                          ],
                         ),
                       )
                     : Container(),

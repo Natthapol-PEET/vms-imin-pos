@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:imin/controllers/camera_qr_controller.dart';
 import 'package:imin/controllers/login_controller.dart';
 import 'package:imin/controllers/screen_controller.dart';
 import 'package:imin/functions/dialog_gate.dart';
@@ -23,6 +25,7 @@ import 'package:intl/intl.dart';
 class EntranceProjectController extends GetxController {
   var loginController = Get.put(LoginController());
   final screenController = Get.put(ScreenController());
+  // final scanQrController = Get.put(ScanQrController());
 
   var context;
   var dataEntrance = [].obs;
@@ -65,7 +68,8 @@ class EntranceProjectController extends GetxController {
       // print('query: ${query}');
       List result = [];
       visitorList.forEach((p) {
-        // print('p.licensePlateV: ${p.licensePlate}');
+        // print('valuelicensePlateV: ${valuelicensePlate}');
+        log('check data visitor : ${p.qrGenId.toString().toLowerCase()}');
         var licensePlate = p.licensePlate.toString().toLowerCase();
         var homeNumber = p.homeNumber.toString().toLowerCase();
         var fullName = p.firstname.toString().toLowerCase() +
@@ -79,6 +83,9 @@ class EntranceProjectController extends GetxController {
       });
       whitelistList.forEach((p) {
         // print('p.licensePlateW: ${p.licensePlate}');
+        // log(p);
+        // print(data['location']['lon']);
+        log('check data whitelist : ${p.firstname.toString().toLowerCase()}');
         var licensePlate = p.licensePlate.toString().toLowerCase();
         var homeNumber = p.homeNumber.toString().toLowerCase();
         var fullName = p.firstname.toString().toLowerCase() +
@@ -121,6 +128,53 @@ class EntranceProjectController extends GetxController {
       update(['update-enteance-data-row']);
     }
   }
+
+  // QR reader query
+  void qrReaderSearchResults(String query) {
+    print('d1Pro');
+    // searchValue = query;
+
+    if (query.isNotEmpty) {
+      // print('filterSearchResults : ${whitelistList}');
+      query = query.toLowerCase();
+      // query = ('W10831672964359836394').toLowerCase();
+      // print('query: ${query}');
+      List result = [];
+      visitorList.forEach((p) {
+        var qrGenId = p.qrGenId.toString().toLowerCase();
+        if (qrGenId == (query)) {
+          result.add(p);
+        }
+      });
+      whitelistList.forEach((p) {
+        var qrGenId = p.qrGenId.toString().toLowerCase();
+        if (qrGenId == (query)) {
+          result.add(p);
+        }
+      });
+      if (result.length == 1) {
+        return showDialogFunction(result[0]);
+      } else if (result.length == 1) {
+        EasyLoading.showError('ไม่พบข้อมูล(${result.length})');
+      } else {
+        EasyLoading.showError('ไม่พบข้อมูล');
+      }
+
+      return;
+    } else {
+      return;
+    }
+  }
+
+  void showDialogFunction(value) {
+    log('checkValue : ${value.firstname}');
+    if (value.firstname.isNotEmpty) {
+      return showDialogDetails(value).show(context);
+    } else {
+      return showDialogCard(value).show(context);
+    }
+  }
+  ///////////////////////
 
   void createRowSearch(List AllListData) {
     if (AllListData.length > 0) {
@@ -312,7 +366,6 @@ class EntranceProjectController extends GetxController {
                 textDetial('สถานะ'),
               ],
             ),
-            
             SizedBox(width: 20),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,

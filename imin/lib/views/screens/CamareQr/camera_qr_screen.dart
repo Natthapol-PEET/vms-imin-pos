@@ -7,6 +7,7 @@ class ScanQrScreen extends StatelessWidget {
   ScanQrScreen({Key? key}) : super(key: key);
   final screenController = Get.put(ScreenController());
 
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -15,7 +16,6 @@ class ScanQrScreen extends StatelessWidget {
         // m2 screen
         ? CameraQrD1ProScreen(size: size)
         // d1 screen
-        : CameraQrD1ProScreen(
-            size: size);
+        : CameraQrD1ProScreen(size: size);
   }
 }

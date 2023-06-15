@@ -2,6 +2,7 @@
 
 const String domainName = "https://vms-service.ngrok.io";
 const String ipServer = domainName + "/web_api";
+const String ipServerForQrApi = domainName + "/qr_api";
 const String ipServerIminService = domainName + "/imin_walkin_api";
 
 // SocketIO Server

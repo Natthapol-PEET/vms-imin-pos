@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -13,6 +14,7 @@ import 'package:imin/models/visitor_model.dart';
 import 'package:imin/models/whitelist_model.dart';
 import 'package:imin/services/exit_service.dart';
 import 'package:imin/services/gate_service.dart';
+import 'package:imin/services/qr_checkout_list_service.dart';
 import 'package:imin/views/widgets/round_button.dart';
 import 'package:imin/views/widgets/round_button_outline.dart';
 
@@ -538,5 +540,34 @@ class ExitProjectController extends GetxController {
                   color: Colors.white),
             )))
         .toList();
+  }
+
+  void qrReaderExitVillageSearchResults(String dataQr) async {
+    EasyLoading.show(status: 'โหลดข้อมูล ...');
+    var resDataQr = await qrCheckOutListService(
+        token: loginController.dataProfile.token, dataQr: dataQr);
+    EasyLoading.dismiss();
+    if (resDataQr['data'] != null) {
+      switch (resDataQr['data']['type']) {
+        case 'visitor':
+          showDialogFunction(VisitorModel.fromJson(resDataQr['data']));
+          break;
+        case 'whitelist':
+          showDialogFunction(WhitelistModel.fromJson(resDataQr['data']));
+          break;
+        default:
+      }
+    } else {
+      EasyLoading.showError('ไม่พบข้อมูล');
+    }
+
+  }
+
+  void showDialogFunction(value) {
+    if (value.firstname.isNotEmpty) {
+      return showDialogDetails(value).show(context);
+    } else {
+      return showDialogCard(value).show(context);
+    }
   }
 }

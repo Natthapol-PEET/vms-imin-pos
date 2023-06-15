@@ -30,3 +30,6 @@ const double normalM2FontSize = 10;
 // const double normalM2FontSize = 22;
 const double smallM2FontSize = 8;
 const double titleM2FontSize = 20;
+// page
+const String entrancePage = "EntrancePage";
+const String exitPage = "exitPage";

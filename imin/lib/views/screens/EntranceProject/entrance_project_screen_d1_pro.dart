@@ -4,23 +4,20 @@ import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:imin/controllers/camera_controller.dart';
+import 'package:imin/controllers/camera_qr_controller.dart';
 import 'package:imin/controllers/entrance_project_controller.dart';
 import 'package:imin/controllers/expansion_panel_controller.dart';
 import 'package:imin/controllers/upload_personal_controller.dart';
 import 'package:imin/helpers/constance.dart';
 import 'package:imin/views/screens/CamareQr/camera_qr_screen.dart';
 import 'package:imin/views/screens/EntranceProject/upload_personal_screen.dart';
-import 'package:imin/views/screens/ExitProject/exit_project_d1_pro_screen.dart';
-import 'package:imin/views/screens/ExitProject/exit_project_screen.dart';
 import 'package:imin/views/widgets/round_button_icon.dart';
 import 'package:imin/views/widgets/round_button_number.dart';
 import 'package:imin/views/widgets/title_content.dart';
-import 'package:flutter/services.dart';
-import 'dart:io';
-import 'dart:developer';
+// import 'package:flutter/services.dart';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class EntranceProjectScreenD1Pro extends StatefulWidget {
@@ -36,6 +33,7 @@ class _EntranceProjectScreenD1ProState
   final entranceController = Get.put(EntranceProjectController());
   final uploadPersonalController = Get.put(UploadPersonalController());
   final cameraController = Get.put(TakePictureController());
+  final scanQrController = Get.put(ScanQrController());
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController? qrReaderController;
   Barcode? resultQrReader;
@@ -44,41 +42,41 @@ class _EntranceProjectScreenD1ProState
     entranceController.getEntranceData(); // 3 list
   }
 
-  static const platform = MethodChannel('samples.flutter.dev/battery');
-  String _batteryLevel = 'Unknown battery level.';
-  Future<void> _getBatteryLevel() async {
-    String batteryLevel;
-    try {
-      final int result = await platform.invokeMethod('getBatteryLevel');
-      batteryLevel = 'Battery level at $result % .';
-    } on PlatformException catch (e) {
-      batteryLevel = "Failed to get battery level: '${e.message}'.";
-    }
-    entranceController.totalValue.value = batteryLevel;
-    setState(() {
-      _batteryLevel = batteryLevel;
-    });
-  }
+  // static const platform = MethodChannel('samples.flutter.dev/battery');
+  // String _batteryLevel = 'Unknown battery level.';
+  // Future<void> _getBatteryLevel() async {
+  //   String batteryLevel;
+  //   try {
+  //     final int result = await platform.invokeMethod('getBatteryLevel');
+  //     batteryLevel = 'Battery level at $result % .';
+  //   } on PlatformException catch (e) {
+  //     batteryLevel = "Failed to get battery level: '${e.message}'.";
+  //   }
+  //   entranceController.totalValue.value = batteryLevel;
+  //   setState(() {
+  //     _batteryLevel = batteryLevel;
+  //   });
+  // }
 
-  Future<void> _getValue() async {
-    String totalValue;
-    try {
-      var result = await platform.invokeMethod('setInitPrinter');
-      totalValue = 'Battery level at $result % .';
-    } on PlatformException catch (e) {
-      totalValue = "Failed to get battery level: '${e.message}'.";
-    }
-    entranceController.totalValue.value = totalValue;
-    setState(() {
-      _batteryLevel = totalValue;
-    });
-  }
+  // Future<void> _getValue() async {
+  //   String totalValue;
+  //   try {
+  //     var result = await platform.invokeMethod('setInitPrinter');
+  //     totalValue = 'Battery level at $result % .';
+  //   } on PlatformException catch (e) {
+  //     totalValue = "Failed to get battery level: '${e.message}'.";
+  //   }
+  //   entranceController.totalValue.value = totalValue;
+  //   setState(() {
+  //     _batteryLevel = totalValue;
+  //   });
+  // }
 
   @override
   void initState() {
     // syncFunction();
 
-    _getBatteryLevel();
+    // _getBatteryLevel();
     super.initState();
   }
 
@@ -138,96 +136,82 @@ class _EntranceProjectScreenD1ProState
                       children: [
                         GetBuilder<ExpansionPanelController>(
                           builder: (c) => ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: redAlertColor,
-                              side: BorderSide(
-                                width: 1,
-                                color: redAlertColor,
+                              style: ElevatedButton.styleFrom(
+                                primary: redAlertColor,
+                                side: BorderSide(
+                                  width: 1,
+                                  color: redAlertColor,
+                                ),
                               ),
-                            ),
-                            onPressed: () {
-                              cameraController.imageUrl.value = "";
-                              uploadPersonalController.initValue();
-                              c.currentContent = UploadPersonalScreen();
-                              c.update(['aopbmsbbffdgkb']);
-                            },
-                            child: Text(
-                              'เพิ่มผู้เข้าโครงการ',
-                              style: TextStyle(
-                                color: textColorContrast,
-                                fontSize: 18,
-                                fontFamily: fontRegular,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
+                              onPressed: () {
+                                cameraController.imageUrl.value = "";
+                                uploadPersonalController.initValue();
+                                c.currentContent = UploadPersonalScreen();
+                                c.update(['aopbmsbbffdgkb']);
+                              },
+                              child: RichText(
+                                  text: TextSpan(children: [
+                                WidgetSpan(
+                                    child: Padding(
+                                  padding: const EdgeInsets.only(right: 5.0),
+                                  child: Icon(Icons.add, size: 20),
+                                )),
+                                TextSpan(
+                                  text: 'เพิ่มผู้เข้าโครงการ',
+                                  style: TextStyle(
+                                    color: textColorContrast,
+                                    fontSize: 16,
+                                    fontFamily: fontRegular,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                )
+                              ]))),
                         ),
-                        // GetBuilder<ExpansionPanelController>(
-                        //   builder: (c) => ElevatedButton(
-                        //     style: ElevatedButton.styleFrom(
-                        //       primary: redAlertColor,
-                        //       side: BorderSide(
-                        //         width: 1,
-                        //         color: redAlertColor,
-                        //       ),
-                        //     ),
-                        //     onPressed: () {
-                        //       // cameraController.imageUrl.value = "";
-                        //       // uploadPersonalController.initValue();
-                        //       // c.currentContent = ScanQrScreen();
-                        //       // c.update(['aopbmsbbffdgkb']);
-                        //       EasyDialog(
-                        //         contentPadding:
-                        //             EdgeInsets.symmetric(horizontal: 20),
-                        //         width: size.width,
-                        //         height: size.height,
-                        //         closeButton: false,
-                        //         contentList: [
-                        //           Text(
-                        //             'แสกน QR Code',
-                        //             style: TextStyle(
-                        //               color: textColorContrast,
-                        //               fontSize: 18,
-                        //               fontFamily: fontRegular,
-                        //               fontWeight: FontWeight.w500,
-                        //             ),
-                        //           ),
-                        //         ],
-                        //       );
-                        //     },
-                        //     child: Text(
-                        //       'แสกน QR Code',
-                        //       style: TextStyle(
-                        //         color: textColorContrast,
-                        //         fontSize: 18,
-                        //         fontFamily: fontRegular,
-                        //         fontWeight: FontWeight.w500,
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
-
-                        // Text(
-                        //   'แสกน QR Code',
-                        //   style: TextStyle(
-                        //     color: textColorContrast,
-                        //     fontSize: 18,
-                        //     fontFamily: fontRegular,
-                        //     fontWeight: FontWeight.w500,
-                        //   ),
-                        // ),
-
-                        GetBuilder<EntranceProjectController>(
+                        Container(
+                          width: 5,
+                        ),
+                        GetBuilder<ScanQrController>(
                           id: 'update-enteance-camera-qr',
                           builder: (c) => Row(
                             children: [
                               ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: redAlertColor,
+                                    side: BorderSide(
+                                      width: 1,
+                                      color: redAlertColor,
+                                    ),
+                                  ),
                                   onPressed: () {
-                                    showQrCamera(size).show(context);
+                                    c
+                                        .showQrCamera(
+                                            size: size,
+                                            currentPage: entrancePage)
+                                        .show(context);
                                     c.update(['update-enteance-camera-qr']);
                                   },
-                                  // onPressed: () => controller.getEntranceData(),
-                                  child: Text('แสกน QR Code')),
+                                  child:
+                                      RichText(
+                                          text: TextSpan(children: [
+                                    WidgetSpan(
+                                        child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 5.0),
+                                      child: Icon(
+                                        Icons.qr_code,
+                                        size: 16,
+                                      ),
+                                    )),
+                                    TextSpan(
+                                      text: 'แสกน QR Code',
+                                      style: TextStyle(
+                                        color: textColorContrast,
+                                        fontSize: 16,
+                                        fontFamily: fontRegular,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    )
+                                  ]))),
                             ],
                           ),
                         ),
@@ -379,74 +363,4 @@ class _EntranceProjectScreenD1ProState
       ],
     );
   }
-
-  EasyDialog showQrCamera(Size size) {
-    return EasyDialog(
-      contentPadding: EdgeInsets.symmetric(horizontal: 20),
-      width: size.width,
-      height: size.height,
-      closeButton: true,
-      cardColor: Colors.black,
-      contentList: [
-        // Text(
-        //   'แสกน QR Code',
-        //   style: TextStyle(
-        //     color: Colors.black,
-        //     fontSize: 18,
-        //     fontFamily: fontRegular,
-        //     fontWeight: FontWeight.w500,
-        //   ),
-        // ),
-        ScanQrScreen()
-      ],
-    );
-  }
-
-  // // qrreader
-  // Widget _buildQrView(BuildContext context) {
-  //   // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
-  //   var scanArea = (MediaQuery.of(context).size.width < 400 ||
-  //           MediaQuery.of(context).size.height < 400)
-  //       ? 150.0
-  //       : 300.0;
-  //   // To ensure the Scanner view is properly sizes after rotation
-  //   // we need to listen for Flutter SizeChanged notification and update controller
-  //   return QRView(
-  //     key: qrKey,
-  //     onQRViewCreated: _onQRViewCreated,
-  //     overlay: QrScannerOverlayShape(
-  //         borderColor: Colors.red,
-  //         borderRadius: 10,
-  //         borderLength: 30,
-  //         borderWidth: 10,
-  //         cutOutSize: scanArea),
-  //     onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
-  //   );
-  // }
-
-  // void _onQRViewCreated(QRViewController qrReaderController) {
-  //   setState(() {
-  //     this.qrReaderController = qrReaderController;
-  //   });
-  //   qrReaderController.scannedDataStream.listen((scanData) {
-  //     setState(() {
-  //       resultQrReader = scanData;
-  //     });
-  //   });
-  // }
-
-  // void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
-  //   log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
-  //   if (!p) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(content: Text('no Permission')),
-  //     );
-  //   }
-  // }
-
-  // @override
-  // void dispose() {
-  //   qrReaderController?.dispose();
-  //   super.dispose();
-  // }
 }

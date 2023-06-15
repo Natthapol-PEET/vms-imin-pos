@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:imin/helpers/configs.dart';
@@ -17,6 +18,7 @@ Future getEntranceProjectWhitelistApi(String token) async {
         "Authorization": "Bearer $token",
       },
     );
+    // log('data API: ${utf8.decode(response.bodyBytes)}');
     return json.decode(utf8.decode(response.bodyBytes));
   } catch (e) {
     print("e: $e");

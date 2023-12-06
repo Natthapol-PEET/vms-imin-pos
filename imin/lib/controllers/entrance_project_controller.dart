@@ -131,18 +131,18 @@ class EntranceProjectController extends GetxController {
 
   // QR reader query
   void qrReaderSearchResults(String query) {
-    print('d1Pro');
+    // log('d1Pro: ' + query);
     // searchValue = query;
 
     if (query.isNotEmpty) {
       // print('filterSearchResults : ${whitelistList}');
       query = query.toLowerCase();
       // query = ('W10831672964359836394').toLowerCase();
-      // print('query: ${query}');
       List result = [];
       visitorList.forEach((p) {
         var qrGenId = p.qrGenId.toString().toLowerCase();
         if (qrGenId == (query)) {
+          log('same query: ${qrGenId}');
           result.add(p);
         }
       });
@@ -167,11 +167,18 @@ class EntranceProjectController extends GetxController {
   }
 
   void showDialogFunction(value) {
-    log('checkValue : ${value.firstname}');
-    if (value.firstname.isNotEmpty) {
-      return showDialogDetails(value).show(context);
-    } else {
-      return showDialogCard(value).show(context);
+    // log('checkValue : ${value}');
+    // log('checkValue : ${value.firstname}');
+    try {
+      if (value.firstname != null) {
+        log('not null : ${value.firstname}');
+        return showDialogDetails(value).show(context);
+      } else {
+        log('null : ${value.firstname}');
+        return showDialogCard(value).show(context);
+      }
+    } catch (e) {
+      log('error : ${e}');
     }
   }
   ///////////////////////

@@ -120,6 +120,7 @@ class ScanQrController extends GetxController {
       resultQrReader = scanData;
       var codeScanData = scanData.code;
       // var codeScanData = 'W10831672964359836394';
+      // log(codeScanData);
       qrReaderController.pauseCamera();
       Get.back();
       switch (this.currentPage.value) {
